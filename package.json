@@ -13,7 +13,7 @@
   "author": {
     "name": "Twinny Vr",
     "email": "conceptfac@gmail.com",
-    "url": "http://https://twinnyvr.co/"
+    "url": "https://twinnyvr.co/"
   },
   "dependencies": {
     "com.meta.movement": "71.0.1",
@@ -24,5 +24,12 @@
     "com.unity.xr.oculus": "4.2.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "samples":[
+    {
+      "displayName":"Twinny Essentials",
+      "description":"Contains scenes and default configuration for Twinny Experience.",
+      "path":"Samples~"
+    }
+  ]
 }
