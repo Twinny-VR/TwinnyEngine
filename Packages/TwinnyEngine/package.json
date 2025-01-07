@@ -3,7 +3,7 @@
   "displayName": "Twinny Engine",
   "version": "1.0.1",
   "type": "tool",
-  "unity": "2022.3",
+  "unity": "2022.3.34f1",
   "description": "A framework for Twinny Experiences Apps development.",
   "documentationUrl":"",
   "changelogUrl":"",
@@ -12,9 +12,10 @@
   "author": {
     "name": "Twinny Vr",
     "email": "conceptfac@gmail.com",
-    "url": "http://https://twinnyvr.co/"
+    "url": "https://twinnyvr.co/"
   },
   "dependencies": {
+    "com.twinny.twe25":"https://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@github.com/Twinny-VR/TwinnyEngine2025.git",
     "com.meta.movement": "71.0.1",
     "com.meta.xr.sdk.all": "71.0.0",
     "com.unity.2d.sprite": "1.0.0",
