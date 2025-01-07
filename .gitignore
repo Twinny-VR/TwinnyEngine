@@ -3,6 +3,8 @@
 
 # Exceto as pastas Assets e Packages
 !/Assets
+!/Packages
+/Packages/*
 !/Packages/TwinnyEngine
 
 # Ignorar arquivos temporários e específicos do Unity dentro de Assets/ e Packages/
