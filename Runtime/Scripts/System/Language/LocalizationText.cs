@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Twinny.UI
 {
 
-    [RequireComponent(typeof(TextMeshPro))]
+    [RequireComponent(typeof(TMP_Text))]
 
     /// <summary>
     /// This class manage TEXT field accord Localization Settings
@@ -17,7 +17,7 @@ namespace Twinny.UI
     public class LocalizationText : MonoBehaviour
     {
         #region Cached Components
-        private TextMeshPro _textMesh;
+        private TMP_Text _textMesh;
         #endregion
 
         #region Fields
@@ -28,7 +28,7 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
-            _textMesh = GetComponent<TextMeshPro>();
+            _textMesh = GetComponent<TMP_Text>();
             SetText();
             LanguageManager.OnLanguageChanged += SetText;
 
@@ -67,7 +67,7 @@ namespace Twinny.Helpers
         // This method insert into a TextMesh a translated text
         /// </summary>
         /// <param name="key">KeyWord to tranlate</param>
-        public static void SetLocalizationText(this TextMeshPro textMesh, string key)
+        public static void SetLocalizationText(this TMP_Text textMesh, string key)
         {
             textMesh.text = LanguageManager.GetTranslated(key);
         }
