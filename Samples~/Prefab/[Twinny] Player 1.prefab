@@ -4334,13 +4334,14 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 594369470
+  SortKey: 3971626489
   ObjectInterest: 2
   Flags: 786433
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2838212549482115543}
   - {fileID: 5930455402979142158}
+  ForceRemoteRenderTimeframe: 0
 --- !u!114 &2838212549482115543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4353,6 +4354,7 @@ MonoBehaviour:
   m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
   SyncScale: 0
   SyncParent: 0
   _autoAOIOverride: 1

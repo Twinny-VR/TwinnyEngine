@@ -23,6 +23,8 @@ namespace Twinny.System
 
     public class SceneFeature : TSingleton<SceneFeature>
     {
+        const string WORLD_NAME = "World";
+
         #region Cached Components
         private Transform _transform;
         #endregion
@@ -74,6 +76,13 @@ namespace Twinny.System
             if (extensionMenu)
                 HUDManager.Instance.LoadExtensionMenu(extensionMenu);
 
+            if (!worldTransform) worldTransform = GameObject.Find(WORLD_NAME)?.transform;
+            if (!worldTransform)
+            {
+                worldTransform = new GameObject().transform;
+                worldTransform.name = WORLD_NAME;
+                worldTransform.parent = _transform;  
+            }
         }
         // Update is called once per frame
         void Update()

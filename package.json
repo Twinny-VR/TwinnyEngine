@@ -1,14 +1,14 @@
 {
   "name": "com.twinny.twe25",
   "displayName": "Twinny Engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "tool",
   "unity": "2022.3",
-  "unityRelease":"34f1",
+  "unityRelease": "34f1",
   "description": "A framework for Twinny Experiences Apps development.",
-  "documentationUrl":"",
-  "changelogUrl":"",
-  "licensesUrl":"",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
   "keywords": [],
   "author": {
     "name": "Twinny Vr",
@@ -25,11 +25,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
   },
-  "samples":[
+  "samples": [
     {
-      "displayName":"Twinny Essentials",
-      "description":"Contains scenes and default configuration for Twinny Experience.",
-      "path":"Samples~"
+      "displayName": "Twinny Essentials",
+      "description": "Contains scenes and default configuration for Twinny Experience.",
+      "path": "Samples~"
     }
   ]
 }
