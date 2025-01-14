@@ -2,6 +2,7 @@ using Meta.WitAi.Attributes;
 using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
+using Twinny.Helpers;
 using Twinny.System;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,8 @@ namespace Twinny.UI
         EXIT,
         SETTINGS,
         CHANGE_SCENE,
-        NAVIGATION
+        NAVIGATION,
+        ACTION
     }
 
     [RequireComponent(typeof(PointableUnityEventWrapper))]
@@ -25,7 +27,7 @@ namespace Twinny.UI
     {
         public ButtonType type;
         [ShowIf("type!=ButtonType.EXIT")]
-        public string scene;
+        public string parameter;
         public int landMarkIndex;
         private PointableUnityEventWrapper _pointable;
         private void Awake()
@@ -42,16 +44,19 @@ namespace Twinny.UI
             switch (type)
             {
                 case ButtonType.START:
-                    LevelManager.Instance.StartExperience(scene);
+                    LevelManager.Instance.StartExperience(parameter);
                     break;
                 case ButtonType.EXIT:
                     LevelManager.Instance.QuitExperience();
                     break;
                 case ButtonType.CHANGE_SCENE:
-                    LevelManager.Instance.RPC_ChangeScene(scene,landMarkIndex);
+                    LevelManager.Instance.RPC_ChangeScene(parameter,landMarkIndex);
                     break;
                 case ButtonType.NAVIGATION:
                     LevelManager.Instance.RPC_NavigateTo(landMarkIndex);
+                    break;
+                case ButtonType.ACTION:
+                    ActionManager.CallAction(parameter);
                     break;
                 default:
                     break;

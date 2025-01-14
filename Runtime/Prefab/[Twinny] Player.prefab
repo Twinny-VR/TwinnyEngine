@@ -4064,11 +4064,13 @@ MonoBehaviour:
   _retargetingAnimationRig:
     _rebindAnimator: 1
     _reEnableRig: 1
-    _rigToggleOnFocus: 0
+    _rigToggleOnFocus: 1
     _rigBuilder: {fileID: 2251377971860327447}
     _ovrSkeletonConstraints:
+    - {fileID: 7457396444807117369}
     - {fileID: 6112215164551959401}
     - {fileID: 8920196997800801958}
+    - {fileID: 2001907244255408950}
   _externalBoneTargets:
     _boneTargets:
     - HumanBodyBone: 0

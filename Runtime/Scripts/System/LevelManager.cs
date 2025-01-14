@@ -6,6 +6,7 @@ using Fusion;
 using Meta.XR.Movement.Networking.Fusion;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twinny.Helpers;
 using Twinny.System.Local;
@@ -50,6 +51,8 @@ namespace Twinny.System
 
         [SerializeField] private GameObject _playerPrefab;
         private NetworkObject _playerObject;
+
+
 
         #endregion
 
@@ -126,7 +129,6 @@ namespace Twinny.System
                 HUDManager.Instance.SetElementActive(new string[] { "CONFIG_MENU" });
                 _bootstrap.StartSinglePlayer();
             }
-
 
         }
 

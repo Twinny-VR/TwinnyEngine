@@ -33,6 +33,8 @@ namespace Twinny.UI
         [Space]
         [Tooltip("H.U.D Dinâmica segue o F.O.V")]
         [SerializeField] private GameObject _dynamicHud;
+        [SerializeField] private Transform _canvasRoot;
+
         [Tooltip("Ângulo limite de visão até iniciar rotação.")]
         [SerializeField] private float _dynamicTreesholdAngle = 30f;
         [Tooltip("Velocidade de rotação da HUD.")]
@@ -51,7 +53,6 @@ namespace Twinny.UI
         [SerializeField] private GameObject _staticHud;
         private Coroutine _fadeCoroutine;
         private GameObject _extensionMenu;
-
 
         private Vector3 _previousCameraPos;
         #endregion
@@ -72,11 +73,12 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
+
             _overlayScreen.worldCamera = Camera.main;
             FadeScreen(true);
             _mainCameraTransform = Camera.main.transform;
             _previousCameraPos = _mainCameraTransform.position;
-        }
+            }
        
         // Update is called once per frame
         void Update()
@@ -114,10 +116,18 @@ namespace Twinny.UI
         }
 
 
-        public void FadeHud(bool status)
+        public void FadeHud(bool status, float limit = 0f)
         {
             //TODO Criar sistema de esmaecer controles
            // if (status) Debug.Log("MOVIMENTANDO");
+        }
+
+
+        public void HideHud(bool status, float limit = 0f)
+        {
+            _canvasRoot.gameObject.SetActive(!status);
+            //TODO Criar sistema de esmaecer controles
+            // if (status) Debug.Log("MOVIMENTANDO");
         }
 
 
@@ -181,7 +191,7 @@ namespace Twinny.UI
 
             if (menu != null)
             {
-                _extensionMenu = Instantiate(menu, isStatic ? _staticHud.transform : _dynamicHud.transform);
+                _extensionMenu = Instantiate(menu, isStatic ? _staticHud.transform : _canvasRoot);
                 _extensionMenu.SetActive(false);
                 HudElement he = new HudElement();
                 he.key = menu.name;
