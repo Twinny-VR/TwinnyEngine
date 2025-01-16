@@ -231,6 +231,20 @@ namespace Twinny.UI
 
         #endregion
 
+
+        [ContextMenu("Start Anchoring")]
+        public void Anchoring() {
+            SelectOption("ANCHORING");
+        }
+
+        [ContextMenu("Create Anchor")]
+        public void Anchored()
+        {
+            SelectOption("ANCHORED");
+        }
+
+
+
     }
 
 }

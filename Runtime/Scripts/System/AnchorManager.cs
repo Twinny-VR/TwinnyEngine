@@ -40,6 +40,8 @@ namespace Twinny.System
 
         [SerializeField] private float _maxDistance = 5f;
 
+        [SerializeField] private bool _usePinchToAnchor = false;
+
         public delegate void onAnchorStateChanged(StateAnchorManager state);
         public static onAnchorStateChanged OnAnchorStateChanged;
 
@@ -60,10 +62,11 @@ namespace Twinny.System
                     OVRSpatialAnchor currentAnchor;
                     TryGetComponent<OVRSpatialAnchor>(out currentAnchor);
 
+                    _spatialAnchorCore.EraseAllAnchors();
+                    
                     if (currentAnchor != null)
                         Destroy(GetComponent<OVRSpatialAnchor>());
 
-                    _spatialAnchorCore.EraseAllAnchors();
                 }
      
 
@@ -217,7 +220,7 @@ namespace Twinny.System
         /// </summary>
         private void OnPinchLeft()
         {
-            if (_state != StateAnchorManager.ANCHORED) return;
+            if (!_usePinchToAnchor || _state != StateAnchorManager.ANCHORED) return;
             _state = StateAnchorManager.ANCHORING;
         }
 
@@ -227,7 +230,7 @@ namespace Twinny.System
         /// </summary>
         private void OnPinchRight()
         {
-            if(_state != StateAnchorManager.ANCHORING) return;
+            if(!_usePinchToAnchor || _state != StateAnchorManager.ANCHORING) return;
             CreateAnchor();
 
         }

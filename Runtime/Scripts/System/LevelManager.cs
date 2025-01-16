@@ -164,6 +164,7 @@ namespace Twinny.System
             isRunning = true;
             //TODO Descobrir se ja esta rodando a experienca
             HUDManager.Instance.SetElementActive(new string[] { "MAIN_MENU", "CONFIG_MENU" });
+           /*
             runner.Spawn(
                             _playerPrefab,
                             Vector3.zero,
@@ -175,6 +176,7 @@ namespace Twinny.System
                                 behaviour.CharacterId = spawner.SelectedCharacterIndex + 1;
                             }
                         );
+           */
 
         }
 
