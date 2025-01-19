@@ -27,9 +27,14 @@ namespace Twinny.System
 
 
         #region Fields
+        [Header("Experience")]
+        [SerializeField] private bool _startSinglePlayer = false;
+
         private NetworkObject _networkObject;
         public static NetworkRunner runner { get => NetworkRunnerHandler.runner; }
 
+        [Space]
+        [Header("Linked Components")]
         [SerializeField]
         private FusionBootstrap _bootstrap;
         public GameObject colocation;
@@ -109,18 +114,14 @@ namespace Twinny.System
 
 
             bool isWifiConnected = IsWiFiConnected();
-            if (isWifiConnected)
-                SetState(new MultiplayerControls());
-            else
-                SetState(new SinglePlayerControls());
-
-            SetState(new MultiplayerControls()); //TODO Excluir
+            
+            SetState(new MultiplayerControls()); //TODO Excluir e modificar pra um sistema global
 
 
             StartCoroutine(CheckInternetConnection());
 
 
-            if (isWifiConnected)
+            if (isWifiConnected && !_startSinglePlayer)
             {
                 _bootstrap.StartSharedClient();
             }
@@ -404,8 +405,14 @@ namespace Twinny.System
             }
         }
 
+
+        public static void CallDelayedAction(Action action, float delay = -1)
+        {
+            Instance.StartCoroutine(DelayedAction(action, delay));
+        }
+
         //TODO Implementar um Helper
-        public static IEnumerator DelayedAction(Action action, float delay = -1)
+        private static IEnumerator DelayedAction(Action action, float delay = -1)
         {
             if (delay < 0)
                 yield return new WaitForEndOfFrame();
@@ -517,7 +524,7 @@ namespace Twinny.System
                 IsManager = true;
                 string enableMenu = SceneFeature.Instance?.extensionMenu ? SceneFeature.Instance.extensionMenu.name : "MAIN_MENU";
                 Debug.LogWarning("OpenMenu:" + enableMenu);
-                StartCoroutine(DelayedAction(() =>
+                CallDelayedAction(() =>
                 {
                     Debug.LogWarning("MOSTRA MENU!");
 
@@ -525,7 +532,7 @@ namespace Twinny.System
                     if (SceneFeature.Instance.enableNavigationMenu)
                         NavigationMenu.Instance?.SetArrows(SceneFeature.Instance?.landMarks[currentLandMark].node);
 
-                }, 1f));
+                }, 1f);
 
 
                 Debug.LogWarning(source + " é o novo MANAGER!");

@@ -34,6 +34,8 @@ namespace Twinny.System
         #endregion
 
         #region Fields
+        [SerializeField]
+        private OVRSpatialAnchor _currentAnchor;
         [SerializeField] private SpatialAnchorCoreBuildingBlock _spatialAnchorCore;
         [SerializeField] private SpatialAnchorLoaderBuildingBlock _spatialAnchorLoader;
         [SerializeField] private SpatialAnchorSpawnerBuildingBlock _spatialAnchorSpawner;
@@ -44,7 +46,7 @@ namespace Twinny.System
 
         public delegate void onAnchorStateChanged(StateAnchorManager state);
         public static onAnchorStateChanged OnAnchorStateChanged;
-
+        [SerializeField]
         private StateAnchorManager _stateAnchorManager = StateAnchorManager.DISABLED;
         private StateAnchorManager _state {  get { return _stateAnchorManager; } set {
 
@@ -59,13 +61,13 @@ namespace Twinny.System
 
                 if(value == StateAnchorManager.ANCHORING)
                 {
+                    _transform.SetParent(null);
+                    _spatialAnchorCore.EraseAllAnchors();
+                    /*
                     OVRSpatialAnchor currentAnchor;
                     TryGetComponent<OVRSpatialAnchor>(out currentAnchor);
-
-                    _spatialAnchorCore.EraseAllAnchors();
-                    
-                    if (currentAnchor != null)
-                        Destroy(GetComponent<OVRSpatialAnchor>());
+                    if (currentAnchor != null) LevelManager.CallDelayedAction(() => { Destroy(GetComponent<OVRSpatialAnchor>()); },.5f);
+                    */
 
                 }
      
@@ -80,6 +82,7 @@ namespace Twinny.System
         private void Awake()
         {
             _transform = transform;
+            Debug.LogWarning("PARENT:" + transform.parent);
             Init();
         }
         // Start is called before the first frame update
@@ -89,7 +92,7 @@ namespace Twinny.System
             //Set callbacks listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.AddListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.AddListener(OnAnchorCreateCompleted);
-
+            _spatialAnchorCore.OnAnchorEraseCompleted.AddListener(OnAnchorEraseCompleted);
             //Set callbacks delegates
             GestureMonitor.Instance.OnPinchLeft += OnPinchLeft;
             GestureMonitor.Instance.OnPinchRight += OnPinchRight;
@@ -115,6 +118,7 @@ namespace Twinny.System
             //Unset listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.RemoveListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.RemoveListener(OnAnchorCreateCompleted);
+            _spatialAnchorCore.OnAnchorEraseCompleted.RemoveListener(OnAnchorEraseCompleted);
 
         }
         #endregion
@@ -122,7 +126,7 @@ namespace Twinny.System
 
 
         #region Public Methods
-       
+
         /// <summary>
         /// This method switch Anchor Placement ON/OFF
         /// </summary>
@@ -137,6 +141,7 @@ namespace Twinny.System
         /// </summary>
         public static void CreateAnchor()
         {
+            Instance.transform.SetParent(null);
             Instance._spatialAnchorCore.EraseAllAnchors();
             Instance._spatialAnchorSpawner.SpawnSpatialAnchor(Instance._transform.position, Instance._transform.rotation);
         }
@@ -162,7 +167,8 @@ namespace Twinny.System
             Vector3 position = anchor.transform.position;
             Quaternion rotation = Quaternion.Euler(0, anchor.transform.rotation.eulerAngles.y, 0);
             _transform.SetPositionAndRotation(position, rotation);
-            _transform.gameObject.AddComponent<OVRSpatialAnchor>();
+            _transform.SetParent(anchor.transform);
+           // _transform.gameObject.AddComponent<OVRSpatialAnchor>();
         }
 
         /// <summary>
@@ -172,22 +178,34 @@ namespace Twinny.System
         /// <param name="result">Possible results of various AnchorCore operations.</param>
         private void OnAnchorCreateCompleted(OVRSpatialAnchor anchor, OVRSpatialAnchor.OperationResult result)
         {
-
+            /*
             OVRSpatialAnchor currentAnchor;
             TryGetComponent<OVRSpatialAnchor>(out currentAnchor);
 
             if (currentAnchor == null)
                 _transform.gameObject.AddComponent<OVRSpatialAnchor>();
 
+            */
 
-            _state =(result.IsSuccess())?  StateAnchorManager.ANCHORED : StateAnchorManager.ANCHORING;
+            if (result.IsSuccess())
+            {
+                _transform.SetParent(anchor.transform);
+            _currentAnchor = anchor;
+            
+            }
+
+            _state =(result.IsSuccess())?  StateAnchorManager.DISABLED : StateAnchorManager.ANCHORING;
 
             if (!result.IsSuccess())
                 Debug.LogError(result);
 
         }
 
+        private void OnAnchorEraseCompleted(OVRSpatialAnchor anchor, OVRSpatialAnchor.OperationResult result)
+        {
+            _currentAnchor = anchor;
 
+        }
 
         /// <summary>
         /// This method align the Anchor and SafeArea acording the spectate view

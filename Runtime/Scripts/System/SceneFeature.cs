@@ -132,7 +132,6 @@ namespace Twinny.System
                 float desiredAngle = transform.eulerAngles.y + landMark.node.transform.eulerAngles.y;
 
                 Vector3 desiredPosition = -landMark.node.transform.localPosition;
-                desiredPosition.y = 0;
                 worldTransform.localPosition = desiredPosition;
                 worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -landMark.node.transform.localRotation.eulerAngles.y);
                 SetHDRI(landMarkIndex);

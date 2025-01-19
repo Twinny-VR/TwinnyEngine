@@ -33,13 +33,12 @@ namespace Twinny.UI
             Vector3 position = _positionOffset;
             position.z = -radius + position.z;
             _transform.position = position;
-            StartCoroutine(
-            LevelManager.DelayedAction(() =>
+            LevelManager.CallDelayedAction(() =>
             {
             Vector3 rotation = _projectionMesh.eulerAngles;
             rotation.x = _pitchRotation;
             _projectionMesh.eulerAngles = rotation;
-            }));
+            });
         }
 
         // Update is called once per frame

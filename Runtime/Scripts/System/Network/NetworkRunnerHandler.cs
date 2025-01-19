@@ -234,10 +234,10 @@ namespace Twinny.System.Network
 
                 }
 
-                StartCoroutine(LevelManager.DelayedAction(() =>
+                LevelManager.CallDelayedAction(() =>
                 {
                     HUDManager.Instance.SetElementActive(LevelManager.IsManager ? new string[] { "CONFIG_MENU", SceneFeature.Instance.extensionMenu.name } : null);
-                }, 1f));
+                }, 1f);
 
             }
 
