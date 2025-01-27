@@ -20,8 +20,8 @@ namespace Twinny.Helpers
 
         #region Fields
         [SerializeField] private bool _dontDestroyOnLoad = false;
-        [SerializeField] private bool _overwriteInstance = false;
-
+        [SerializeField] private bool _keepAllInstances = false;
+        [SerializeField] private bool _lastInstancePersistent = false;
         #endregion
 
         /// <summary>
@@ -32,13 +32,18 @@ namespace Twinny.Helpers
             if (_dontDestroyOnLoad)
                 DontDestroyOnLoad(this.gameObject);
 
-            if (_overwriteInstance)
+            if (_keepAllInstances)
             {
                 _instance = this as T;
             }
             else
             {
                 if (!_instance) _instance = this as T;
+                else
+                    if (_lastInstancePersistent) { 
+                    Destroy(_instance.gameObject);
+                    _instance = this as T;
+                }
                 else
                     Destroy(gameObject);
             }

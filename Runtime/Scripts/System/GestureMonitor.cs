@@ -21,8 +21,6 @@ namespace Twinny.System
         private Camera _camera;
         private OVRHand _leftHand, _rightHand;
         private bool _wasPinchingLeft, _wasPinchingRight = false;  // Left and Right hand status Flag
-        private bool _isGrabbingLeft = false;
-        private bool _isGrabbingRight = false;
         [Header("Interactions")]
         [SerializeField] private HandGrabInteractor _handGrabInteractorLeft;
         [SerializeField] private HandGrabInteractor _handGrabInteractorRight;

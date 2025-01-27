@@ -7,6 +7,8 @@ using UnityEngine;
 using Twinny.Helpers;
 using Twinny.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using Fusion;
 
 namespace Twinny.System
 {
@@ -38,10 +40,18 @@ namespace Twinny.System
         public GameObject extensionMenu;
         #endregion
 
+        #region Delegates
+        public delegate void onTeleportToLandMark(int landMarkIndex);
+        public onTeleportToLandMark OnTeleportToLandMark;
+        #endregion
+
+
 
 #if UNITY_EDITOR
         private void OnValidate()
         { 
+            if (worldTransform == null) worldTransform = new GameObject("World").transform;
+            worldTransform.SetParent(transform);
             if (landMarks == null) return;
 
             foreach (var mark in landMarks)
@@ -68,11 +78,24 @@ namespace Twinny.System
         // Start is called before the first frame update
         void Start()
         {
+
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose += OnRecenterDetected;
 
             if (extensionMenu)
                 HUDManager.Instance.LoadExtensionMenu(extensionMenu);
+
+            int layer = LayerMask.NameToLayer("Character");
+
+            if (layer == -1) return;
+
+            if(sceneType == SceneType.MR)
+                Camera.main.cullingMask &= ~(1 << layer);
+            else
+                Camera.main.cullingMask |= (1 << layer);
+
+
+            CheckGameMode();
 
         }
         // Update is called once per frame
@@ -143,6 +166,24 @@ namespace Twinny.System
                 worldTransform.position = AnchorManager.Instance.transform.position;
                 worldTransform.rotation = AnchorManager.Instance.transform.rotation;
             }
+
+            OnTeleportToLandMark?.Invoke(landMarkIndex);
+        }
+
+
+        public LandMark GetLandMark(LandMarkNode node)
+        {
+            return landMarks.FirstOrDefault(o => o.node == node);
+        }
+
+        public int GetLandMarkIndex(LandMarkNode node)
+        {
+            for (int i = 0; i < landMarks.Length; i++)
+            {
+                if (landMarks[i].node == node)
+                { return i; }
+            }
+            return -1;
         }
 
 
@@ -205,6 +246,16 @@ namespace Twinny.System
             rotationOffset = Mathf.Clamp(rotationOffset, 0, 360);
 
             RenderSettings.skybox.SetFloat("_Rotation", rotationOffset);
+        }
+
+        private void CheckGameMode()
+        {
+                bool active = (LevelManager.runner.GameMode != Fusion.GameMode.Single);
+                NetworkTransform[] networks = _transform.GetComponentsInChildren<NetworkTransform>();
+                foreach (var item in networks)
+                {
+                    item.enabled = active;
+                }
         }
 
 

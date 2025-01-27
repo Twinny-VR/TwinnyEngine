@@ -40,6 +40,11 @@ namespace Twinny.UI
         public void OnRelease(PointerEvent pointerEvent)
         {
 
+            if(!HUDManager.Instance.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+            {
+                AlertViewHUD.PostMessage("Volte para dentro da SAFE AREA para navegar!",AlertViewHUD.MessageType.Warning, 5f);
+                return;
+            }
 
             switch (type)
             {

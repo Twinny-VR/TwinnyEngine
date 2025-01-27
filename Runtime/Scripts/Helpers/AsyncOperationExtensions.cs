@@ -28,5 +28,16 @@ namespace Twinny.Helpers
                 await Task.Yield(); // Aguarda até o próximo frame
             }
         }
+
+
+        // Método para aguardar a conclusão do carregamento da cena
+        public static async Task WaitForSceneLoadAsync(AsyncOperation asyncLoad)
+        {
+            // Enquanto a cena não estiver carregada, aguarde
+            while (!asyncLoad.isDone)
+            {
+                await Task.Yield(); // Aguarda até o próximo frame
+            }
+        }
     }
 }

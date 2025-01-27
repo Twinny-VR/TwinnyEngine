@@ -4,12 +4,15 @@
 
 using Fusion;
 using Meta.XR.Movement.Networking.Fusion;
+using Oculus.Platform;
+using Oculus.Platform.Models;
+using Photon.Voice.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Twinny.Helpers;
-using Twinny.System.Local;
 using Twinny.System.Network;
 using Twinny.UI;
 using UnityEngine;
@@ -27,6 +30,7 @@ namespace Twinny.System
 
 
         #region Fields
+        public string userName;
         [Header("Experience")]
         [SerializeField] private bool _startSinglePlayer = false;
 
@@ -37,8 +41,6 @@ namespace Twinny.System
         [Header("Linked Components")]
         [SerializeField]
         private FusionBootstrap _bootstrap;
-        public GameObject colocation;
-        private IControls _currentControls;
 
         [SerializeField]
         private AudioMixer _audioMixer;
@@ -52,11 +54,10 @@ namespace Twinny.System
         public Material defaultSkybox;
 
         public bool tryReconnect = true;
-       public  NetworkPoseRetargeterSpawnerFusion spawner;
+        public NetworkPoseRetargeterSpawnerFusion spawner;
 
         [SerializeField] private GameObject _playerPrefab;
         private NetworkObject _playerObject;
-
 
 
         #endregion
@@ -97,9 +98,6 @@ namespace Twinny.System
         */
 
 
-
-
-
         #region MonoBehaviour Methods
 
         //Awake is called before the script is started
@@ -111,15 +109,15 @@ namespace Twinny.System
         // Start is called before the first frame update
         void Start()
         {
+           if(!Core.IsInitialized()) Core.Initialize();
 
+            Users.GetLoggedInUser().OnComplete(OnLoggedInUser);
 
-            bool isWifiConnected = IsWiFiConnected();
-            
-            SetState(new MultiplayerControls()); //TODO Excluir e modificar pra um sistema global
-
+           
 
             StartCoroutine(CheckInternetConnection());
 
+            bool isWifiConnected = IsWiFiConnected();
 
             if (isWifiConnected && !_startSinglePlayer)
             {
@@ -141,9 +139,9 @@ namespace Twinny.System
         // Destroy is called when component/object was removed
         private void OnDestroy()
         {
-
-
+            // if (OVRManager.display != null) OVRManager.display.RecenteredPose -= OnRecenterDetected;
         }
+
 
 
         #endregion
@@ -158,26 +156,29 @@ namespace Twinny.System
         }
 
         [ContextMenu("Start Experience")]
-        public void StartExperience() { StartExperience("MockupScene"); }
+        public void StartExperience() { StartExperience("CenaVazia"); }
 
         public void GetReady()
         {
             isRunning = true;
             //TODO Descobrir se ja esta rodando a experienca
             HUDManager.Instance.SetElementActive(new string[] { "MAIN_MENU", "CONFIG_MENU" });
-           /*
-            runner.Spawn(
-                            _playerPrefab,
-                            Vector3.zero,
-                            Quaternion.identity,
-                            runner.LocalPlayer,
-                            (runner, obj) => // onBeforeSpawned
-                            {
-                                var behaviour = obj.GetComponent<NetworkPoseRetargeterBehaviourFusion>();
-                                behaviour.CharacterId = spawner.SelectedCharacterIndex + 1;
-                            }
-                        );
-           */
+
+            if(spawner != null && spawner.isActiveAndEnabled)
+             runner.Spawn(
+                             _playerPrefab,
+                             Vector3.zero,
+                             Quaternion.identity,
+                             runner.LocalPlayer,
+                             (runner, obj) => // onBeforeSpawned
+                             {
+                                 var behaviour = obj.GetComponent<NetworkPoseRetargeterBehaviourFusion>();
+                                 behaviour.CharacterId = spawner.SelectedCharacterIndex + 1;
+                             }
+                         );
+
+
+                AnchorManager.SpawnColocation();
 
         }
 
@@ -196,7 +197,7 @@ namespace Twinny.System
             RPC_StartForAll(PlayerRef.None, 0);
         }
 
-
+        
 
 
         /// <summary>
@@ -228,11 +229,9 @@ namespace Twinny.System
         /// Works only in multiplayer mode
         /// </summary>
         /// <returns>Returns if it's currently transmiting</returns>
-        public static bool GetVoipStatus()
+        public static bool GetVoipStatus2()
         {
 
-            if (Instance._currentControls is MultiplayerControls multiplayer)
-                return multiplayer.GetVoipStatus();
 
             return false;
 
@@ -244,10 +243,8 @@ namespace Twinny.System
         /// Switch primary recorder transmission
         /// Works only in multiplayer mode
         /// </summary>
-        public static void SetVoip()
+        public static void SetVoip2()
         {
-            if (Instance._currentControls is MultiplayerControls multiplayer)
-                multiplayer.SetVoip();
         }
 
         /// <summary>
@@ -282,12 +279,12 @@ namespace Twinny.System
             {
                 if (scene == "StartScene")
                 {
-                    await _currentControls.UnloadAdditivesScenes();
+                    await NetworkSceneManager.UnloadAdditivesScenes();
                     //RPC_MenuReset(true);
                 }
                 else
                 {
-                    await _currentControls.LoadAdditiveSceneAsync(scene, landMarkIndex);
+                    await NetworkSceneManager.LoadAdditiveSceneAsync(scene, landMarkIndex);
                     //RPC_MenuReset(false);
                 }
                 HUDManager.Instance.FadeScreen(true);
@@ -320,7 +317,7 @@ namespace Twinny.System
         public static bool IsWiFiConnected()
         {
 
-            if (Application.platform == RuntimePlatform.Android)
+            if (UnityEngine.Application.platform == RuntimePlatform.Android)
             {
 
                 try
@@ -359,22 +356,28 @@ namespace Twinny.System
             else
                 return UnityEngine.Application.internetReachability != NetworkReachability.NotReachable;
         }
-        
+
 
         #endregion
 
         #region Private Methods
-        /// <summary>
-        /// Switch controlState platform
-        /// </summary>
-        /// <param name="newState">SinglePlayerControls or MultiPlayerControls</param>
-        private void SetState(IControls newState)
+
+        void OnLoggedInUser(Message msg)
         {
-            _currentControls = newState;
-            _currentControls.SetUp();
+            if (msg.IsError)
+            {
+                Debug.LogError("Erro ao verificar informações do usuário: " + msg.GetError().Message);
+                return;
+            }
+
+            User user = msg.GetUser();
+            userName = user.DisplayName != "" ? user.DisplayName : user.OculusID;
+            Debug.LogWarning("USER:" + userName);                        
         }
 
+        
 
+       
 
         #endregion
 
@@ -408,7 +411,10 @@ namespace Twinny.System
 
         public static void CallDelayedAction(Action action, float delay = -1)
         {
-            Instance.StartCoroutine(DelayedAction(action, delay));
+            if (Instance != null)
+                Instance.StartCoroutine(DelayedAction(action, delay));
+            else
+                Debug.LogWarning("[LevelManager] IMPOSSIBLE TO CALL DELAYED ACTION.");
         }
 
         //TODO Implementar um Helper
@@ -439,7 +445,10 @@ namespace Twinny.System
 
             manager = source;
 
-            Debug.LogWarning("RPC_StartForAll");
+            if (source == runner.LocalPlayer) IsManager = true;
+
+            Debug.LogWarning(IsManager ? "YOU ARE THE MASTER!" : $"{source} IS THE MASTER!");
+
 
             HUDManager.Instance.SetElementActive(IsManager ? new string[] { "CONFIG_MENU" } : null);
 
@@ -500,7 +509,6 @@ namespace Twinny.System
         public void RPC_NavigateTo(int landMarkIndex, bool fade = true)
         {
             currentLandMark = landMarkIndex;
-            Debug.LogWarning("RPC_NavigateTo");
             if (fade)
                 NavigateTo(landMarkIndex);
             else

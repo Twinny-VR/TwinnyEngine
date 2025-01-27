@@ -30,3 +30,7 @@ MonoBehaviour:
     value: VOLTAR
   - key: EXIT
     value: SAIR
+  - key: Info
+    value: Dica
+  - key: Error
+    value: Erro

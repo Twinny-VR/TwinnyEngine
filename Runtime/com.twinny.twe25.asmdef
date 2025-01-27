@@ -13,7 +13,10 @@
         "Meta.WitAi.Lib",
         "PhotonVoice",
         "Meta.XR.Movement.Networking.Fusion",
-        "Fusion.Unity"
+        "Fusion.Unity",
+        "Oculus.AvatarSDK2",
+        "Oculus.AvatarSDK2.Samples",
+        "Oculus.Platform"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -48,10 +48,14 @@ namespace Twinny.UI
         private bool _isFollowing;
         [SerializeField]
         private List<HudElement> _hudElements = new List<HudElement>();
+
+        public bool allowClickSafeAreaOutside = false;
         [Space]
         [Tooltip("H.U.D Estática")]
         [SerializeField] private GameObject _staticHud;
         private Coroutine _fadeCoroutine;
+        private Coroutine _fadeDynamicCoroutine;
+        private Coroutine _fadeNavCoroutine;
         private GameObject _extensionMenu;
 
         private Vector3 _previousCameraPos;
@@ -97,6 +101,11 @@ namespace Twinny.UI
                 FadeHud(false);
             //if (_configMenu != null) FollowUser2(_configMenu.transform, 0.5f);
         }
+
+        private void OnDisable()
+        {
+
+        }
         #endregion
 
         #region Public Methods
@@ -112,7 +121,7 @@ namespace Twinny.UI
         {
             if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
 
-            _fadeCoroutine = StartCoroutine(FadeCanvas(_fadeScreen, fade ? 0 : 1, 0, 1, callback));
+            _fadeCoroutine = StartCoroutine(FadeCanvas(_fadeScreen, fade ? 0 : 1, 0, .5f, callback));
         }
 
 
@@ -138,42 +147,21 @@ namespace Twinny.UI
         public void SetElementActive(string[] elements = null)
         {
 
-
             foreach (HudElement item in _hudElements)
             {
-
                 item.element.SetActive(false);
                 if (elements != null)
                     foreach (var element in elements)
                     {
                         if (element == item.key)
                         {
+
                             item.element.SetActive(true);
                         }
                     }
             }
         }
 
-
-        [Obsolete]//TODO Excluit
-        public void SetElementActive(bool status, string[] exceptions = null)
-        {
-
-
-            foreach (HudElement item in _hudElements)
-            {
-
-                item.element.SetActive(status);
-                if (exceptions != null)
-                    foreach (var element in exceptions)
-                    {
-                        if (element == item.key)
-                        {
-                            item.element.SetActive(!status);
-                        }
-                    }
-            }
-        }
 
 
         /// <summary>
@@ -261,7 +249,7 @@ namespace Twinny.UI
         /// <param name="duration">Motion time</param>
         /// <param name="callback">bool return: Callback function (true for hided, false for showing)</param>
         /// <returns></returns>
-        private IEnumerator FadeCanvas(CanvasGroup canvas, float targetAlpha, float delay, float duration, Action<bool> callback)
+        private IEnumerator FadeCanvas(CanvasGroup canvas, float targetAlpha, float delay, float duration, Action<bool> callback = null)
         {
             float startAlpha = canvas.alpha;
             float elapsedTime = 0f;
@@ -291,6 +279,15 @@ namespace Twinny.UI
         #endregion
 
         #region UI Buttons Actions
+
+        #endregion
+
+        #region CallBack Methods
+
+        private void OnSafeAreaEntered2(bool status)
+        {
+
+        }
 
         #endregion
     }

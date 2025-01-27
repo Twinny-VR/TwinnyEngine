@@ -92,9 +92,14 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             if (!SceneFeature.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             if (!_activeNode) { Debug.LogWarning($"[NavigationMenu] Navigation nodes are not configured."); return; }
 
+            if (!HUDManager.Instance.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+            {
+                AlertViewHUD.PostMessage("Volte para dentro da SAFE AREA para navegar!", AlertViewHUD.MessageType.Warning, 5f);
+                return;
+            }
 
 
-            Debug.LogWarning($"{direction} Arrow Released");
+
                LandMarkNode targetNode = _activeNode;
             switch (direction)
             {

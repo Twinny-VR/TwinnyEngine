@@ -52,7 +52,7 @@ namespace Twinny.UI
             OnVolumeChange(LevelManager.GetAudioVolume());
 
             //Sets Voip Feed UI Icon
-            OnVoipChange(LevelManager.GetVoipStatus());
+           // OnVoipChange(LevelManager.GetVoipStatus());
 
             //Sets WiFi Feed UI Icon
             OnInternetConnectionChanged(LevelManager.IsWiFiConnected());
@@ -169,6 +169,7 @@ namespace Twinny.UI
         /// <param name="status">Is Active</param>
         public void ShowRadialMenu(bool status)
         {
+
             _isActive = status;
             _closeTimer = status ? _closeInactiveMenuTime : 0;
             _radialMenu.SetActive(status);
@@ -192,6 +193,9 @@ namespace Twinny.UI
         /// <param name="option">Action option.</param>
         public void SelectOption(string option)
         {
+
+            Debug.LogWarning(option);
+
             _isActive = false;
             _closeTimer = 0;
             _radialMenu.SetActive(false);
@@ -204,7 +208,7 @@ namespace Twinny.UI
                     LevelManager.SetAudio();
                 break;
                 case "VOICE"://It's called by BT_SOUND
-                    LevelManager.SetVoip();
+                    //LevelManager.SetVoip(); TODO Implement this feature
                     break;
                 case "ANCHORING"://It's called by BT_ANCHORING
                     OnClose = AnchorManager.HandleAnchorPlacement;
