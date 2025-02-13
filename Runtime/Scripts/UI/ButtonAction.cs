@@ -1,12 +1,13 @@
+#if OCULUS
 using Meta.WitAi.Attributes;
 using Oculus.Interaction;
-using System.Collections;
-using System.Collections.Generic;
+using Twinny.XR;
+#endif
+
 using Twinny.Helpers;
+using Twinny.Localization;
 using Twinny.System;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 
 namespace Twinny.UI
@@ -21,44 +22,51 @@ namespace Twinny.UI
         ACTION
     }
 
+#if OCULUS
     [RequireComponent(typeof(PointableUnityEventWrapper))]
-
+#endif
     public class ButtonAction : MonoBehaviour
     {
         public ButtonType type;
+#if OCULUS
         [ShowIf("type!=ButtonType.EXIT")]
+        private PointableUnityEventWrapper _pointable;
+#endif
         public string parameter;
         public int landMarkIndex;
-        private PointableUnityEventWrapper _pointable;
-        private void Awake()
+        protected virtual void Awake()
         {
+#if OCULUS
             _pointable = GetComponent<PointableUnityEventWrapper>();
-            _pointable.WhenRelease.AddListener((pointerEvent) => OnRelease(pointerEvent));
-            //_pointable.WhenRelease.AddListener(OnRelease);
+            _pointable.WhenRelease.AddListener((pointerEvent) => OnRelease());
+#endif
         }
 
-        public void OnRelease(PointerEvent pointerEvent)
+        [ContextMenu("CLICK")]
+        public void OnRelease()
         {
 
-            if(!HUDManager.Instance.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+#if OCULUS
+            //TODO Criar um sistema de configurações
+            if (!LevelManagerXR.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
             {
-                AlertViewHUD.PostMessage("Volte para dentro da SAFE AREA para navegar!",AlertViewHUD.MessageType.Warning, 5f);
+                AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
                 return;
             }
 
             switch (type)
             {
                 case ButtonType.START:
-                    LevelManager.Instance.StartExperience(parameter);
+                    LevelManagerXR.StartExperience(parameter, landMarkIndex);
                     break;
                 case ButtonType.EXIT:
-                    LevelManager.Instance.QuitExperience();
+                    LevelManagerXR.QuitExperience();
                     break;
                 case ButtonType.CHANGE_SCENE:
-                    LevelManager.Instance.RPC_ChangeScene(parameter,landMarkIndex);
+                        LevelManagerXR.instance.RPC_ChangeScene(parameter, landMarkIndex);
                     break;
                 case ButtonType.NAVIGATION:
-                    LevelManager.Instance.RPC_NavigateTo(landMarkIndex);
+                    LevelManagerXR.instance.RPC_NavigateTo(landMarkIndex);
                     break;
                 case ButtonType.ACTION:
                     ActionManager.CallAction(parameter);
@@ -66,6 +74,7 @@ namespace Twinny.UI
                 default:
                     break;
             }
+#endif
         }
 
     }

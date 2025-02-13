@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Twinny.Helpers
@@ -50,5 +51,23 @@ namespace Twinny.Helpers
             else
                 Debug.LogWarning($"[ActionManager] Action '{actionName}' not founded in CustomActions registry.");
         }
+
+
+
+        /// <summary>
+        /// Call an action with delay or in End of Frame.
+        /// </summary>
+        /// <param name="action">Method to call</param>
+        /// <param name="delay">Delay time in milliseconds, let empty to wait for End of Frame.</param>
+        public async static void CallDelayedAction(Action action, int delay = -1)
+        {
+            if (delay < 0)
+                await Task.Yield();
+            else
+                await Task.Delay(delay);
+
+            action?.Invoke();
+        }
+
     }
 }

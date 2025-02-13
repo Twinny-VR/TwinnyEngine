@@ -1,3 +1,4 @@
+#if OCULUS
 using Oculus.Interaction;
 using UnityEngine;
 
@@ -156,3 +157,4 @@ namespace Twinny.UI
 
     }
 }
+#endif

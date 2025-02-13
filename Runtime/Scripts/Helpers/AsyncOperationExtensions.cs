@@ -1,5 +1,6 @@
+#if FUSION2
+
 using Fusion;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -41,3 +42,5 @@ namespace Twinny.Helpers
         }
     }
 }
+
+#endif

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3dfb78f07383442830acb0860a6240, type: 3}
+  m_Name: pt-BR
+  m_EditorClassIdentifier: 
+  languageName: "Portugu\xEAs BR"
+  stringEntries:
+  - key: START
+    value: INICIAR
+  - key: ANCHOR
+    value: ANCORA
+  - key: 'ANCHOR '
+    value: POSICIONAR
+  - key: ANCHORING
+    value: ANCORANDO
+  - key: VISIT
+    value: VISITAR
+  - key: VOIP
+    value: VOIP
+  - key: BACK
+    value: VOLTAR
+  - key: EXIT
+    value: SAIR
+  - key: Info
+    value: Dica
+  - key: Error
+    value: Erro
+  - key: '%DISCONECTED_MESSAGE'
+    value: "[DESCONECTADO] O aplicativo ser\xE1 reiniciado."
+  - key: DISCONNECTED
+    value: DESCONECTADO
+  - key: '%BACK_TO_SAFE_AREA'
+    value: Volte para dentro da SAFE AREA para navegar!
+  - key: '%CONNECTING_MESSAGE'
+    value: CONECTANDO AO SERVIDOR...
+  - key: '%LOADING_SCENE'
+    value: CARREGANDO...
+  - key: '%NO_ANCHOR_MESSAGE'
+    value: "VOC\xCA N\xC3O EST\xC1 ANCORADO!"

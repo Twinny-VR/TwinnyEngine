@@ -1,8 +1,8 @@
+#if OCULUS
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Twinny.Helpers;
+using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
 
@@ -45,7 +45,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
         public void SetArrows(LandMarkNode node) {
             if (!SceneFeature.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
-            _navigationMenu.SetActive(node && LevelManager.IsManager);
+            _navigationMenu.SetActive(node && NetworkedLevelManager.IsManager);
             if (!node) return;
             
             _activeNode = node;
@@ -92,9 +92,9 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             if (!SceneFeature.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             if (!_activeNode) { Debug.LogWarning($"[NavigationMenu] Navigation nodes are not configured."); return; }
 
-            if (!HUDManager.Instance.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+            if (!NetworkedLevelManager.allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea) )//TODO Globalizar isso sem anchor
             {
-                AlertViewHUD.PostMessage("Volte para dentro da SAFE AREA para navegar!", AlertViewHUD.MessageType.Warning, 5f);
+                AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
                 return;
             }
 
@@ -118,10 +118,12 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             }
             LandMark landMark = SceneFeature.Instance.landMarks.FirstOrDefault(lm => lm.node == targetNode);
             int landMarkIndex = Array.IndexOf(SceneFeature.Instance.landMarks, landMark);
-            LevelManager.Instance.RPC_NavigateTo(landMarkIndex);
+            NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex);
         }
 
         #endregion
     }
 
 }
+
+#endif

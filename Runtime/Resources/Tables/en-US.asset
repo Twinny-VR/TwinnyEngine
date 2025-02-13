@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3dfb78f07383442830acb0860a6240, type: 3}
+  m_Name: en-US
+  m_EditorClassIdentifier: 
+  languageName: "Portugu\xEAs BR"
+  stringEntries:
+  - key: START
+    value: START
+  - key: ANCHOR
+    value: ANCHOR
+  - key: 'ANCHOR '
+    value: TO ANCHOR
+  - key: ANCHORING
+    value: ANCHORING
+  - key: VISIT
+    value: VISIT
+  - key: VOIP
+    value: VOIP
+  - key: BACK
+    value: BACK
+  - key: EXIT
+    value: EXIT
+  - key: Info
+    value: Dica
+  - key: Error
+    value: Error
+  - key: '%DISCONECTED_MESSAGE'
+    value: '[DISCONNECTED] Application is restarting.'
+  - key: DISCONNECTED
+    value: DISCONNECTED
+  - key: '%BACK_TO_SAFE_AREA'
+    value: Go back inside the SAFE AREA
+  - key: '%CONNECTING_MESSAGE'
+    value: CONNECTING TO SERVER...
+  - key: '%LOADING_SCENE'
+    value: LOADING SCENE...
+  - key: '%NO_ANCHOR_MESSAGE'
+    value: YOU ARE NOT ANCHORED!

@@ -70,9 +70,10 @@ public class DebugPanel : MonoBehaviour
             
             animator?.SetBool("folded", _startFolded);
 
+#if OCULUS
             if(GestureMonitor.Instance)
             GestureMonitor.Instance.OnPinchLeft += SetFold;
-
+#endif
         }
 
         private void Update()
@@ -82,9 +83,10 @@ public class DebugPanel : MonoBehaviour
 
         private void OnDestroy()
         {
+#if OCULUS
             if (GestureMonitor.Instance)
                 GestureMonitor.Instance.OnPinchLeft -= SetFold;
-
+#endif
         }
 
         #endregion

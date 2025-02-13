@@ -1,64 +1,60 @@
-using Meta.WitAi.Json;
-using Oculus.Interaction;
+#if FUSION2
+using Fusion;
+using Twinny.System.Network;
+#endif
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Twinny.Helpers;
+using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
-using static OVRHaptics;
 
 namespace Twinny.UI
 {
-    [Serializable]
-    public enum HUDType
-    {
-        STATIC,
-        FOLLOW_USER
-    }
+
 
     /// <summary>
     /// This is a singleton class to control H.U.D Anchor elements
     /// </summary>
-    public class HUDManager : TSingleton<HUDManager>
+    public class HUDManager : MonoBehaviour, IUICallBacks
     {
 
         #region Fields
 
         [Header("COMPONENTS")]
 
-        [SerializeField] private Canvas _overlayScreen;
-        [SerializeField] private CanvasGroup _fadeScreen;
+        [Space]
+        [Tooltip("H.U.D Estática")]
+        [SerializeField] private GameObject _staticHud;
+
         [Space]
         [Tooltip("H.U.D Dinâmica segue o F.O.V")]
         [SerializeField] private GameObject _dynamicHud;
         [SerializeField] private Transform _canvasRoot;
-
+        [SerializeField] private GameObject _configMenu;
+        [SerializeField] private GameObject _mainMenu;
+        [SerializeField] private Transform _mainMenu2;
+        private GameObject _extensionMenu;
+        [Space]
         [Tooltip("Ângulo limite de visão até iniciar rotação.")]
         [SerializeField] private float _dynamicTreesholdAngle = 30f;
         [Tooltip("Velocidade de rotação da HUD.")]
         [Range(0.1f, 1f)]
         [SerializeField] private float _dynamicRotationSpeed = .5f;
-        
+
         [Space]
+        [Tooltip("H.U.D Dinâmica de Navegação")]
         [SerializeField] private GameObject _navigationHud;
 
 
         private bool _isFollowing;
-        [SerializeField]
-        private List<HudElement> _hudElements = new List<HudElement>();
 
-        public bool allowClickSafeAreaOutside = false;
-        [Space]
-        [Tooltip("H.U.D Estática")]
-        [SerializeField] private GameObject _staticHud;
+
         private Coroutine _fadeCoroutine;
         private Coroutine _fadeDynamicCoroutine;
         private Coroutine _fadeNavCoroutine;
-        private GameObject _extensionMenu;
-
         private Vector3 _previousCameraPos;
+
         #endregion
         #region Delegates
 
@@ -71,19 +67,23 @@ namespace Twinny.UI
         //Awake is called before the script is started
         private void Awake()
         {
-            Init();
+
         }
 
         // Start is called before the first frame update
         void Start()
         {
+#if OCULUS
+            AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
+#endif
+            CallBackUI.RegisterCallback(this);
 
-            _overlayScreen.worldCamera = Camera.main;
-            FadeScreen(true);
             _mainCameraTransform = Camera.main.transform;
             _previousCameraPos = _mainCameraTransform.position;
-            }
-       
+            _mainMenu.SetActive(false);
+
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -104,7 +104,10 @@ namespace Twinny.UI
 
         private void OnDisable()
         {
-
+#if OCULUS
+            AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
+#endif
+            CallBackUI.UnregisterCallback(this);
         }
         #endregion
 
@@ -112,23 +115,10 @@ namespace Twinny.UI
 
 
 
-        /// <summary>
-        /// Fade screen between change scenes
-        /// </summary>
-        /// <param name="fade">true hides, false shows</param>
-        /// <param name="callback">bool return: Callback function (true for hided, false for showing)</param>
-        public void FadeScreen(bool fade, Action<bool> callback = null)
-        {
-            if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
-
-            _fadeCoroutine = StartCoroutine(FadeCanvas(_fadeScreen, fade ? 0 : 1, 0, .5f, callback));
-        }
-
-
         public void FadeHud(bool status, float limit = 0f)
         {
             //TODO Criar sistema de esmaecer controles
-           // if (status) Debug.Log("MOVIMENTANDO");
+            // if (status) Debug.Log("MOVIMENTANDO");
         }
 
 
@@ -139,7 +129,7 @@ namespace Twinny.UI
             // if (status) Debug.Log("MOVIMENTANDO");
         }
 
-
+        /*
         /// <summary>
         /// Set all handeables UI elements active.
         /// </summary>
@@ -153,6 +143,7 @@ namespace Twinny.UI
                 if (elements != null)
                     foreach (var element in elements)
                     {
+                        Debug.LogWarning(element+"|"+item.key);
                         if (element == item.key)
                         {
 
@@ -161,7 +152,7 @@ namespace Twinny.UI
                     }
             }
         }
-
+        */
 
 
         /// <summary>
@@ -169,22 +160,25 @@ namespace Twinny.UI
         /// </summary>
         /// <param name="menu">Menu UI object</param>
         /// <param name="isStatic">Default:false</param>
-        public void LoadExtensionMenu(GameObject menu, bool isStatic = false)
+        private void LoadExtensionMenu(UnityEngine.GameObject menu, bool isStatic = false)
         {
+
+
             if (_extensionMenu != null)
             {
-                _hudElements.RemoveAll(item => item.element == _extensionMenu);
                 Destroy(_extensionMenu.gameObject);
             }
 
             if (menu != null)
             {
                 _extensionMenu = Instantiate(menu, isStatic ? _staticHud.transform : _canvasRoot);
-                _extensionMenu.SetActive(false);
+
+#if FUSION2                
+                _extensionMenu.SetActive(NetworkedLevelManager.IsManager);
+#endif 
                 HudElement he = new HudElement();
                 he.key = menu.name;
                 he.element = _extensionMenu;
-                _hudElements.Add(he);
             }
         }
 
@@ -205,35 +199,23 @@ namespace Twinny.UI
             if (speed > 0)
             {
 
-            Quaternion targetRotation = Quaternion.Euler(0f, _mainCameraTransform.eulerAngles.y, 0f);
+                Quaternion targetRotation = Quaternion.Euler(0f, _mainCameraTransform.eulerAngles.y, 0f);
 
-            float angleDifference = Quaternion.Angle(tracer.rotation, targetRotation);
+                float angleDifference = Quaternion.Angle(tracer.rotation, targetRotation);
 
-            if (angleDifference > treesholdAngle || _isFollowing)
-            {
+                if (angleDifference > treesholdAngle || _isFollowing)
+                {
 
-                tracer.rotation = Quaternion.Slerp(tracer.rotation, targetRotation, (10f * speed) * Time.deltaTime);
-                //Debug.Log(angleDifference);
-                _isFollowing = (angleDifference > 1f);
+                    tracer.rotation = Quaternion.Slerp(tracer.rotation, targetRotation, (10f * speed) * Time.deltaTime);
+                    //Debug.Log(angleDifference);
+                    _isFollowing = (angleDifference > 1f);
+                }
             }
-            } 
             Vector3 desiredPosition = _mainCameraTransform.position;
             desiredPosition.y = 0f;
 
             tracer.position = desiredPosition;
         }
-
-
-        /// <summary>
-        /// Search in all handeables UI elements in scene.
-        /// </summary>
-        /// <param name="key">key to search</param>
-        /// <returns>Especific UI element</returns>
-        private HudElement GetHudElement(string key)
-        {
-            return _hudElements.FirstOrDefault(item => item.key == key);
-        }
-
 
 
         #endregion
@@ -288,6 +270,119 @@ namespace Twinny.UI
         {
 
         }
+
+#if FUSION2
+        public void OnSwitchManager(PlayerRef source)
+        {
+            Debug.LogWarning("Switch Manager chamado no HUDManager!");
+
+            if (source == NetworkRunnerHandler.runner.LocalPlayer)
+                ActionManager.CallDelayedAction(() =>
+                {
+
+                    _extensionMenu.SetActive(true);
+                    if (SceneFeature.Instance.enableNavigationMenu)
+                        NavigationMenu.Instance?.SetArrows(SceneFeature.Instance?.landMarks[NetworkedLevelManager.instance.currentLandMark].node);
+
+                }, 500);
+
+
+        }
+
+        public void OnExperienceStarting(PlayerRef source)
+        {
+
+            _mainMenu.SetActive(false);
+
+        }
+
+        public void OnExperienceStarted(PlayerRef source)
+        {
+            Debug.LogWarning("OnExperienceStarted:" + source);
+            Debug.LogWarning("OnExperienceStarted:" + _mainMenu);
+            _mainMenu.SetActive(true);
+        }
+#endif
+
+        public void OnLoadExtensionMenu(GameObject menu)
+        {
+            LoadExtensionMenu(menu);
+
+        }
+
+        public void OnStartLoadScene()
+        {
+
+        }
+
+
+        public void OnHideHud(bool status)
+        {
+            HideHud(status);
+        }
+
+        public void OnLoadSceneFeature()
+        {
+
+            ActionManager.CallDelayedAction(() =>
+            {
+                //TODO Make inactive and fadeout H.U.D
+
+                bool active = true;
+#if FUSION2
+                active = NetworkedLevelManager.IsManager;
+#endif
+
+                if (_extensionMenu) _extensionMenu.SetActive(active);
+                else
+                    _mainMenu?.SetActive(true);
+
+                _navigationHud.SetActive(SceneFeature.Instance.enableNavigationMenu);
+                _dynamicHud.SetActive(true);
+
+            }, 500);
+        }
+
+        public void OnUnloadSceneFeature()
+        {
+
+        }
+
+        public void OnLoadScene()
+        {
+        }
+
+#if OCULUS
+        public void OnAnchorStateChanged(StateAnchorManager state)
+        {
+            Debug.LogWarning("OnAnchorStateChanged");
+
+            bool isActive = state == StateAnchorManager.DISABLED || state == StateAnchorManager.ANCHORED;
+            //TODO Make inactive and fadeout H.U.D
+            if (_extensionMenu) _extensionMenu.SetActive(isActive);
+            else _mainMenu?.SetActive(isActive);
+
+            _navigationHud?.SetActive(isActive && SceneFeature.Instance && SceneFeature.Instance.enableNavigationMenu);
+
+        }
+#endif
+        public void OnPlatformInitialize()
+        {
+            AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, 90);
+        }
+
+        public void OnExperienceReady()
+        {
+            AlertViewHUD.CancelMessage();
+            _mainMenu.SetActive(true);
+        }
+
+        public void OnExperienceFinished(bool isRunning)
+        {
+            _dynamicHud?.SetActive(isRunning);
+            _mainMenu?.SetActive(isRunning);
+        }
+
 
         #endregion
     }

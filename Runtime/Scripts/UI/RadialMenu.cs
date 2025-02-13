@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+#if OCULUS
+using Twinny.Helpers;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +31,7 @@ namespace Twinny.UI
         [SerializeField] private GameObject _voiceOnIcon;
         [SerializeField] private GameObject _voiceOffIcon;
 
-        private Action OnClose;
+   //     private Action<bool> OnClose;
         #endregion
 
 
@@ -43,19 +41,19 @@ namespace Twinny.UI
         void Start()
         {
             //Set CallBacks
-            LevelManager.OnInternetConnectionChanged += OnInternetConnectionChanged;
-            LevelManager.OnVolumeChanged += OnVolumeChange;
-            LevelManager.OnVoipChanged += OnVoipChange;
+            NetworkHelper.OnInternetConnectionChanged += OnInternetConnectionChanged;
+            AudioManager.OnVolumeChanged += OnVolumeChange;
+            AudioManager.OnVoipChanged += OnVoipChange;
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
 
             //Sets Audio Feed UI Icon
-            OnVolumeChange(LevelManager.GetAudioVolume());
+            OnVolumeChange(AudioManager.GetAudioVolume());
 
             //Sets Voip Feed UI Icon
            // OnVoipChange(LevelManager.GetVoipStatus());
 
             //Sets WiFi Feed UI Icon
-            OnInternetConnectionChanged(LevelManager.IsWiFiConnected());
+            OnInternetConnectionChanged(NetworkHelper.IsWiFiConnected());
             
             ResizeRadialMenu();
         }
@@ -77,10 +75,10 @@ namespace Twinny.UI
         private void OnDestroy()
         {
             //Unset all callbacks
-            LevelManager.OnInternetConnectionChanged -= OnInternetConnectionChanged;
-            LevelManager.OnVolumeChanged -= OnVolumeChange;
+            NetworkHelper.OnInternetConnectionChanged -= OnInternetConnectionChanged;
+            AudioManager.OnVolumeChanged -= OnVolumeChange;
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
-            LevelManager.OnVoipChanged -= OnVoipChange;
+            AudioManager.OnVoipChanged -= OnVoipChange;
         }
         #endregion
 
@@ -129,14 +127,13 @@ namespace Twinny.UI
                 switch (state)
                 {
                     case StateAnchorManager.DISABLED:
+                    case StateAnchorManager.ANCHORED:
+                    if (_isActive)
+                    {
                         _anchorButton.SetActive(false);
                         _closeButton.SetActive(false);
                         _mainButton.SetActive(true);
-                        break;
-                    case StateAnchorManager.ANCHORED:
-                        _anchorButton.SetActive(false);
-                        _closeButton.SetActive(true);
-                        _mainButton.SetActive(false);
+                    }
                         break;
                     case StateAnchorManager.ANCHORING:
                         _anchorButton.SetActive(true);
@@ -194,7 +191,7 @@ namespace Twinny.UI
         public void SelectOption(string option)
         {
 
-            Debug.LogWarning(option);
+            Debug.LogWarning($"[RadialMenu] {option} selected.");
 
             _isActive = false;
             _closeTimer = 0;
@@ -205,13 +202,12 @@ namespace Twinny.UI
             switch (option)
             {
                 case "AUDIO"://It's called by BT_SOUND
-                    LevelManager.SetAudio();
+                    AudioManager.SetAudio();
                 break;
                 case "VOICE"://It's called by BT_SOUND
                     //LevelManager.SetVoip(); TODO Implement this feature
                     break;
                 case "ANCHORING"://It's called by BT_ANCHORING
-                    OnClose = AnchorManager.HandleAnchorPlacement;
                     AnchorManager.HandleAnchorPlacement();
                     break;
                 case "ANCHORED"://It's called by BT_ANCHORED
@@ -229,8 +225,7 @@ namespace Twinny.UI
         /// </summary>
         public void OnCloseRelease()
         {
-            OnClose?.Invoke();
-            OnClose = null;
+            ShowRadialMenu(false);
         }
 
         #endregion
@@ -252,3 +247,4 @@ namespace Twinny.UI
     }
 
 }
+#endif

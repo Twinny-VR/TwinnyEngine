@@ -1,7 +1,7 @@
 {
   "name": "com.twinny.twe25",
   "displayName": "Twinny Engine",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "tool",
   "unity": "2022.3",
   "unityRelease": "34f1",
@@ -18,16 +18,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Twinny-VR/TwinnyEngine.git"
-  },
-  "dependencies": {
-    "com.meta.movement": "71.0.1",
-    "com.meta.xr.sdk.all": "71.0.0",
-    "com.unity.2d.sprite": "1.0.0",
-    "com.unity.collab-proxy": "2.6.0",
-    "com.unity.xr.management": "4.5.0",
-    "com.unity.xr.oculus": "4.2.0",
-    "com.unity.modules.vr": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
   },
   "samples": [
     {

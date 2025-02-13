@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using Meryel.UnityCodeAssist.MQTTnet.Server;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using Twinny.Localization;
 using System.IO;
+
 
 namespace Twinny.Helpers
 {
@@ -182,6 +182,52 @@ namespace Twinny.Helpers
 
     public class TwinnySceneMenu
     {
+
+        [MenuItem("Twinny/Platform/Set Meta Quest Platform")]
+        private static void SetMetaQuest()
+        {
+            SetPlatformScenes("MetaQuest");
+        }
+        private static void SetPlatformScenes(string platform) { 
+
+            string originalPlatformStartScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}StartScene.unity";
+
+            string scenesFolder = "Assets/Scenes";
+            if (!AssetDatabase.IsValidFolder(scenesFolder))
+            {
+                AssetDatabase.CreateFolder("Assets", "Scenes");
+            }
+
+            string platformFolder = Path.Combine(scenesFolder, platform);
+            if (!AssetDatabase.IsValidFolder(platformFolder))
+            {
+                AssetDatabase.CreateFolder(scenesFolder, platform);
+            }
+
+            var newScenes = new EditorBuildSettingsScene[2];
+
+            string destinyPath = Path.Combine(platformFolder, $"{platform}StartScene.unity");
+            // Copia a cena de dentro do pacote para o destino
+            if (AssetDatabase.CopyAsset(originalPlatformStartScene, destinyPath))
+            {
+                newScenes[1] = new EditorBuildSettingsScene(destinyPath, true);
+
+            }
+            else
+            {
+                Debug.LogError($"Failed to copy '{originalPlatformStartScene}' to '{destinyPath}.");
+                return;
+            }
+
+            string originalPlatformScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}PlatformScene.unity";
+            //  var inBuildScenes = EditorBuildSettings.scenes;
+            newScenes[0] = new EditorBuildSettingsScene(originalPlatformScene, true);
+            
+            EditorBuildSettings.scenes = newScenes;
+            Debug.LogWarning("Scenes In Build setted to Meta Quest Platform.");
+
+        }
+
         [MenuItem("Twinny/Scenes/New VR Scene")]
         [MenuItem("Assets/Create/Twinny/Scenes/New VR Scene")]
         private static void CreateVRScene()

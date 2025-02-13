@@ -1,7 +1,6 @@
+#if OCULUS
 using Oculus.Interaction;
-using System.Collections;
-using System.Collections.Generic;
-using Twinny.System;
+using Twinny.Helpers;
 using UnityEngine;
 
 namespace Twinny.UI
@@ -33,7 +32,7 @@ namespace Twinny.UI
             Vector3 position = _positionOffset;
             position.z = -radius + position.z;
             _transform.position = position;
-            LevelManager.CallDelayedAction(() =>
+            ActionManager.CallDelayedAction(() =>
             {
             Vector3 rotation = _projectionMesh.eulerAngles;
             rotation.x = _pitchRotation;
@@ -48,3 +47,4 @@ namespace Twinny.UI
         }
     }
 }
+#endif
