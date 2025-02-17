@@ -1,14 +1,16 @@
+/*
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+
 using System.Linq;
 using Twinny.XR;
-using Unity.XR.Oculus;
+//using Unity.XR.Oculus;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.XR;
-using UnityEngine.XR.Management;
 
+using UnityEngine.XR;
 
 [CustomEditor(typeof(MonoBehaviour), true)]
 public class PlatformCheckerEditor : Editor
@@ -19,14 +21,12 @@ public class PlatformCheckerEditor : Editor
         CheckOculusProviderStatus();
     }
 
-
     private void CheckXRPlugInStatus()
     {
         bool init = XRGeneralSettings.Instance.InitManagerOnStart;
-
+    
       
     }
-
 
     void CheckOculusProviderStatus()
     {
@@ -108,3 +108,4 @@ public class PlatformCheckerEditor : Editor
 
 
 }
+*/
