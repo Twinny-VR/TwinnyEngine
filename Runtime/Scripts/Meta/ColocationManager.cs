@@ -1,9 +1,10 @@
-#if FUSION2
+#if OCULUS && FUSION2
+using Fusion;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Fusion;
 using Twinny.Localization;
 using UnityEngine;
 

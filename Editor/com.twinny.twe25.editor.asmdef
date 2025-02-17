@@ -2,7 +2,9 @@
     "name": "com.twinny.twe25.editor",
     "rootNamespace": "",
     "references": [
-        "GUID:a8f676c24a947874381a083bf134ec1c"
+        "GUID:a8f676c24a947874381a083bf134ec1c",
+        "GUID:e40ba710768534012815d3193fa296cb",
+        "GUID:4af21795022437d4bb139a86514b9ff9"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

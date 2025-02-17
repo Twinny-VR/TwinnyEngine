@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Threading.Tasks;
 using Twinny.Localization;
+using Twinny.XR;
 
 namespace Twinny.System.Network
 {
@@ -179,7 +180,7 @@ namespace Twinny.System.Network
         {
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
-            if (NetworkedLevelManager.tryReconnect)
+            if (LevelManagerXR.Config.tryReconnect)
             {
                 Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!",Twinny.UI.AlertViewHUD.MessageType.Error,10f);
                 TryReconnect();

@@ -1,6 +1,4 @@
 #if UNITY_EDITOR
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -10,6 +8,8 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using Twinny.Localization;
 using System.IO;
+using Twinny.XR;
+using System;
 
 
 namespace Twinny.Helpers
@@ -183,14 +183,21 @@ namespace Twinny.Helpers
     public class TwinnySceneMenu
     {
 
-        [MenuItem("Twinny/Platform/Set Meta Quest Platform")]
+
+
+        [MenuItem("Twinny/Platforms/Set Meta Quest Platform")]
         private static void SetMetaQuest()
         {
             SetPlatformScenes("MetaQuest");
         }
-        private static void SetPlatformScenes(string platform) { 
+        private static void SetPlatformScenes(string platform) {
+            var newScenes = new List<EditorBuildSettingsScene>();
 
+
+            string originalPlatformScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}PlatformScene.unity";
             string originalPlatformStartScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}StartScene.unity";
+            string originalPlatformMockupScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}MockupScene.unity";
+
 
             string scenesFolder = "Assets/Scenes";
             if (!AssetDatabase.IsValidFolder(scenesFolder))
@@ -204,29 +211,111 @@ namespace Twinny.Helpers
                 AssetDatabase.CreateFolder(scenesFolder, platform);
             }
 
-            var newScenes = new EditorBuildSettingsScene[2];
+            newScenes.Add(new EditorBuildSettingsScene(originalPlatformScene, true));
 
             string destinyPath = Path.Combine(platformFolder, $"{platform}StartScene.unity");
             // Copia a cena de dentro do pacote para o destino
-            if (AssetDatabase.CopyAsset(originalPlatformStartScene, destinyPath))
-            {
-                newScenes[1] = new EditorBuildSettingsScene(destinyPath, true);
 
-            }
-            else
+
+            if(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(destinyPath) == null) 
+            if (!AssetDatabase.CopyAsset(originalPlatformStartScene, destinyPath))
             {
                 Debug.LogError($"Failed to copy '{originalPlatformStartScene}' to '{destinyPath}.");
                 return;
             }
 
-            string originalPlatformScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}PlatformScene.unity";
+            newScenes.Add(new EditorBuildSettingsScene(destinyPath, true));
+
+            destinyPath = Path.Combine(platformFolder, $"{platform}MockupScene.unity");
+            // Copia a cena de dentro do pacote para o destino
+
+
+            if(AssetDatabase.LoadAssetAtPath<UnityEngine.Object> (originalPlatformMockupScene) != null)
+            {
+
+
+            if (AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(destinyPath) == null)
+                if (!AssetDatabase.CopyAsset(originalPlatformMockupScene, destinyPath))
+                {
+                    Debug.LogError($"Failed to copy '{originalPlatformMockupScene}' to '{destinyPath}.");
+                    return;
+                }
+
+            }
+
+            newScenes.Add(new EditorBuildSettingsScene(destinyPath, true));
+
+
             //  var inBuildScenes = EditorBuildSettings.scenes;
-            newScenes[0] = new EditorBuildSettingsScene(originalPlatformScene, true);
+
             
-            EditorBuildSettings.scenes = newScenes;
+            EditorBuildSettings.scenes = newScenes.ToArray();
             Debug.LogWarning("Scenes In Build setted to Meta Quest Platform.");
 
         }
+
+        [MenuItem("Twinny/Platforms/Create Meta Quest Platform Preset")]
+        public static void CreateMetaPreset()
+        {
+            CreateRuntimePreset<RuntimeXR>();
+        }
+
+
+        [MenuItem("Twinny/Platforms/Set Windows Platform")]
+        private static void SetWinPlatform()
+        {
+            SetPlatformScenes("Win");
+        }
+
+
+        [MenuItem("Twinny/Platforms/Create Multi-Platform Preset")]
+        public static void CreatePreset()
+        {
+            CreateRuntimePreset<MultiPlatformRuntime>();
+        }
+
+        public static void CreateRuntimePreset<T>() where T : TwinnyRuntime 
+        {
+            T preset = ScriptableObject.CreateInstance<T>();
+
+
+            if (AssetDatabase.IsValidFolder("Resources")){
+                AssetDatabase.CreateFolder("Assets","Resources");
+            }
+
+            string filePath = EditorUtility.SaveFilePanelInProject(
+            "Salvar Preset",                  // Título da janela
+            "RuntimeXRPreset",                // Nome do arquivo sugerido
+            "asset",                          // Extensão do arquivo
+            "Escolha onde salvar o preset",   // Texto de ajuda
+            "Assets/Resources"                        // Caminho inicial sugerido (Assets/Resources)
+        );
+
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                // Cria o asset no caminho escolhido
+                AssetDatabase.CreateAsset(preset, filePath);
+                AssetDatabase.SaveAssets();
+
+                Debug.Log($"Preset salvo em: {filePath}");
+
+                string relativePath = filePath.Substring(filePath.IndexOf("Assets"));  // Pega o caminho relativo a partir de Assets/
+                UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(relativePath);
+
+                // Seleciona o asset e foca na aba "Project"
+                Selection.activeObject = asset;
+                EditorUtility.FocusProjectWindow(); // Foca a janela do Project no asset
+
+
+            }
+            else
+            {
+                Debug.LogWarning("O usuário cancelou a criação do preset.");
+            }
+
+        }
+
 
         [MenuItem("Twinny/Scenes/New VR Scene")]
         [MenuItem("Assets/Create/Twinny/Scenes/New VR Scene")]

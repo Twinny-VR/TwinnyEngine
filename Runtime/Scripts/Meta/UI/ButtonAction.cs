@@ -48,7 +48,7 @@ namespace Twinny.UI
 
 #if OCULUS
             //TODO Criar um sistema de configurações
-            if (!LevelManagerXR.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+            if (!LevelManagerXR.Config.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
             {
                 AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
                 return;

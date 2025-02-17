@@ -3,11 +3,14 @@ using Fusion;
 #endif
 using UnityEngine;
 
+
 namespace Twinny.UI
 {
     public interface IUICallBacks
     {
-        void OnHideHud(bool status);
+        void OnHudStatusChanged(bool status);
+
+        #region Experience Callbacks
 
         void OnPlatformInitialize();
         void OnExperienceReady();
@@ -17,10 +20,21 @@ namespace Twinny.UI
         void OnLoadScene();
         void OnLoadSceneFeature();
         void OnUnloadSceneFeature();
+        void OnExperienceStarting();
+        void OnExperienceStarted();
+
+        #endregion
+
 #if FUSION2
-        void OnExperienceStarting(PlayerRef source);
-        void OnExperienceStarted(PlayerRef source);
         void OnSwitchManager(PlayerRef source);
 #endif
+
+#region Camera Callbacks
+
+        void OnCameraChanged(Transform camera, string type);
+        void OnCameraLocked(Transform target);
+#endregion
+
+
     }
 }

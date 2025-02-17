@@ -1,4 +1,3 @@
-#if FUSION2 && PHOTON_VOICE_DEFINED 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +5,13 @@ using System.Threading.Tasks;
 using Twinny.UI;
 using Twinny.Helpers;
 
-using Photon.Voice.Unity;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using Fusion;
 using System;
 using System.Data.Common;
+#if FUSION2
+using Fusion;
+#endif
 
 namespace Twinny.System.Network
 {
@@ -34,14 +34,31 @@ namespace Twinny.System.Network
             if (SceneFeature.Instance)
             {
                 await UnloadAdditivesScenes();
-
             }
-            if(scene is SceneRef index)
-                await NetworkRunnerHandler.runner.LoadScene(index, LoadSceneMode.Additive);
-            else 
-                await NetworkRunnerHandler.runner.LoadScene(scene as string, LoadSceneMode.Additive);
 
-            NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex, false);
+#if FUSION2 //TODO Mudar isso depois
+
+            if (NetworkRunnerHandler.Instance)
+            {
+                if (scene is SceneRef index)
+                    await NetworkRunnerHandler.runner.LoadScene(index, LoadSceneMode.Additive);
+                else
+                    await NetworkRunnerHandler.runner.LoadScene(scene as string, LoadSceneMode.Additive);
+
+                NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex, false);
+            }else
+            if (scene is string name)
+                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));
+            else
+                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
+
+
+#else 
+            if (scene is string name)
+                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));
+            else
+                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
+#endif
 
         }
 
@@ -54,7 +71,11 @@ namespace Twinny.System.Network
                 Scene loadedScene =  SceneManager.GetSceneAt(i);
                 if (loadedScene.buildIndex > 1)
                 {
+#if FUSION2 && OCULUS //TODO Mudar isso depois
                     await NetworkRunnerHandler.runner.UnloadScene(loadedScene.name);
+#else
+                    await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.UnloadSceneAsync(loadedScene.name));
+#endif
                 }
             }
 
@@ -62,7 +83,7 @@ namespace Twinny.System.Network
         }
 
 
-        #endregion
+#endregion
 
 
 
@@ -71,4 +92,3 @@ namespace Twinny.System.Network
     }
 
 }
-#endif

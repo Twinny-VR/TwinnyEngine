@@ -1,10 +1,11 @@
-#if OCULUS && FUSION2
+#if FUSION2
 using Fusion;
 using System.Threading.Tasks;
 using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Network;
 using Twinny.UI;
+using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,20 +25,8 @@ namespace Twinny.System
 
         #region Fields
 
-        //TODO achar um lugar adequado
-        [Header("Experience")]
-        [SerializeField] protected bool _startSinglePlayer = false;
-
-        [SerializeField] protected bool _tryReconnect = true;
-        public static bool tryReconnect { get => instance._tryReconnect; }
-
-        [SerializeField]
-        protected bool _allowClickSafeAreaOutside = false;
-        public static bool allowClickSafeAreaOutside { get => instance._allowClickSafeAreaOutside; }
-        [SerializeField]
-        protected Material _defaultSkybox;
-        public static Material defaultSkybox { get => instance._defaultSkybox; }
-
+        [SerializeField] public TwinnyRuntime config;// { get; set; }
+        
         protected NetworkObject _networkObject;
 
         [Space]
@@ -62,7 +51,7 @@ namespace Twinny.System
         #region MonoBehaviour Methods
 
         //Awake is called before the script is started
-        void Awake()
+        protected virtual void Awake()
         {
             if(_instance == null)
                 _instance = this;
@@ -75,9 +64,9 @@ namespace Twinny.System
             _networkObject = GetComponent<NetworkObject>();
         }
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
-            _ = PlatformInitializer();
+            _ = TwinnyManager.InitializePlatform();
         }
 
         // Update is called once per frame
@@ -202,61 +191,6 @@ namespace Twinny.System
         #endregion
 
         #region Private Methods
-
-        protected virtual async Task PlatformInitializer()
-        {
-
-            //Load current platform StartScene
-            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-
-            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
-
-
-            CallBackUI.CallAction(callback => callback.OnPlatformInitialize());
-
-            /*
-                if (Application.platform == RuntimePlatform.Android)
-            {
-                Debug.LogWarning("[LevelManager] Android Platform initialized.");
-
-            }
-            else
-                if(Application.platform == RuntimePlatform.IPhonePlayer )
-            {
-                Debug.LogWarning("[LevelManager] iOS Platform initialized.");
-            }
-            else
-                if(Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor  )
-            {
-                Debug.LogWarning("[LevelManager] nacOS Platform initialized.");
-            }
-            else
-                if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor  )
-            {
-                Debug.LogWarning("[LevelManager] Windows Platform initialized.");
-            }
-            else
-                if(Application.platform == RuntimePlatform.WebGLPlayer)
-            {
-                Debug.LogWarning("[LevelManager] WebGL Platform initialized.");
-            }
-            else
-            {
-                Debug.LogError($"[LevelManager] Unknow Platform initialized ({Application.platform}).");
-            }
-            */
-
-
-            await CanvasTransition.FadeScreen(false);
-
-
-        }
-
-
-
-
-
-
         #endregion
 
         #region Coroutines
@@ -303,7 +237,7 @@ namespace Twinny.System
             Debug.LogWarning(IsManager ? "YOU ARE THE MASTER!" : (source != PlayerRef.None ? $"{source} IS THE MASTER!" : "NO MASTERS"));
 
             if (source != PlayerRef.None)
-                CallBackUI.CallAction(callback => callback.OnExperienceStarting(source));
+                CallBackUI.CallAction(callback => callback.OnExperienceStarting());
 
 
             if (NetworkRunnerHandler.runner.IsSceneAuthority)

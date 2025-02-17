@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cc5c234723e3a54d8dd09b131117743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshType: 5
+  _meshType: 1
 --- !u!114 &27231387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skeletonType: 5
+  _skeletonType: 1
   _updateRootPose: 0
   _updateRootScale: 1
   _enablePhysicsCapsules: 0
@@ -7371,7 +7371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cc5c234723e3a54d8dd09b131117743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshType: 4
+  _meshType: 0
 --- !u!114 &594530480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7403,7 +7403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skeletonType: 4
+  _skeletonType: 0
   _updateRootPose: 0
   _updateRootScale: 1
   _enablePhysicsCapsules: 0
@@ -9832,7 +9832,7 @@ PrefabInstance:
     - target: {fileID: 8247241769411034173, guid: 1a581d41c98ca824fae039f262c1b49f,
         type: 3}
       propertyPath: SortKey
-      value: 1226971987
+      value: 2580996776
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22851,10 +22851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce947c6f24234b84cad5414799a77def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startSinglePlayer: 0
-  _tryReconnect: 1
-  _allowClickSafeAreaOutside: 0
-  _defaultSkybox: {fileID: 0}
+  config: {fileID: 11400000, guid: 9517df6381b5e4d46a154e5df02769d0, type: 2}
   _isManager: 0
   _currentLandMark: -1
   _bootstrap: {fileID: 366325652}
@@ -22870,7 +22867,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3855508581
+  SortKey: 914566074
   ObjectInterest: 1
   Flags: 524289
   NestedObjects: []
@@ -25721,7 +25718,7 @@ PrefabInstance:
     - target: {fileID: 5540159012111824956, guid: af172b2dbd774b0458a3b25438de2f87,
         type: 3}
       propertyPath: SortKey
-      value: 1048928592
+      value: 2402953381
       objectReference: {fileID: 0}
     - target: {fileID: 8146941101619413188, guid: af172b2dbd774b0458a3b25438de2f87,
         type: 3}

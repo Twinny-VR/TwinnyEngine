@@ -191,7 +191,7 @@ namespace Twinny.System
                 if (landMarkIndex < 0)//If no LandMark to set, reset skybox to Passthroug
                 {
 #if OCULUS && FUSION2
-                RenderSettings.skybox = NetworkedLevelManager.defaultSkybox;
+                RenderSettings.skybox = NetworkedLevelManager.instance.config.defaultSkybox;
 #endif
                 Camera.main.backgroundColor = Color.clear;
                     Camera.main.clearFlags = CameraClearFlags.SolidColor;

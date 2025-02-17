@@ -39,6 +39,7 @@ namespace Twinny.Helpers
             {
                 await Task.Yield(); // Aguarda até o próximo frame
             }
+
         }
     }
 }

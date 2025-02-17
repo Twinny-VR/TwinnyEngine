@@ -1,29 +1,66 @@
 #if OCULUS && FUSION2
-using System.Threading.Tasks;
 using Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
+using System.Threading.Tasks;
 using Twinny.Helpers;
 using Twinny.System;
 using Twinny.System.Network;
+using Twinny.UI;
 using UnityEngine;
 using UnityEngine.XR.Management;
-
 namespace Twinny.XR
 {
     public class LevelManagerXR : NetworkedLevelManager
     {
 
+
+
         [SerializeField]
         private FusionBootstrap _bootstrap;
+        public static RuntimeXR Config { get { return instance.config as RuntimeXR; } }
 
-   
-
-        protected override async Task PlatformInitializer()
+#if UNITY_EDITOR
+        private void OnValidate()
         {
 
+            config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
 
-            await base.PlatformInitializer();
+            if (config == null)
+            {
+                Debug.LogError("[LevelManagerXR] Impossible to load 'RuntimeXRPreset'.");
+            }
+
+        }
+#endif
+
+        protected override void Awake()
+        {
+            base.Awake();
+            config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
+
+            if (config == null)
+            {
+                Debug.LogError("[NetworkedLevelManager] Impossible to load 'RuntimeXRPreset'.");
+            }
+
+        }
+
+
+        protected override void Start()
+        {
+            base.Start();
+            TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
+        }
+
+        private void OnDestroy()
+        {
+            TwinnyManager.OnPlatformInitialize -= OnPlatformInitialized;
+
+        }
+
+        private void OnPlatformInitialized(Platform platform)
+        {
 
             /* TODO Ver melhor como isso funciona
             if (!Core.IsInitialized()) Core.Initialize();
@@ -36,10 +73,9 @@ namespace Twinny.XR
 
 
             //Initialize as XR Platform
-            if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
+            if (platform == Platform.XR)
             {
-                Debug.LogWarning("[LevelManager] XR Platform initialized.");
-                if (isWifiConnected && !_startSinglePlayer)
+                if (isWifiConnected && !Config.startSinglePlayer)
                     _bootstrap.StartSharedClient();
                 else
                 {
@@ -50,6 +86,9 @@ namespace Twinny.XR
             {
                 Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
+
+                        _ = CanvasTransition.FadeScreen(false);
+
 
         }
 
