@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Twinny.System;
 using Twinny.System.Network;
 using UnityEngine;
-using static Oculus.Interaction.Context;
 
 
 namespace Twinny.XR {

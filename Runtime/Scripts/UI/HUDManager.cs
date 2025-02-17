@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Fusion;
 using Twinny.System;
 using Twinny.System.Cameras;
 using Twinny.UI;
@@ -109,7 +108,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     }
 #if FUSION2
 
-    void IUICallBacks.OnSwitchManager(PlayerRef source)
+    void IUICallBacks.OnSwitchManager(int source)
     {
     }
 #endif

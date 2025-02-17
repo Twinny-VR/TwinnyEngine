@@ -180,11 +180,13 @@ namespace Twinny.System.Network
         {
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
+#if OCULUS
             if (LevelManagerXR.Config.tryReconnect)
             {
                 Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!",Twinny.UI.AlertViewHUD.MessageType.Error,10f);
                 TryReconnect();
             }
+#endif
         }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
@@ -226,7 +228,7 @@ namespace Twinny.System.Network
         }
         public void OnSceneLoadStart(NetworkRunner runner) { }
 
-        #endregion
+#endregion
 
     }
 }

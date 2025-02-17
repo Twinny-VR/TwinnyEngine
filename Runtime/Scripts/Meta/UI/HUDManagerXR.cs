@@ -272,11 +272,11 @@ namespace Twinny.UI
         }
 
 #if FUSION2
-        public void OnSwitchManager(PlayerRef source)
+        public void OnSwitchManager(int source)
         {
             Debug.LogWarning("Switch Manager chamado no HUDManager!");
 
-            if (source == NetworkRunnerHandler.runner.LocalPlayer)
+            if (source == NetworkRunnerHandler.runner.LocalPlayer.PlayerId)
                 ActionManager.CallDelayedAction(() =>
                 {
 

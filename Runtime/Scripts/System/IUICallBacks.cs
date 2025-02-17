@@ -26,7 +26,7 @@ namespace Twinny.UI
         #endregion
 
 #if FUSION2
-        void OnSwitchManager(PlayerRef source);
+        void OnSwitchManager(int source);
 #endif
 
 #region Camera Callbacks

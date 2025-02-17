@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Fusion;
 using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Cameras;
@@ -11,7 +10,6 @@ using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Oculus.Interaction.Context;
 
 namespace Twinny.System
 {

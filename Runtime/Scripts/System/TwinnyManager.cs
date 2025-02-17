@@ -5,7 +5,9 @@ using Twinny.Helpers;
 using Twinny.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if OCULUS
 using UnityEngine.XR.Management;
+#endif
 
 namespace Twinny.System
 {
@@ -38,6 +40,7 @@ namespace Twinny.System
             if (Application.platform == RuntimePlatform.Android)
             {
 
+#if OCULUS
                 if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
                 {
 
@@ -45,6 +48,7 @@ namespace Twinny.System
                     Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
                 }
                 else
+#endif
                 {
 
                     Platform = Platform.MOBILE;

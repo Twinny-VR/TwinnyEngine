@@ -311,7 +311,7 @@ namespace Twinny.System
             else
                 Debug.LogWarning("Você não tem autoridade pra mudar variaveis");
 
-            CallBackUI.CallAction(callback => callback.OnSwitchManager(source));
+            CallBackUI.CallAction(callback => callback.OnSwitchManager(source.PlayerId));
         }
 
 
