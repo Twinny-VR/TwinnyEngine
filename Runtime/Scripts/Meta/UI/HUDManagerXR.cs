@@ -289,6 +289,7 @@ namespace Twinny.UI
 
         }
 
+#endif
         public void OnExperienceStarting()
         {
 
@@ -300,7 +301,6 @@ namespace Twinny.UI
         {
             _mainMenu.SetActive(true);
         }
-#endif
 
         public void OnLoadExtensionMenu(GameObject menu)
         {

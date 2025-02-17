@@ -1,6 +1,8 @@
 #if FUSION2
 
 using Fusion;
+
+#endif
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -20,6 +22,7 @@ namespace Twinny.Helpers
         }
 
 
+#if FUSION2
         // Método para aguardar a conclusão do carregamento da cena
         public static async Task WaitForSceneLoadAsync(NetworkSceneAsyncOp asyncLoad)
         {
@@ -29,6 +32,7 @@ namespace Twinny.Helpers
                 await Task.Yield(); // Aguarda até o próximo frame
             }
         }
+#endif
 
 
         // Método para aguardar a conclusão do carregamento da cena
@@ -43,5 +47,3 @@ namespace Twinny.Helpers
         }
     }
 }
-
-#endif
