@@ -186,7 +186,6 @@ public class CameraHandler : TSingleton<CameraHandler>
                             break;
                     }
                 }
-#if UNITY_EDITOR
                 else // Para o mouse, quando não há toque
                 {
                     Vector2 mousePosition = Input.mousePosition;
@@ -239,7 +238,7 @@ public class CameraHandler : TSingleton<CameraHandler>
                         }
                     }
                 }
-#endif
+
 
                 // Verifica se um objeto foi clicado
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
