@@ -1,10 +1,7 @@
 #if FUSION2
-
 using Fusion;
-using System;
-
-
 #endif
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 

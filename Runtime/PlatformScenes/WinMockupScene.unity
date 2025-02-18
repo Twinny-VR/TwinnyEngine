@@ -927,7 +927,7 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _keepAllInstances: 0
   _lastInstancePersistent: 0
-  _sensorCenter: {fileID: 20301494}
+  _sensorCenter: {fileID: 0}
   _sensorLocked: {fileID: 1255269562}
 --- !u!4 &1975444097 stripped
 Transform:
