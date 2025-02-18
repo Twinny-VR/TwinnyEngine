@@ -1,16 +1,11 @@
-/*
+
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-
-
-using System.Linq;
+using System.Threading.Tasks;
 using Twinny.XR;
-//using Unity.XR.Oculus;
 using UnityEditor;
 using UnityEngine;
 
-using UnityEngine.XR;
 
 [CustomEditor(typeof(MonoBehaviour), true)]
 public class PlatformCheckerEditor : Editor
@@ -18,55 +13,68 @@ public class PlatformCheckerEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        CheckOculusProviderStatus();
+        _ = CheckOculusProviderStatus();
+
     }
 
-    private void CheckXRPlugInStatus()
+    async Task<bool> CheckPluginManagement(string packageName)
     {
-        bool init = XRGeneralSettings.Instance.InitManagerOnStart;
-    
-      
-    }
+        bool isPluginManagementInstalled = false;
 
-    void CheckOculusProviderStatus()
-    {
-        // Verifique as configurações gerais do XR
-        XRGeneralSettings xrGeneralSettings = XRGeneralSettings.Instance;
+        // Faz a requisição para obter a lista de pacotes instalados
+        var request = UnityEditor.PackageManager.Client.List();
 
-        if (xrGeneralSettings != null && xrGeneralSettings.Manager != null)
+        // Aguarda a requisição ser concluída
+        while (!request.IsCompleted)
         {
-            var activeLoaders = xrGeneralSettings.Manager.activeLoaders;
-            var oculusLoader = activeLoaders.FirstOrDefault(loader => loader is OculusLoader);
+            await Task.Yield();
 
-            if (oculusLoader != null) { 
-                
-                AddDefineSymbol("OCULUS");
+        }
 
-                if (AssetDatabase.IsValidFolder("Resources"))
+        // Verifica se o pacote Plugin Management está na lista
+        if (request.Status == UnityEditor.PackageManager.StatusCode.Success)
+        {
+            foreach (var package in request.Result)
+            {
+                if (package.name.Contains(packageName))
                 {
-                    AssetDatabase.CreateFolder("Assets", "Resources");
+                    isPluginManagementInstalled = true;
+                    break;
                 }
-
-                string fileName = "RuntimeXRPreset.asset";
-                string assetPath = "Assets/Resources/" + fileName;
-                RuntimeXR preset = AssetDatabase.LoadAssetAtPath<RuntimeXR>(assetPath);
-
-                if (preset == null) {
-                    preset = ScriptableObject.CreateInstance<RuntimeXR>();
-                    AssetDatabase.CreateAsset(preset, assetPath);
-                    AssetDatabase.SaveAssets();
-                    Debug.Log("Novo preset RuntimeXR criado e salvo em: " + assetPath);
-                }
-
             }
-            else
-            { RemoveDefineSymbol("OCULUS"); }
+        }
+        return isPluginManagementInstalled;
+    }
+
+    async Task CheckOculusProviderStatus()
+    {
+
+        bool hasOculus = await CheckPluginManagement("com.meta.xr.sdk.all");
+
+        if (hasOculus)
+        {
+            AddDefineSymbol("OCULUS");
+
+            if (AssetDatabase.IsValidFolder("Resources"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Resources");
+            }
+
+            string fileName = "RuntimeXRPreset.asset";
+            string assetPath = "Assets/Resources/" + fileName;
+            RuntimeXR preset = AssetDatabase.LoadAssetAtPath<RuntimeXR>(assetPath);
+
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<RuntimeXR>();
+                AssetDatabase.CreateAsset(preset, assetPath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("Novo preset RuntimeXR criado e salvo em: " + assetPath);
+            }
 
         }
         else
-        {
-            Debug.LogError("XRGeneralSettings ou XRManager não estão configurados corretamente.");
-        }
+            RemoveDefineSymbol("OCULUS");
     }
 
 
@@ -108,4 +116,3 @@ public class PlatformCheckerEditor : Editor
 
 
 }
-*/
