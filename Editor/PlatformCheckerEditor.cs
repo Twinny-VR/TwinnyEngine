@@ -1,4 +1,4 @@
-
+#if UNITY_EDITOR
 
 using System;
 using System.Threading.Tasks;
@@ -120,3 +120,5 @@ public class PlatformCheckerEditor : UnityEditor.Editor
 }
 
 }
+
+#endif

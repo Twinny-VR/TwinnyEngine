@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
-using Oculus.Avatar2;
 using TMPro;
 using Twinny.Helpers;
 using Twinny.UI;
@@ -353,7 +352,7 @@ namespace Twinny.System.Cameras
             {
                
                 var blend = _brain.m_CustomBlends.m_CustomBlends.FirstOrDefault(blend => blend.m_To == _lockedCamera.name);
-                int index = _brain.m_CustomBlends.m_CustomBlends.IndexOf(blend);
+                int index = 0; // _brain.m_CustomBlends.m_CustomBlends. (blend);
                 CinemachineBlendDefinition oldBlend = blend.m_Blend;
 
 

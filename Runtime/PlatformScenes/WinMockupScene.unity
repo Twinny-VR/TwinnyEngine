@@ -928,7 +928,7 @@ MonoBehaviour:
   _keepAllInstances: 0
   _lastInstancePersistent: 0
   _sensorCenter: {fileID: 20301494}
-  _sensorLocked: {fileID: 0}
+  _sensorLocked: {fileID: 1255269562}
 --- !u!4 &1975444097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,

@@ -43,6 +43,7 @@ public class BuildingFeature : MonoBehaviour
     private void OnCameralocked(BuildingFeature building)
     {
       //  Debug.LogWarning($"CAMERA LOCKED: {building} THIS: {building == this}");
+        if(_prisma != null) 
         _prisma.SetActive(building != this);
     }
 
