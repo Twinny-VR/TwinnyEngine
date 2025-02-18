@@ -1,24 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
+using Oculus.Avatar2;
 using TMPro;
 using Twinny.Helpers;
 using Twinny.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-namespace Twinny.System.Cameras{
-
-public class CameraHandler : TSingleton<CameraHandler>
+namespace Twinny.System.Cameras
 {
+
+    public class CameraHandler : TSingleton<CameraHandler>
+    {
         #region Delegates
         public delegate void onCameraChanged(CinemachineFreeLook camera);
         public static onCameraChanged OnCameraChanged;
         public delegate void onCameraLocked(BuildingFeature building);
         public static onCameraLocked OnCameraLocked;
         #endregion
+
+        [SerializeField] private CameraRuntime _config;
+
+        private CinemachineBrain _brain;
 
 
         [Header("CAMERAS")]
@@ -32,11 +40,12 @@ public class CameraHandler : TSingleton<CameraHandler>
         private CinemachineCameraOffset _offset;
 
 
+        private float _zoomLimitMin = 0f;
+        private float _zoomLimitMax = 1000f;
 
-        [SerializeField] private GameObject _backButton;
+        [SerializeField] private Transform _sensorCenter;
 
-        [SerializeField] private float _horizontalSensitivity = .1f;
-        [SerializeField] private float _verticalSensitivity = .1f;
+
         public float _xAxis = 0f;  // O valor que vai ser alterado com o arrasto
         [Range(0f, 1f)]
         public float _yAxis = .5f;  // O valor que vai ser alterado com o arrasto
@@ -46,10 +55,49 @@ public class CameraHandler : TSingleton<CameraHandler>
         private float _touchStartY = 0f;  // Posição Y do toque inicial
         private bool _isDragging = false;  // Para verificar se o usuário está arrastando
         private float _zoom;
-        private float _zoomLimitMax = 10f;
-        private float _zoomLimitMin = 0f;
-        [SerializeField] private float _zoomSensitivity = .001f;
         private float _initialDistance = 0f;
+
+        #region MonoBehaviour Methods
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (AssetDatabase.IsValidFolder("Resources"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Resources");
+            }
+
+            string fileName = "CameraRuntimePreset.asset";
+            string assetPath = "Assets/Resources/" + fileName;
+            CameraRuntime preset = AssetDatabase.LoadAssetAtPath<CameraRuntime>(assetPath);
+
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<CameraRuntime>();
+                AssetDatabase.CreateAsset(preset, assetPath);
+                AssetDatabase.SaveAssets();
+                Debug.LogWarning("[CameraHandler] Novo preset 'CameraRuntimePreset' criado e salvo em: " + assetPath);
+            }
+
+            _config = AssetDatabase.LoadAssetAtPath<CameraRuntime>(assetPath);
+
+        }
+#endif
+
+
+        void Awake()
+        {
+            _brain = Camera.main.GetComponent<CinemachineBrain>();
+
+            _config = Resources.Load<CameraRuntime>("CameraRuntimePreset");
+
+            if (_config == null)
+            {
+                Debug.LogError("[CameraHandler] Impossible to load 'CameraRuntimePreset'.");
+            }
+
+        }
+
 
         // Start is called before the first frame update
         void Start()
@@ -70,7 +118,7 @@ public class CameraHandler : TSingleton<CameraHandler>
         {
             OnCameraChanged -= OnCameraChange;
             OnCameraLocked -= OnLockInBuilding;
-            
+
         }
 
 
@@ -87,7 +135,7 @@ public class CameraHandler : TSingleton<CameraHandler>
             if (scrollInput != 0)
             {
                 float zoomDelta = scrollInput;
-                _zoom += zoomDelta * _zoomSensitivity * 1000f;  // Sensibilidade ajustada para o zoom
+                _zoom += zoomDelta * _config.zoomSensitivity * 1000f;  // Sensibilidade ajustada para o zoom
                 _zoom = Mathf.Clamp(_zoom, _zoomLimitMin, _zoomLimitMax);   // Limita o zoom
                 SetZoom(_zoom);
             }
@@ -134,7 +182,7 @@ public class CameraHandler : TSingleton<CameraHandler>
                                 float deltaX = touch.position.x - _touchStartX;
                                 if (Mathf.Abs(deltaX) > .5f) // Evita movimentos pequenos
                                 {
-                                    _xAxis = _initialX + deltaX * _horizontalSensitivity;
+                                    _xAxis = _initialX + deltaX * _config.horizontalSensitivity;
                                     SetHorizontalAxis(_xAxis);
                                 }
 
@@ -142,7 +190,7 @@ public class CameraHandler : TSingleton<CameraHandler>
                                 float deltaY = touch.position.y - _touchStartY;
                                 if (Mathf.Abs(deltaY) > .5f) // Evita movimentos pequenos
                                 {
-                                    _yAxis = _initialY + deltaY * _verticalSensitivity * .01f;
+                                    _yAxis = _initialY + deltaY * _config.verticalSensitivity * .01f;
                                     _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
                                     SetGimbalVerticalAxis(_yAxis);
                                 }
@@ -177,7 +225,7 @@ public class CameraHandler : TSingleton<CameraHandler>
                             {
                                 float zoomDelta = (currentDistance - _initialDistance);
                                 zoomDelta = Mathf.Clamp(zoomDelta, -1f, 1f); // Limita o zoom
-                                _zoom += zoomDelta * _zoomSensitivity * 100f;
+                                _zoom += zoomDelta * _config.zoomSensitivity * 100f;
                                 _zoom = Mathf.Clamp(_zoom, _zoomLimitMin, _zoomLimitMax);
                                 SetZoom(_zoom);
 
@@ -224,20 +272,21 @@ public class CameraHandler : TSingleton<CameraHandler>
                         float deltaX = mousePosition.x - _touchStartX;
                         if (Mathf.Abs(deltaX) > 1f) // Evita movimentos pequenos
                         {
-                            _xAxis = _initialX + deltaX * _horizontalSensitivity * .1f;// * 10f * Time.fixedDeltaTime;
-                            SetHorizontalAxis(_xAxis );
+                            _xAxis = _initialX + deltaX * _config.horizontalSensitivity * .1f;// * 10f * Time.fixedDeltaTime;
+                            SetHorizontalAxis(_xAxis);
                         }
 
                         // Movimentos no eixo Y (vertical)
                         float deltaY = mousePosition.y - _touchStartY;
                         if (Mathf.Abs(deltaY) > 1f) // Evita movimentos pequenos
                         {
-                            _yAxis = _initialY + deltaY * _verticalSensitivity * .001f;// * .1f * Time.fixedDeltaTime;
+                            _yAxis = _initialY + deltaY * _config.verticalSensitivity * .001f;// * .1f * Time.fixedDeltaTime;
                             _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
                             SetGimbalVerticalAxis(_yAxis);
                         }
                     }
                 }
+
 
 
                 // Verifica se um objeto foi clicado
@@ -253,23 +302,38 @@ public class CameraHandler : TSingleton<CameraHandler>
             }
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void OnCameraChange(CinemachineFreeLook camera)
         {
             _offset = camera.GetComponent<CinemachineCameraOffset>();
             _lockedCamera.gameObject.SetActive(false);
             _centralCamera.gameObject.SetActive(false);
 
-            string cameraType = "CENTRAL";
+
+            if (camera == _centralCamera)
+            {
+                if (SceneFeature.Instance && SceneFeature.Instance.sensorCenter) LockCentralCamera(SceneFeature.Instance.sensorCenter);
+                else
+                    LockCentralCamera(_sensorCenter);
+                _zoomLimitMin = _config.zoomLimitMin;
+                _zoomLimitMax = _config.zoomLimitMax;
+                CallBackUI.CallAction(callback => callback.OnCameraChanged(camera.transform, "CENTRAL"));
+            }
 
             if (camera == _lockedCamera)
-                cameraType = "LOCKED";
+            {
+                
+                _zoomLimitMin = _lockedCameraTarget.GetLimiters().x;
+                _zoomLimitMax = _lockedCameraTarget.GetLimiters().y;
+                CallBackUI.CallAction(callback => callback.OnCameraChanged(camera.transform, "LOCKED"));
+            }
 
-            _zoomLimitMin = camera == _centralCamera ? 0f : _lockedCameraTarget.GetLimiters().x;//TODO organizar isso
-            _zoomLimitMax = camera == _centralCamera ? 1000f : _lockedCameraTarget.GetLimiters().y;//TODO organizar isso
 
             camera.gameObject.SetActive(true);
 
-            CallBackUI.CallAction(callback => callback.OnCameraChanged(camera.transform,cameraType));
 
         }
 
@@ -279,14 +343,34 @@ public class CameraHandler : TSingleton<CameraHandler>
 
             if (building == null)
             {
-              //  _lockedCameraTarget.Select(false);
+                //  _lockedCameraTarget.Select(false);
                 _lockedCameraTarget = null;
-                currentCamera = _centralCamera;                
+                currentCamera = _centralCamera;
                 CallBackUI.CallAction(callback => callback.OnCameraLocked(null));
                 return;
             }
+            if (building.overrideBlend)
+            {
+               
+                var blend = _brain.m_CustomBlends.m_CustomBlends.FirstOrDefault(blend => blend.m_To == _lockedCamera.name);
+                int index = _brain.m_CustomBlends.m_CustomBlends.IndexOf(blend);
+                CinemachineBlendDefinition oldBlend = blend.m_Blend;
+
+
+                _brain.m_CustomBlends.m_CustomBlends[index].m_Blend = building.customBlend;
+
+
+                AsyncOperationExtensions.CallDelayedAction(() => {
+
+                    _brain.m_CustomBlends.m_CustomBlends[index].m_Blend = oldBlend;
+
+                }, (int)(building.customBlend.m_Time*1000) + 100);
+            }
+
+
+
             _lockedCameraTarget = building;
-      //      _lockedCameraTarget.Select();
+            //      _lockedCameraTarget.Select();
             _lockedCamera.Follow = _lockedCamera.LookAt = building.sensorCentral;
             currentCamera = _lockedCamera;
 
@@ -294,157 +378,19 @@ public class CameraHandler : TSingleton<CameraHandler>
 
 
         }
-        /*
-        void Update()
+
+        private void LockCentralCamera(Transform target)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-
-
-
-            Vector3 cameraPosition = Camera.main.transform.position;
-
-            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-            if (scrollInput != 0)
-            {
-
-                float zoomDelta = scrollInput;
-                _zoom += zoomDelta;
-                SetZoom(_zoom * 1000f * _zoomSensitivity);
-            }
-
-
-
-
-
-            // Para dispositivos móveis, usamos a entrada touch
-            if (Input.GetMouseButton(0) || Input.touchCount > 0)
-            {
-
-                Ray ray = default;
-                RaycastHit hit;
-
-                if (Input.touchCount == 1) //Horizontal and Vertical touch
-                {
-                    Touch touch = Input.GetTouch(0);  // Captura o primeiro toque
-                    switch (touch.phase)
-                    {
-                        case TouchPhase.Began:
-                            // Quando o toque começa, salva a posição inicial Y
-                            _touchStartX = touch.position.x;
-                            _touchStartY = touch.position.y;
-                            _initialX = _centralCamera.m_XAxis.Value;
-                            _initialY = _centralCamera.m_YAxis.Value;
-                            _isDragging = true;
-                            break;
-
-                        case TouchPhase.Moved:
-                            // Durante o movimento, calcula a diferença vertical
-                            if (_isDragging)
-                            {
-
-                                float deltaX = touch.position.x - _touchStartX;
-                                _xAxis = _initialX + deltaX * _horizontalSensitivity;
-                                SetHorizontalAxis(_xAxis);
-
-                                float deltaY = touch.position.y - _touchStartY;
-                                _yAxis = _initialY + deltaY * _verticalSensitivity;
-                                _yAxis = Mathf.Clamp(_yAxis, 0f, 1f);
-                                SetGimbalVerticalAxis(_yAxis);
-
-                            }
-                            break;
-
-                        case TouchPhase.Ended:
-                        case TouchPhase.Canceled:
-                            // Quando o toque termina ou é cancelado, desativa o arrasto
-                            _isDragging = false;
-                            break;
-                    }
-
-                    ray = Camera.main.ScreenPointToRay(touch.position);
-
-                }
-                else if (Input.touchCount == 2)
-                {
-                    Touch touch1 = Input.GetTouch(0);
-                    Touch touch2 = Input.GetTouch(1);
-
-                    switch (touch1.phase)
-                    {
-                        case TouchPhase.Began:
-                            // Quando o gesto de pinçar começa, calcula a distância inicial entre os toques
-                            _initialDistance = Vector2.Distance(touch1.position, touch2.position);
-                            break;
-
-                        case TouchPhase.Moved:
-                            // Durante o movimento, calcula a distância atual entre os toques
-                            float currentDistance = Vector2.Distance(touch1.position, touch2.position);
-                            if(currentDistance > 50f)
-                            {
-
-                            // Calcula a diferença na distância entre os toques para aplicar o zoom
-                            float zoomDelta = (currentDistance - _initialDistance);
-                            zoomDelta = Mathf.Clamp(zoomDelta, -1f, 1f); // Limita o delta entre -1 e 1
-                            _zoom += zoomDelta * _zoomSensitivity * 1000f;
-                            SetZoom(_zoom);
-
-                            // Atualiza a distância inicial para a próxima comparação
-                            _initialDistance = currentDistance;
-                            }
-                            break;
-                    }
-                }
-#if UNITY_EDITOR
-                else
-                {
-                    Vector2 mousePosition = Input.mousePosition;
-                    ray = Camera.main.ScreenPointToRay(mousePosition);
-
-                    if (!_isDragging)
-                    {
-                        // Quando o toque (ou clique) começa
-                        _touchStartX = mousePosition.x;
-                        _touchStartY = mousePosition.y;
-                        _initialX = _centralCamera.m_XAxis.Value;
-                        _initialY = _centralCamera.m_YAxis.Value;
-                        _isDragging = true;
-                    }
-                    else
-                    {
-                        // Durante o movimento do mouse (arrasto)
-
-                        float deltaX = mousePosition.x - _touchStartX;
-                        _xAxis = _initialX + deltaX * _horizontalSensitivity;
-                        SetHorizontalAxis(_xAxis);
-
-                                            float deltaY = mousePosition.y + _touchStartY;
-                                            if (_verticalInvertToggle.isOn) deltaY = deltaY * -1;
-                                            _yAxis = _initialY + deltaY * _verticalSensitivity;
-                                            SetVerticalAxis(_yAxis);
-                        float deltaY = mousePosition.y - _touchStartY;
-                        _yAxis = _initialY + deltaY * _verticalSensitivity;
-                        _yAxis = Mathf.Clamp(_yAxis, 0f, 1f);
-                        SetGimbalVerticalAxis(_yAxis);
-                    }
-                }
-#endif
-
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                {
-
-                    GameObject clickedObject = hit.collider.gameObject;
-                    SelectObject(clickedObject);
-                }
-
-            }
-            else
-            {
-                _isDragging = false;
-            }
+            Debug.Log($"[CameraHandler] Central Camera locked in: {target}");
+            _centralCamera.Follow = target;
+            _centralCamera.LookAt = target;
         }
-*/
+
+
+        #endregion
+
+
+        #region Public Methods
         public void SelectObject(GameObject go)
         {
             /*
@@ -494,6 +440,7 @@ public class CameraHandler : TSingleton<CameraHandler>
             _offset.m_Offset = position;
         }
 
+        #endregion
 
         float GetRealZoom(float value)
         {

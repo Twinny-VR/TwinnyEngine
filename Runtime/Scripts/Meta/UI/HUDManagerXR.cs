@@ -8,6 +8,7 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
+using Twinny.XR;
 
 namespace Twinny.UI
 {
@@ -277,13 +278,13 @@ namespace Twinny.UI
             Debug.LogWarning("Switch Manager chamado no HUDManager!");
 
             if (source == NetworkRunnerHandler.runner.LocalPlayer.PlayerId)
-                ActionManager.CallDelayedAction(() =>
+                AsyncOperationExtensions.CallDelayedAction(() =>
                 {
 
                     _extensionMenu.SetActive(true);
 #if OCULUS
-                    if (SceneFeature.Instance.enableNavigationMenu)
-                        NavigationMenu.Instance?.SetArrows(SceneFeature.Instance?.landMarks[NetworkedLevelManager.instance.currentLandMark].node);
+                    if (SceneFeatureXR.Instance.enableNavigationMenu)
+                        NavigationMenu.Instance?.SetArrows(SceneFeatureXR.Instance?.landMarks[NetworkedLevelManager.instance.currentLandMark].node);
 #endif
                 }, 500);
 
@@ -322,7 +323,7 @@ namespace Twinny.UI
         public void OnLoadSceneFeature()
         {
 
-            ActionManager.CallDelayedAction(() =>
+            AsyncOperationExtensions.CallDelayedAction(() =>
             {
                 //TODO Make inactive and fadeout H.U.D
 
@@ -335,7 +336,7 @@ namespace Twinny.UI
                 else
                     _mainMenu?.SetActive(true);
 
-                _navigationHud.SetActive(SceneFeature.Instance.enableNavigationMenu);
+                _navigationHud.SetActive(SceneFeatureXR.Instance.enableNavigationMenu);
                 _dynamicHud.SetActive(true);
 
             }, 500);
@@ -360,7 +361,7 @@ namespace Twinny.UI
             if (_extensionMenu) _extensionMenu.SetActive(isActive);
             else _mainMenu?.SetActive(isActive);
 
-            _navigationHud?.SetActive(isActive && SceneFeature.Instance && SceneFeature.Instance.enableNavigationMenu);
+            _navigationHud?.SetActive(isActive && SceneFeatureXR.Instance && SceneFeatureXR.Instance.enableNavigationMenu);
 
         }
 #endif

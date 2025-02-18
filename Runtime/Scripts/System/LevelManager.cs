@@ -46,7 +46,7 @@ namespace Twinny.System
                     Debug.Log("Novo preset 'MultiPlatformRuntimePreset' criado e salvo em: " + assetPath);
                 }
 
-                _config = Resources.Load<MultiPlatformRuntime>("MultiPlatformRuntimePreset");
+                _config = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
 
 
 
@@ -114,7 +114,7 @@ namespace Twinny.System
 
             await CanvasTransition.FadeScreen(true);
 
-            CameraHandler.OnCameraLocked(null);
+            CameraHandler.OnCameraLocked?.Invoke(null);
 
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")

@@ -9,6 +9,8 @@ using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using System;
 using System.Data.Common;
+using Twinny.XR;
+
 #if FUSION2
 using Fusion;
 #endif
@@ -31,7 +33,7 @@ namespace Twinny.System.Network
         {
              await Task.Delay(500); // Similar "yield return new WaitForSeconds(.5f)"
 
-            if (SceneFeature.Instance)
+            if (SceneFeatureXR.Instance)
             {
                 await UnloadAdditivesScenes();
             }

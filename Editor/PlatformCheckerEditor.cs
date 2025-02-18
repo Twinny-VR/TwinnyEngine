@@ -6,9 +6,12 @@ using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 
+namespace Twinny.Editor
+{
+
 
 [CustomEditor(typeof(MonoBehaviour), true)]
-public class PlatformCheckerEditor : Editor
+public class PlatformCheckerEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {
@@ -50,7 +53,6 @@ public class PlatformCheckerEditor : Editor
     {
 
         bool hasOculus = await CheckPluginManagement("com.meta.xr.sdk.all");
-
         if (hasOculus)
         {
             AddDefineSymbol("OCULUS");
@@ -114,5 +116,7 @@ public class PlatformCheckerEditor : Editor
     }
 
 
+
+}
 
 }

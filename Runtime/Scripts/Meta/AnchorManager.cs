@@ -1,4 +1,4 @@
-#if OCULUS && FUSION2
+#if FUSION2 && OCULUS
 using Meta.XR.BuildingBlocks;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using Fusion;
 using Twinny.System.Network;
 using System.Threading.Tasks;
 using Meta.XR.MultiplayerBlocks.Shared;
+using Twinny.XR;
 
 namespace Twinny.System
 {
@@ -207,7 +208,7 @@ namespace Twinny.System
 
         public static void AnchorScene()//TODO Swith to platform
         {
-            SceneFeature sceneFeature = SceneFeature.Instance;
+            SceneFeatureXR sceneFeature = SceneFeatureXR.Instance;
             if(sceneFeature == null) return;
 
             sceneFeature.transform.position = AnchorManager.Instance.transform.position;

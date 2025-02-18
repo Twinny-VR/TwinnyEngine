@@ -205,15 +205,15 @@ namespace Twinny.System.Network
                 //TODO Remove before build
                 Debug.LogWarning($"SCENE LOADED {(currentLandMark == -1 ? "without LandMarks" : $"on LandMark{currentLandMark}")}.");
 
-                if (SceneFeature.Instance != null)
+                if (SceneFeatureXR.Instance != null)
                 {
                     OnLoadSceneFeature?.Invoke();
                     if (currentLandMark >= 0)
                     {
                         //TODO Q diabos fiz aqui
-                        SceneFeature.Instance.TeleportToLandMark(currentLandMark);
-                        if (SceneFeature.Instance.landMarks.Length > 0 && SceneFeature.Instance.currentLandMark != SceneFeature.Instance.landMarks[currentLandMark])
-                            SceneFeature.Instance.TeleportToLandMark(currentLandMark);
+                        SceneFeatureXR.Instance.TeleportToLandMark(currentLandMark);
+                        if (SceneFeatureXR.Instance.landMarks.Length > 0 && SceneFeatureXR.Instance.currentLandMark != SceneFeatureXR.Instance.landMarks[currentLandMark])
+                            SceneFeatureXR.Instance.TeleportToLandMark(currentLandMark);
 
                     }
 

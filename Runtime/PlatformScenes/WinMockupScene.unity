@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &20301493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 20301494}
+  m_Layer: 0
+  m_Name: SensorCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &20301494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20301493}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.38466415, z: -0, w: -0.9230566}
+  m_LocalPosition: {x: -4.499985, y: 22.9, z: -126.000015}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1975444097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &119490650
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +323,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zoomLimitMin: -20
   _zoomLimitMax: 100
+  _overrideBlend: 1
+  customBlend:
+    m_Style: 0
+    m_Time: 0
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   _prisma: {fileID: 1304424295}
   sensorCentral: {fileID: 313711972}
 --- !u!65 &1255269563
@@ -367,6 +408,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zoomLimitMin: -20
   _zoomLimitMax: 100
+  _overrideBlend: 0
+  customBlend:
+    m_Style: 0
+    m_Time: 0
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   _prisma: {fileID: 1150611753}
   sensorCentral: {fileID: 796373065}
 --- !u!65 &1265685068
@@ -501,6 +552,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zoomLimitMin: -20
   _zoomLimitMax: 100
+  _overrideBlend: 0
+  customBlend:
+    m_Style: 0
+    m_Time: 0
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   _prisma: {fileID: 1604354376}
   sensorCentral: {fileID: 1280392808}
 --- !u!1 &1432632136
@@ -653,6 +714,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zoomLimitMin: -20
   _zoomLimitMax: 100
+  _overrideBlend: 0
+  customBlend:
+    m_Style: 0
+    m_Time: 0
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   _prisma: {fileID: 821223812}
   sensorCentral: {fileID: 119490651}
 --- !u!65 &1878864838
@@ -777,6 +848,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 20301494}
     - targetCorrespondingSourceObject: {fileID: 7874738934944048477, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
         type: 3}
       insertIndex: -1
@@ -790,6 +865,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 963662210}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 21388250608084578, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1975444096}
     - targetCorrespondingSourceObject: {fileID: 7350826744493342695, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
         type: 3}
       insertIndex: -1
@@ -827,6 +906,35 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1402422880}
   m_SourcePrefab: {fileID: 100100000, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
+--- !u!1 &1975444095 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 21388250608084578, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 1975444094}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1975444096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975444095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834994dbbe3f7a940af55d61692eb386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
+  _keepAllInstances: 0
+  _lastInstancePersistent: 0
+  _sensorCenter: {fileID: 20301494}
+  _sensorLocked: {fileID: 0}
+--- !u!4 &1975444097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 1975444094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

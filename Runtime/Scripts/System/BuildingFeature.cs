@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Twinny.System.Cameras;
 using UnityEngine;
 
 public class BuildingFeature : MonoBehaviour
 {
+    [Header("Camera Overrides")]
     [SerializeField] private float _zoomLimitMin = -20f;
     [SerializeField] private float _zoomLimitMax = 100f;
+
+    [SerializeField] private bool _overrideBlend;
+    public bool overrideBlend { get { return _overrideBlend; } }
+    public CinemachineBlendDefinition customBlend;
+
 
 
     [Header("CACHED")]

@@ -4,12 +4,14 @@ using UnityEngine;
 using Twinny.Helpers;
 using Twinny.UI;
 using System.Linq;
+using Twinny.System;
+
 #if FUSION2
 using Fusion;
 using Twinny.System.Network;
 #endif
 
-namespace Twinny.System
+namespace Twinny.XR
 {
     /// <summary>
     /// Scene layout type VR(Virtual), MR(Mixed), MOBILE(Mobile)
@@ -22,7 +24,7 @@ namespace Twinny.System
         MOBILE //Mobile
     }
 
-    public class SceneFeature : TSingleton<SceneFeature>
+    public class SceneFeatureXR : TSingleton<SceneFeatureXR>
     {
         #region Cached Components
         private Transform _transform;
@@ -31,13 +33,13 @@ namespace Twinny.System
         #region Fields
         public Transform worldTransform;
         [SerializeField] public SceneType sceneType;
-        
+
         [SerializeField] public LandMark[] landMarks = new LandMark[0];
         [SerializeField] public bool enableNavigationMenu;
         [HideInInspector]
         public LandMark currentLandMark;
         public GameObject extensionMenu;
-        #endregion
+#endregion
 
         #region Delegates
         public delegate void onTeleportToLandMark(int landMarkIndex);
@@ -150,7 +152,7 @@ namespace Twinny.System
 #if OCULUS
                 worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -landMark.node.transform.localRotation.eulerAngles.y);
                 NavigationMenu.Instance?.SetArrows(enableNavigationMenu ? landMark.node : null);
-#endif                
+#endif
                 SetHDRI(landMarkIndex);
                 SetHDRIRotation(worldTransform.localRotation.eulerAngles.y + transform.rotation.eulerAngles.y);
             }
@@ -260,7 +262,7 @@ namespace Twinny.System
         }
 
 
-        #endregion
+#endregion
 
 
         #region Private Methods

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Twinny.System;
+using Twinny.XR;
 using UnityEngine;
 
 public class LandMarkLinkedObjects : MonoBehaviour
@@ -14,7 +15,7 @@ public class LandMarkLinkedObjects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SceneFeature.Instance.OnTeleportToLandMark += OnTeleportToLandMark;
+        SceneFeatureXR.Instance.OnTeleportToLandMark += OnTeleportToLandMark;
         for (int i = 0; i < transform.childCount; i++)
         {
             _childreen.Add(transform.GetChild(i).gameObject);
@@ -23,7 +24,7 @@ public class LandMarkLinkedObjects : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneFeature.Instance.OnTeleportToLandMark -= OnTeleportToLandMark;
+        SceneFeatureXR.Instance.OnTeleportToLandMark -= OnTeleportToLandMark;
 
     }
 
@@ -31,7 +32,7 @@ public class LandMarkLinkedObjects : MonoBehaviour
     {
 
 
-        int nodeIndex = SceneFeature.Instance.GetLandMarkIndex(_landMarkNode);
+        int nodeIndex = SceneFeatureXR.Instance.GetLandMarkIndex(_landMarkNode);
         Debug.LogWarning($"[LandMarkLinkedObjects] Teleported to LandMark{landMarkIndex}|{nodeIndex}");
 
         bool active = ( nodeIndex == landMarkIndex);

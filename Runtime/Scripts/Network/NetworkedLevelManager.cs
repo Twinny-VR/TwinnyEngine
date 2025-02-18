@@ -183,7 +183,7 @@ namespace Twinny.System
         public async void NavigateTo(int landMarkIndex)
         {
             await CanvasTransition.FadeScreen(true);
-            SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
+            SceneFeatureXR.Instance.TeleportToLandMark(landMarkIndex);
             await CanvasTransition.FadeScreen(false);
         }
 
@@ -286,7 +286,7 @@ namespace Twinny.System
             if (fade)
                 NavigateTo(landMarkIndex);
             else
-                SceneFeature.Instance?.TeleportToLandMark(landMarkIndex);
+                SceneFeatureXR.Instance?.TeleportToLandMark(landMarkIndex);
 
         }
 

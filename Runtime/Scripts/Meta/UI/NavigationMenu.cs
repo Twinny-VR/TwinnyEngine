@@ -45,7 +45,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
         #region Public Methods
 
         public void SetArrows(LandMarkNode node) {
-            if (!SceneFeature.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
+            if (!SceneFeatureXR.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             _navigationMenu.SetActive(node && NetworkedLevelManager.IsManager);
             if (!node) return;
             
@@ -55,7 +55,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             _eastArrow.SetActive(node.east);
             _westArrow.SetActive(node.west);
 
-            transform.rotation = SceneFeature.Instance.worldTransform.rotation;
+            transform.rotation = SceneFeatureXR.Instance.worldTransform.rotation;
         }
 
 
@@ -90,7 +90,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
         public void OnArrowRelease(string direction)
         {
-            if (!SceneFeature.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
+            if (!SceneFeatureXR.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             if (!_activeNode) { Debug.LogWarning($"[NavigationMenu] Navigation nodes are not configured."); return; }
 
             if (!LevelManagerXR.Config.allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea) )//TODO Globalizar isso sem anchor
@@ -117,8 +117,8 @@ public class NavigationMenu : TSingleton<NavigationMenu>
                     targetNode = _activeNode.west;
                     break;
             }
-            LandMark landMark = SceneFeature.Instance.landMarks.FirstOrDefault(lm => lm.node == targetNode);
-            int landMarkIndex = Array.IndexOf(SceneFeature.Instance.landMarks, landMark);
+            LandMark landMark = SceneFeatureXR.Instance.landMarks.FirstOrDefault(lm => lm.node == targetNode);
+            int landMarkIndex = Array.IndexOf(SceneFeatureXR.Instance.landMarks, landMark);
             NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex);
         }
 

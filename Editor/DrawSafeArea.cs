@@ -4,11 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using Twinny.System;
 
-namespace Twinny
+namespace Twinny.Editor
 {
 
     [CustomEditor(typeof(LandMarkNode))]
-    public class DrawSafeArea : Editor
+    public class DrawSafeArea : UnityEditor.Editor
     {
 
         private void OnSceneGUI()

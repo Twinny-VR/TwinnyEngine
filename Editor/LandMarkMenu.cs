@@ -10,6 +10,7 @@ using Twinny.Localization;
 using System.IO;
 using Twinny.XR;
 using System;
+using UnityEditor.Presets;
 
 
 namespace Twinny.Helpers
@@ -46,7 +47,7 @@ namespace Twinny.Helpers
 
         public static void AddLandMarkNode(LandMarkNode node)
         {
-            SceneFeature feature = ObjectDeletionChecker.FindSceneFeatureInScene();
+            SceneFeatureXR feature = ObjectDeletionChecker.FindSceneFeatureInScene();
             if (feature)
             {
                 var landMarks = feature.landMarks;
@@ -99,7 +100,7 @@ namespace Twinny.Helpers
         private static void OnHierarchyChanged()
         {
 
-            SceneFeature feature = FindSceneFeatureInScene();
+            SceneFeatureXR feature = FindSceneFeatureInScene();
 
             if (!feature || feature.landMarks == null) return;
 
@@ -147,10 +148,10 @@ namespace Twinny.Helpers
         }
 
 
-        public static SceneFeature FindSceneFeatureInScene()
+        public static SceneFeatureXR FindSceneFeatureInScene()
         {
             // Seek for SceneFeature component in all GameObjects in scene
-            foreach (var obj in UnityEngine.Object.FindObjectsOfType<SceneFeature>())
+            foreach (var obj in UnityEngine.Object.FindObjectsOfType<SceneFeatureXR>())
             {
                 return obj; // Returns the first founded
             }
@@ -285,7 +286,7 @@ namespace Twinny.Helpers
 
             string filePath = EditorUtility.SaveFilePanelInProject(
             "Salvar Preset",                  // Título da janela
-            "RuntimeXRPreset",                // Nome do arquivo sugerido
+            preset.GetType().Name + "Preset",                // Nome do arquivo sugerido
             "asset",                          // Extensão do arquivo
             "Escolha onde salvar o preset",   // Texto de ajuda
             "Assets/Resources"                        // Caminho inicial sugerido (Assets/Resources)
@@ -416,7 +417,7 @@ namespace Twinny.Helpers
         {
             GameObject root = new GameObject();
             root.name = LandMarkMenu.ROOT_NAME;
-            SceneFeature feature = root.AddComponent<SceneFeature>();
+            SceneFeatureXR feature = root.AddComponent<SceneFeatureXR>();
             feature.sceneType = type;
             GameObject world = new GameObject();
             world.name = LandMarkMenu.WORLD_NAME;
