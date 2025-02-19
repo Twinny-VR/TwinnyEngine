@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 789684486510353798}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpatialAnchorDebug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5437877546670600563}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Anchor Placement Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 2581141925924456888}
   - component: {fileID: 4244866149167792531}
   - component: {fileID: 1093395891584423953}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 5746455440449849712}
   - component: {fileID: 4739711070729164942}
   - component: {fileID: 7446219725409999024}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 7385209481863432126}
   - component: {fileID: 922351037445670373}
   - component: {fileID: 3681983538041947567}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 8208824031824876697}
   - component: {fileID: 8440380491695263565}
   - component: {fileID: 4443663627753317366}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}

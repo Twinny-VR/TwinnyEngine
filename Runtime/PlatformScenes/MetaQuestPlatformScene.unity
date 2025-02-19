@@ -1643,7 +1643,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3135
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -7206,7 +7206,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3135
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -8764,7 +8764,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3135
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -22373,6 +22373,8 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 9517df6381b5e4d46a154e5df02769d0, type: 2}
   _isManager: 0
   _currentLandMark: -1
+  maquete: 
+  decorado: 
   _bootstrap: {fileID: 366325652}
   _spawner: {fileID: 120486631}
 --- !u!114 &1900741461
