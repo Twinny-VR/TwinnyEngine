@@ -375,7 +375,7 @@ MonoBehaviour:
   _showMessages: 1
   _showWarnings: 1
   _showErrors: 1
-  animator: {fileID: 0}
+  animator: {fileID: 316260250901333758}
 --- !u!95 &316260250901333758
 Animator:
   serializedVersion: 5
@@ -384,7 +384,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8602384357941057721}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: ebb7bf802b8fb7740b6cf6724a8933aa, type: 2}
   m_CullingMode: 0
