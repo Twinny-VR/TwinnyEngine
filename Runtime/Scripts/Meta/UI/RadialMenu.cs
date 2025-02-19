@@ -102,8 +102,12 @@ namespace Twinny.UI
         /// <param name="volume">Value between -80f(mute) and 0f(normal).</param>
         private void OnVolumeChange(float volume)
         {
+            if(_soundOffIcon && _soundOnIcon)
+            {
+
             _soundOffIcon.SetActive(volume <= -80f);
             _soundOnIcon.SetActive(volume > -80f);
+            }
         }
 
         /// <summary>
