@@ -27,6 +27,7 @@ namespace Twinny.UI
         [Space]
         [Tooltip("H.U.D Estática")]
         [SerializeField] private GameObject _staticHud;
+        [SerializeField] private GameObject _banner;
 
         [Space]
         [Tooltip("H.U.D Dinâmica segue o F.O.V")]
@@ -76,6 +77,7 @@ namespace Twinny.UI
         {
 #if OCULUS
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
+            _banner.transform.SetParent(AnchorManager.Instance.transform);
 #endif
             CallBackUI.RegisterCallback(this);
 
@@ -304,6 +306,7 @@ namespace Twinny.UI
         {
 
             _mainMenu.SetActive(false);
+            _banner.SetActive(false);
 
         }
 
@@ -367,8 +370,12 @@ namespace Twinny.UI
 
             bool isActive = state == StateAnchorManager.DISABLED || state == StateAnchorManager.ANCHORED;
             //TODO Make inactive and fadeout H.U.D
-            if (_extensionMenu) _extensionMenu.SetActive(isActive);
-            else _mainMenu?.SetActive(isActive);
+            if (_extensionMenu)
+                _extensionMenu.SetActive(isActive);
+            else { 
+                _mainMenu?.SetActive(isActive);
+                _banner?.SetActive(isActive);
+            }
 
             _navigationHud?.SetActive(isActive && SceneFeatureXR.Instance && SceneFeatureXR.Instance.enableNavigationMenu);
 

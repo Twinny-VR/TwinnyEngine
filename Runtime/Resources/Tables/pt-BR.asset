@@ -35,14 +35,14 @@ MonoBehaviour:
   - key: Error
     value: Erro
   - key: '%DISCONECTED_MESSAGE'
-    value: "[DESCONECTADO] O aplicativo ser\xE1 reiniciado."
+    value: "REINICIANDO EXPERI\xCANCIA."
   - key: DISCONNECTED
     value: DESCONECTADO
   - key: '%BACK_TO_SAFE_AREA'
     value: Volte para dentro da SAFE AREA para navegar!
   - key: '%CONNECTING_MESSAGE'
-    value: CONECTANDO AO SERVIDOR...
+    value: "INICIANDO EXPERI\xCANCIA."
   - key: '%LOADING_SCENE'
-    value: CARREGANDO...
+    value: CARREGANDO CENA...
   - key: '%NO_ANCHOR_MESSAGE'
     value: "VOC\xCA N\xC3O EST\xC1 ANCORADO!"
