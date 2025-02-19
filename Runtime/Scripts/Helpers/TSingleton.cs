@@ -18,6 +18,7 @@ namespace Twinny.Helpers
         #region Fields
         [SerializeField] private bool _dontDestroyOnLoad = false;
         [SerializeField] private bool _keepAllInstances = false;
+        [SerializeField] private bool _firstInstancePersistent = false;
         [SerializeField] private bool _lastInstancePersistent = false;
         #endregion
 
@@ -31,6 +32,7 @@ namespace Twinny.Helpers
 
             if (_keepAllInstances)
             {
+                if(!_firstInstancePersistent)
                 _instance = this as T;
             }
             else
