@@ -15,6 +15,8 @@ namespace Twinny.XR
     public class LevelManagerXR : NetworkedLevelManager
     {
 
+        public string maquete;
+        public string decorado;
 
         public static RuntimeXR Config { get { return instance.config as RuntimeXR; } }
 
@@ -140,6 +142,21 @@ namespace Twinny.XR
             if (NetworkRunnerHandler.runner.IsSceneAuthority)
                 AnchorManager.AnchorScene();
         }
+
+        [ContextMenu("INICIAR")]
+        public void Iniciar()
+        {
+            StartExperience(maquete, -1); 
+        }
+
+
+        [ContextMenu("VISITAR")]
+        public void Visitar()
+        {
+
+            RPC_ChangeScene(decorado, 0);
+        }
+
 
     }
 }

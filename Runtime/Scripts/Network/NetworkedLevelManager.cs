@@ -92,8 +92,6 @@ namespace Twinny.System
 
         }
 
-        [ContextMenu("Start Experience")]
-        public static void StartExperience() { StartExperience("MockupScene", -1); }
 
         public virtual void GetReady()
         {
@@ -225,13 +223,6 @@ namespace Twinny.System
             if (NetworkRunnerHandler.runner.IsSceneAuthority)
                 _ = ChangeScene(scene, landMark);
 
-        }
-
-        [ContextMenu("VISITAR")]
-        public void Visitar()
-        {
-
-            RPC_ChangeScene("NONE", 0);
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]
