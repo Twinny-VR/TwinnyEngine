@@ -262,6 +262,15 @@ namespace Twinny.UI
         #endregion
 
         #region UI Buttons Actions
+        public void HandleAnchor()
+        {
+            AnchorManager.HandleAnchorPlacement();
+        }
+
+        public void CreateAnchor()
+        {
+            AnchorManager.CreateAnchor();
+        }
 
         #endregion
 
