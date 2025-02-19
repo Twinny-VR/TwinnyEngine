@@ -190,6 +190,21 @@ namespace Twinny.Helpers
         private static void SetMetaQuest()
         {
             SetPlatformScenes("MetaQuest");
+            /*
+            string oculusFolder = "Assets/Oculus";
+            if (!AssetDatabase.IsValidFolder(scenesFolder))
+            {
+                AssetDatabase.CreateFolder("Assets", "Oculus");
+            }
+            string originalProjectConfig = $"Packages/com.twinny.twe25/Runtime/Oculus/OculusProjectConfig.asset";
+            string destinyPath = Path.Combine(s
+//            if (AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Oculus/") == null)
+                if (!AssetDatabase.CopyAsset(originalProjectConfig, destinyPath))
+                {
+                    Debug.LogError($"Failed to copy '{originalPlatformStartScene}' to '{destinyPath}.");
+                    return;
+                }
+            */
         }
         private static void SetPlatformScenes(string platform) {
             var newScenes = new List<EditorBuildSettingsScene>();

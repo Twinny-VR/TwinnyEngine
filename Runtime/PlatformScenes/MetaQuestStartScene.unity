@@ -890,11 +890,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlertHUD
       objectReference: {fileID: 0}
-    - target: {fileID: 6893646940998507820, guid: aa2618757ff443d46a3b1d0bb91a0b6e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
