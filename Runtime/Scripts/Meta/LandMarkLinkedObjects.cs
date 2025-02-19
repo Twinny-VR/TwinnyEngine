@@ -7,7 +7,7 @@ using UnityEngine;
 public class LandMarkLinkedObjects : MonoBehaviour
 {
 
-    [SerializeField] private LandMarkNode _landMarkNode;
+    [SerializeField] private LandMarkNode[] _landMarkNodes;
     [SerializeField]
     private List<GameObject> _childreen = new List<GameObject>();
 
@@ -30,12 +30,21 @@ public class LandMarkLinkedObjects : MonoBehaviour
 
     private void OnTeleportToLandMark(int landMarkIndex)
     {
+        bool active = false;
 
+        foreach (var node in _landMarkNodes)
+        {
+            int nodeIndex = SceneFeatureXR.Instance.GetLandMarkIndex(node);
 
-        int nodeIndex = SceneFeatureXR.Instance.GetLandMarkIndex(_landMarkNode);
-        Debug.LogWarning($"[LandMarkLinkedObjects] Teleported to LandMark{landMarkIndex}|{nodeIndex}");
+            if(nodeIndex == landMarkIndex)
+            {
+                active = true;
+                break;
+            }
 
-        bool active = ( nodeIndex == landMarkIndex);
+        }
+     //   Debug.LogWarning($"[LandMarkLinkedObjects] Teleported to LandMark{landMarkIndex}|{nodeIndex}");
+
 
         foreach (var item in _childreen)
         {

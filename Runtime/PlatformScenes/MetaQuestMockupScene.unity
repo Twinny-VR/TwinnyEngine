@@ -130,10 +130,19 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1135092526}
     m_Modifications:
+    - target: {fileID: 5035330583271990, guid: f103dc28e1b83da4db420697ff7f4f7e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 100379308210575144, guid: f103dc28e1b83da4db420697ff7f4f7e,
         type: 3}
       propertyPath: SortKey
-      value: 2039637822
+      value: 535580087
+      objectReference: {fileID: 0}
+    - target: {fileID: 1183308742715503488, guid: f103dc28e1b83da4db420697ff7f4f7e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0074999984
       objectReference: {fileID: 0}
     - target: {fileID: 2950909126494949067, guid: f103dc28e1b83da4db420697ff7f4f7e,
         type: 3}
@@ -189,6 +198,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: '[Twinny] Mockup'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5869233443713205370, guid: f103dc28e1b83da4db420697ff7f4f7e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0074999984
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -280,7 +294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  _overwriteInstance: 0
+  _keepAllInstances: 0
+  _lastInstancePersistent: 0
   worldTransform: {fileID: 1135092526}
   sceneType: 0
   landMarks: []
