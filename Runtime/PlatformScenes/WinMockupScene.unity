@@ -321,8 +321,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc52ad0ff736264b9490abdc0e9d354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoomLimitMin: -20
-  _zoomLimitMax: 100
+  _zoomLimitMin: -100
+  _zoomLimitMax: 0
   _overrideBlend: 1
   customBlend:
     m_Style: 0
@@ -335,6 +335,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   _prisma: {fileID: 1304424295}
   sensorCentral: {fileID: 313711972}
+  sensorCentralLook: {fileID: 0}
 --- !u!65 &1255269563
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -406,8 +407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc52ad0ff736264b9490abdc0e9d354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoomLimitMin: -20
-  _zoomLimitMax: 100
+  _zoomLimitMin: -100
+  _zoomLimitMax: 0
   _overrideBlend: 0
   customBlend:
     m_Style: 0
@@ -420,6 +421,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   _prisma: {fileID: 1150611753}
   sensorCentral: {fileID: 796373065}
+  sensorCentralLook: {fileID: 1975444098}
 --- !u!65 &1265685068
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -564,6 +566,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   _prisma: {fileID: 1604354376}
   sensorCentral: {fileID: 1280392808}
+  sensorCentralLook: {fileID: 0}
 --- !u!1 &1432632136
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +729,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   _prisma: {fileID: 821223812}
   sensorCentral: {fileID: 119490651}
+  sensorCentralLook: {fileID: 0}
 --- !u!65 &1878864838
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -927,11 +931,18 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _keepAllInstances: 0
   _lastInstancePersistent: 0
-  _sensorCenter: {fileID: 0}
-  _sensorLocked: {fileID: 1255269562}
+  _sensorFollow: {fileID: 0}
+  _sensorLook: {fileID: 0}
+  _sensorLocked: {fileID: 0}
 --- !u!4 &1975444097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 1975444094}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1975444098 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7196362826417602908, guid: 45c2457b84b8ec14fa3f51a8154dd8ef,
     type: 3}
   m_PrefabInstance: {fileID: 1975444094}
   m_PrefabAsset: {fileID: 0}

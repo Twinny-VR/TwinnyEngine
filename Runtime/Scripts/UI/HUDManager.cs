@@ -46,7 +46,9 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     public void BackToHome()
     {
-      CameraHandler.OnCameraLocked?.Invoke(null);
+#if !OCULUS
+        CameraHandler.OnCameraLocked?.Invoke(null);
+#endif
     }
 
     public void ResetExperience()
@@ -59,7 +61,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
         Application.Quit();
     }
 
-    #endregion
+#endregion
     #region System Callback Methods
 
     void IUICallBacks.OnExperienceFinished(bool isRunning)

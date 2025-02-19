@@ -1,3 +1,4 @@
+#if !OCULUS
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -21,6 +22,7 @@ public class BuildingFeature : MonoBehaviour
 
     [Header("SENSORS")]
     public Transform sensorCentral;
+    public Transform sensorCentralLook;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,3 +57,4 @@ public class BuildingFeature : MonoBehaviour
     }
 
 }
+#endif

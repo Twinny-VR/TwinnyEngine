@@ -100,24 +100,6 @@ namespace Twinny.System
             isRunning = true;
 
             CallBackUI.CallAction(callback => callback.OnExperienceReady());
-
-
-            /* TODO Criar um sistema de spawn caso houver para cada plataforma 
-            if(spawner != null && spawner.isActiveAndEnabled)
-                NetworkRunnerHandler.runner.Spawn(
-                             _playerPrefab,
-                             Vector3.zero,
-                             Quaternion.identity,
-                             NetworkRunnerHandler.runner.LocalPlayer,
-                             (runner, obj) => // onBeforeSpawned
-                             {
-                                 var behaviour = obj.GetComponent<NetworkPoseRetargeterBehaviourFusion>();
-                                 behaviour.CharacterId = spawner.SelectedCharacterIndex + 1;
-                             }
-                         );
-            */
-
-
         }
 
         public static void StartExperience(string scene, int landMarkIndex)

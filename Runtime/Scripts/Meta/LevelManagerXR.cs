@@ -1,5 +1,6 @@
 #if OCULUS && FUSION2
 using Fusion;
+using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 using System.Threading.Tasks;
@@ -15,10 +16,10 @@ namespace Twinny.XR
     {
 
 
-
-        [SerializeField]
-        private FusionBootstrap _bootstrap;
         public static RuntimeXR Config { get { return instance.config as RuntimeXR; } }
+
+        [SerializeField] private FusionBootstrap _bootstrap;
+        [SerializeField] private NetworkPoseRetargeterSpawnerFusion _spawner;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -87,7 +88,7 @@ namespace Twinny.XR
                 Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
 
-                        _ = CanvasTransition.FadeScreen(false);
+            _ = CanvasTransition.FadeScreen(false);
 
 
         }
@@ -96,6 +97,24 @@ namespace Twinny.XR
         {
             base.GetReady();
             AnchorManager.SpawnColocation();
+
+            // TODO Criar um sistema de spawn caso houver para cada plataforma 
+            if (_spawner != null && _spawner.isActiveAndEnabled)
+                _spawner.SpawnCharacter();
+/*
+                NetworkRunnerHandler.runner.Spawn(
+                             _playerPrefab,
+                             Vector3.zero,
+                             Quaternion.identity,
+                             NetworkRunnerHandler.runner.LocalPlayer,
+                             (runner, obj) => // onBeforeSpawned
+                             {
+                                 var behaviour = obj.GetComponent<NetworkPoseRetargeterBehaviourFusion>();
+                                 behaviour.CharacterId = _spawner.SelectedCharacterIndex + 1;
+                             }
+                         );
+
+                */
 
         }
 
@@ -111,7 +130,7 @@ namespace Twinny.XR
 
             User user = msg.GetUser();
             var userName = user.DisplayName != "" ? user.DisplayName : user.OculusID;
-            Debug.LogWarning("USER:" + userName);                        
+            Debug.LogWarning("USER:" + userName);
         }
 
         //TODO Ver utilidade disso

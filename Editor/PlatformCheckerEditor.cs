@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR2
 
 using System;
 using System.Threading.Tasks;

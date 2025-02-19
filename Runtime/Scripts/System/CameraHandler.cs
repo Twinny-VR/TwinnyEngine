@@ -1,3 +1,4 @@
+#if !OCULUS
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Twinny.System.Cameras
     public class CameraHandler : TSingleton<CameraHandler>
     {
         #region Delegates
-        public delegate void onCameraChanged(CinemachineFreeLook camera);
+        public delegate void onCameraChanged(CinemachineVirtualCamera camera);
         public static onCameraChanged OnCameraChanged;
         public delegate void onCameraLocked(BuildingFeature building);
         public static onCameraLocked OnCameraLocked;
@@ -29,20 +30,22 @@ namespace Twinny.System.Cameras
 
 
         [Header("CAMERAS")]
-        private CinemachineFreeLook _currentCamera;
-        private CinemachineFreeLook currentCamera { get => _currentCamera; set { _currentCamera = value; OnCameraChanged?.Invoke(value); } }
-        [SerializeField] private CinemachineFreeLook _centralCamera;
-        [SerializeField] private CinemachineFreeLook _lockedCamera;
+        private CinemachineVirtualCamera _currentCamera;
+        private CinemachinePOV _currentPOV;
+        private CinemachineVirtualCamera currentCamera { get => _currentCamera; set { _currentCamera = value; OnCameraChanged?.Invoke(value); } }
+        [SerializeField] private CinemachineVirtualCamera _centralCamera;
+        [SerializeField] private CinemachineVirtualCamera _lockedCamera;
         private BuildingFeature _lockedCameraTarget;
 
         [Space]
         private CinemachineCameraOffset _offset;
 
 
-        private float _zoomLimitMin = 0f;
-        private float _zoomLimitMax = 1000f;
+        private float _zoomLimitMin = -1400f;
+        private float _zoomLimitMax = -100f;
 
-        [SerializeField] private Transform _sensorCenter;
+        [SerializeField] private Transform _sensorFollow;
+        [SerializeField] private Transform _sensorLook;
 
 
         public float _xAxis = 0f;  // O valor que vai ser alterado com o arrasto
@@ -53,7 +56,7 @@ namespace Twinny.System.Cameras
         private float _touchStartX = 0f;  // Posição X do toque inicial
         private float _touchStartY = 0f;  // Posição Y do toque inicial
         private bool _isDragging = false;  // Para verificar se o usuário está arrastando
-        private float _zoom;
+        private float _zoom = -1400;
         private float _initialDistance = 0f;
 
         #region MonoBehaviour Methods
@@ -110,7 +113,6 @@ namespace Twinny.System.Cameras
 
             currentCamera = _centralCamera;
 
-            SetZoom(_zoom);
         }
 
         private void OnDestroy()
@@ -169,8 +171,9 @@ namespace Twinny.System.Cameras
 
                             _touchStartX = touch.position.x;
                             _touchStartY = touch.position.y;
-                            _initialX = currentCamera.m_XAxis.Value;
-                            _initialY = currentCamera.m_YAxis.Value;
+
+                            _initialX =   _currentPOV.m_HorizontalAxis.Value;
+                            _initialY = _currentPOV.m_VerticalAxis.Value;
                             _isDragging = true;
                             break;
 
@@ -189,8 +192,8 @@ namespace Twinny.System.Cameras
                                 float deltaY = touch.position.y - _touchStartY;
                                 if (Mathf.Abs(deltaY) > .5f) // Evita movimentos pequenos
                                 {
-                                    _yAxis = _initialY + deltaY * _config.verticalSensitivity * .01f;
-                                    _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
+                                    _yAxis = _initialY + deltaY * _config.verticalSensitivity;
+                                   // _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
                                     SetGimbalVerticalAxis(_yAxis);
                                 }
                             }
@@ -261,8 +264,8 @@ namespace Twinny.System.Cameras
 
                         _touchStartX = mousePosition.x;
                         _touchStartY = mousePosition.y;
-                        _initialX = currentCamera.m_XAxis.Value;
-                        _initialY = currentCamera.m_YAxis.Value;
+                        _initialX = _currentPOV.m_HorizontalAxis.Value;
+                        _initialY = _currentPOV.m_VerticalAxis.Value;
                         _isDragging = true;
                     }
                     else
@@ -279,8 +282,8 @@ namespace Twinny.System.Cameras
                         float deltaY = mousePosition.y - _touchStartY;
                         if (Mathf.Abs(deltaY) > 1f) // Evita movimentos pequenos
                         {
-                            _yAxis = _initialY + deltaY * _config.verticalSensitivity * .001f;// * .1f * Time.fixedDeltaTime;
-                            _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
+                            _yAxis = _initialY + deltaY * _config.verticalSensitivity;// * .001f;// * .1f * Time.fixedDeltaTime;
+                          //  _yAxis = Mathf.Clamp(_yAxis, 0f, 1f); // Limita o eixo Y
                             SetGimbalVerticalAxis(_yAxis);
                         }
                     }
@@ -305,23 +308,25 @@ namespace Twinny.System.Cameras
 
         #region Private Methods
 
-        private void OnCameraChange(CinemachineFreeLook camera)
+        private void OnCameraChange(CinemachineVirtualCamera camera)
         {
+            _currentPOV = camera.GetCinemachineComponent<CinemachinePOV>();
             _offset = camera.GetComponent<CinemachineCameraOffset>();
-            _lockedCamera.gameObject.SetActive(false);
-            _centralCamera.gameObject.SetActive(false);
-
+            //_lockedCamera.gameObject.SetActive(false);
+            //_centralCamera.gameObject.SetActive(false);
+            _centralCamera.Priority = 10;
+            _lockedCamera.Priority = 10;
 
             if (camera == _centralCamera)
             {
-                if (SceneFeature.Instance && SceneFeature.Instance.sensorCenter) LockCentralCamera(SceneFeature.Instance.sensorCenter);
+                if (SceneFeature.Instance && SceneFeature.Instance.sensorFollow && SceneFeature.Instance.sensorLook) LockCentralCamera(SceneFeature.Instance.sensorFollow, SceneFeature.Instance.sensorLook);
                 else
-                    LockCentralCamera(_sensorCenter);
+                    LockCentralCamera(_sensorFollow, _sensorLook);
                 _zoomLimitMin = _config.zoomLimitMin;
                 _zoomLimitMax = _config.zoomLimitMax;
                 CallBackUI.CallAction(callback => callback.OnCameraChanged(camera.transform, "CENTRAL"));
             }
-
+            else
             if (camera == _lockedCamera)
             {
                 
@@ -330,8 +335,12 @@ namespace Twinny.System.Cameras
                 CallBackUI.CallAction(callback => callback.OnCameraChanged(camera.transform, "LOCKED"));
             }
 
+            AsyncOperationExtensions.CallDelayedAction(() =>
+            {
+                camera.Priority = 11;
 
-            camera.gameObject.SetActive(true);
+
+            }, 100);
 
 
         }
@@ -370,7 +379,8 @@ namespace Twinny.System.Cameras
 
             _lockedCameraTarget = building;
             //      _lockedCameraTarget.Select();
-            _lockedCamera.Follow = _lockedCamera.LookAt = building.sensorCentral;
+            _lockedCamera.Follow = building.sensorCentral;
+            _lockedCamera.LookAt = building.sensorCentralLook;
             currentCamera = _lockedCamera;
 
             CallBackUI.CallAction(callback => callback.OnCameraLocked(building.transform));
@@ -378,11 +388,11 @@ namespace Twinny.System.Cameras
 
         }
 
-        private void LockCentralCamera(Transform target)
+        private void LockCentralCamera(Transform follow, Transform look)
         {
-            Debug.Log($"[CameraHandler] Central Camera locked in: {target}");
-            _centralCamera.Follow = target;
-            _centralCamera.LookAt = target;
+            Debug.Log($"[CameraHandler] Central Camera locked in: {follow} LookAt: {look}");
+            _centralCamera.Follow = follow;
+            _centralCamera.LookAt = look;
         }
 
 
@@ -409,7 +419,7 @@ namespace Twinny.System.Cameras
         public void SetHorizontalAxis(float value)
         {
 
-            currentCamera.m_XAxis.Value = value;
+            _currentPOV.m_HorizontalAxis.Value = value;
 
         }
 
@@ -427,7 +437,7 @@ namespace Twinny.System.Cameras
 
         public void SetGimbalVerticalAxis(float value)
         {
-            currentCamera.m_YAxis.Value = value;
+            _currentPOV.m_VerticalAxis.Value = value;
         }
 
 
@@ -466,3 +476,5 @@ namespace Twinny.System.Cameras
     }
 
 }
+
+#endif

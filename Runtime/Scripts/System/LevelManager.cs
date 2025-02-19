@@ -113,9 +113,9 @@ namespace Twinny.System
 
 
             await CanvasTransition.FadeScreen(true);
-
+#if !OCULUS
             CameraHandler.OnCameraLocked?.Invoke(null);
-
+#endif
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
@@ -170,7 +170,7 @@ namespace Twinny.System
         }
 
 
-        #endregion
+#endregion
 
 
         #region CallBack Methods

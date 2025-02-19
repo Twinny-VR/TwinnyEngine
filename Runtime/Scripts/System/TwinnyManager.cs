@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twinny.Helpers;
 using Twinny.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 #if OCULUS
@@ -37,6 +38,58 @@ namespace Twinny.System
 
             CallBackUI.CallAction(callback => callback.OnPlatformInitialize());
 
+
+#if UNITY_EDITOR
+
+
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+
+#if OCULUS
+                if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
+                {
+
+                    Platform = Platform.XR;
+                    Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
+                }
+                else
+#endif
+                {
+
+                    Platform = Platform.MOBILE;
+                    Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
+                }
+
+
+
+            }
+            else
+            if (EditorUserBuildSettings.activeBuildTarget  == BuildTarget.iOS)
+            {
+                Platform = Platform.MOBILE;
+                Debug.LogWarning("[TwinnyManager] iOS Platform initialized.");
+            }
+            else
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows || EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64)
+            {
+                Platform = Platform.WINDOWS;
+                Debug.LogWarning("[TwinnyManager] Windows Platform initialized.");
+            }
+            else
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WebGL)
+            {
+                Platform = Platform.WEBGL;
+                Debug.LogWarning("[TwinnyManager] WebGL Platform initialized.");
+            }
+            else
+            {
+                Platform = Platform.UNKNOW;
+                Debug.LogError($"[TwinnyManager] Unknow Platform initialized ({Application.platform}).");
+            }
+
+
+
+#else
             if (Application.platform == RuntimePlatform.Android)
             {
 
@@ -86,6 +139,7 @@ namespace Twinny.System
                 Platform = Platform.UNKNOW;
                 Debug.LogError($"[TwinnyManager] Unknow Platform initialized ({Application.platform}).");
             }
+#endif
 
             OnPlatformInitialize?.Invoke(Platform);
 
