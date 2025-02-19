@@ -36,7 +36,6 @@ namespace Twinny.System
             await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
 
 
-            CallBackUI.CallAction(callback => callback.OnPlatformInitialize());
 
 
 #if UNITY_EDITOR
@@ -142,6 +141,7 @@ namespace Twinny.System
 #endif
 
             OnPlatformInitialize?.Invoke(Platform);
+            CallBackUI.CallAction(callback => callback.OnPlatformInitialize());
 
 
         }

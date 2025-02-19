@@ -32,7 +32,7 @@ namespace Twinny.Helpers
 
             if (_keepAllInstances)
             {
-                if(!_firstInstancePersistent)
+                if(!_firstInstancePersistent || !_instance)
                 _instance = this as T;
             }
             else

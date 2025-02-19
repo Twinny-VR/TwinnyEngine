@@ -9,6 +9,7 @@ using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
 using Twinny.XR;
+using UnityEngine.SceneManagement;
 
 namespace Twinny.UI
 {
@@ -337,6 +338,9 @@ namespace Twinny.UI
 
             AsyncOperationExtensions.CallDelayedAction(() =>
             {
+                if(SceneManager.sceneCount > 2) //Means experience was started yet
+                    _banner.SetActive(false);
+
                 //TODO Make inactive and fadeout H.U.D
 
                 bool active = true;
