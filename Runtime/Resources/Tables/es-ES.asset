@@ -46,3 +46,7 @@ MonoBehaviour:
     value: CARGANDO...
   - key: '%NO_ANCHOR_MESSAGE'
     value: NO ESTAS ANCLADO!
+  - key: '%NO_ANCHOR_MESSAGE'
+    value: NO ESTAS ANCLADO!
+  - key: '%NO_NETWORK_MESSAGE'
+    value: "NO SE PUEDE CONECTAR! INICIANDO LA EXPERIENCIA SIN CONEXI\xD3N."

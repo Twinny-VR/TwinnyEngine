@@ -5,10 +5,12 @@ using Oculus.Platform;
 using Oculus.Platform.Models;
 using System.Threading.Tasks;
 using Twinny.Helpers;
+using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR.Management;
 namespace Twinny.XR
 {
@@ -71,19 +73,13 @@ namespace Twinny.XR
             */
 
 
-            //Get Internet Status
-            bool isWifiConnected = NetworkHelper.IsWiFiConnected();
 
 
             //Initialize as XR Platform
             if (platform == Platform.XR)
             {
-                if (isWifiConnected && !Config.startSinglePlayer)
-                    _bootstrap.StartSharedClient();
-                else
-                {
-                    _bootstrap.StartSinglePlayer();
-                }
+
+                ConnectToServer();
             }
             else
             {
@@ -92,7 +88,32 @@ namespace Twinny.XR
 
             _ = CanvasTransition.FadeScreen(false);
 
+            
+        }
 
+        public async void ConnectToServer()
+        {
+            //Get Internet Status
+            bool isWifiConnected = true;// = NetworkHelper.IsWiFiConnected();
+
+
+            if (!Config.restarting && isWifiConnected && !Config.startSinglePlayer)
+            {
+                _bootstrap.StartSharedClient();
+                await Task.Delay(Config.connectionTimeout * 1000);
+
+                if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
+                else
+                {
+                   Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                    Config.restarting = true;
+                    await Task.Delay(4000);
+                    SceneManager.LoadScene(0);//StartScene always must be 0
+                    return;
+                }
+            }
+            Config.restarting = false;
+                _bootstrap.StartSinglePlayer();
         }
 
         public override void GetReady()

@@ -387,7 +387,7 @@ namespace Twinny.UI
 #endif
         public void OnPlatformInitialize()
         {
-            AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, 90);
+            AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
         }
 
         public void OnExperienceReady()

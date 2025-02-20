@@ -46,3 +46,5 @@ MonoBehaviour:
     value: LOADING SCENE...
   - key: '%NO_ANCHOR_MESSAGE'
     value: YOU ARE NOT ANCHORED!
+  - key: '%NO_NETWORK_MESSAGE'
+    value: UNABLE TO CONNECT! STARTING OFFLINE EXPERIENCE.

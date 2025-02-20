@@ -24,7 +24,7 @@ namespace Twinny
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose += OnRecenterDetected;
 
-          //  StartCoroutine(DisplayCheck());
+            //  StartCoroutine(DisplayCheck());
         }
 
 
@@ -36,22 +36,23 @@ namespace Twinny
             Debug.LogWarning("[LevelManager] Recenter was detected.");
             Debug.LogWarning("OVRManager:" + OVRManager.instance);
             Debug.LogWarning("OVRDisplay:" + OVRManager.display);
-
-            if (LevelManagerXR.instance == null || (LevelManagerXR.isRunning && (!NetworkRunnerHandler.runner || !NetworkRunnerHandler.runner.IsConnectedToServer)))
-            {
-                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
-                _restarting = true;
-                Task.Run(async () =>
-                {
-                    await Task.Delay(5000);
-                    SceneManager.LoadScene(0);//StartScene always must be 0
-                });
-
-                return;
-            }
-
             if (NetworkRunnerHandler.runner.GameMode != GameMode.Single)
             {
+
+                if (LevelManagerXR.instance == null || (LevelManagerXR.isRunning && (!NetworkRunnerHandler.runner || !NetworkRunnerHandler.runner.IsConnectedToServer)))
+                {
+                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
+                    _restarting = true;
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(5000);
+                        SceneManager.LoadScene(0);//StartScene always must be 0
+                    });
+
+                    return;
+                }
+
+
 
 
                 AnchorManager.Recolocation();
