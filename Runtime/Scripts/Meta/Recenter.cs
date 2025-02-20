@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using Fusion;
+using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
@@ -42,18 +43,17 @@ namespace Twinny
                 if (LevelManagerXR.instance == null || (LevelManagerXR.isRunning && (!NetworkRunnerHandler.runner || !NetworkRunnerHandler.runner.IsConnectedToServer)))
                 {
                         _restarting = true;
-                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(5000);
+                    //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
+
+                    Debug.LogWarning("CHAMA RESET");
+
+                    AsyncOperationExtensions.CallDelayedAction(() => {
+
                         Debug.LogWarning("DEVERIA REINICIAR AQUI! Cena: "+ SceneManager.GetActiveScene().name);
-                        Application.Quit();
+                        SceneManager.LoadScene(0);
 
-                        LevelManagerXR.instance.ResetApplication();
-
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                    });
-
+                    }, 5000);
+                      
                     return;
                 }
 
