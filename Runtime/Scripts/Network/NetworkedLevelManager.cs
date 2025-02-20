@@ -117,7 +117,10 @@ namespace Twinny.System
         }
 
 
-
+        public virtual void ResetApplication()
+        {
+            Debug.LogWarning("[NetworkedLevelManager] RESET APPLICATION");
+        }
 
         /// <summary>
         /// This Async Method changes the actual scene.

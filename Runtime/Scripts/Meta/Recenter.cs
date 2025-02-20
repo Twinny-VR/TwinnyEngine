@@ -48,6 +48,7 @@ namespace Twinny
                         await Task.Delay(5000);
                         Debug.LogWarning("DEVERIA REINICIAR AQUI! Cena: "+ SceneManager.GetActiveScene().name);
                         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        LevelManagerXR.instance.ResetApplication();
                     });
 
                     return;
