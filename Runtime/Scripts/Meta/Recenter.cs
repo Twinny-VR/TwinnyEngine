@@ -43,14 +43,15 @@ namespace Twinny
                 if (LevelManagerXR.instance == null || (LevelManagerXR.isRunning && (!NetworkRunnerHandler.runner || !NetworkRunnerHandler.runner.IsConnectedToServer)))
                 {
                         _restarting = true;
-                    //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
+                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
 
                     Debug.LogWarning("CHAMA RESET");
 
                     AsyncOperationExtensions.CallDelayedAction(() => {
 
                         Debug.LogWarning("DEVERIA REINICIAR AQUI! Cena: "+ SceneManager.GetActiveScene().name);
-                        SceneManager.LoadScene(0);
+
+                       _ = LevelManagerXR.instance.ResetExperience();
 
                     }, 5000);
                       

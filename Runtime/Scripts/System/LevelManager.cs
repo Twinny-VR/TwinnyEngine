@@ -97,7 +97,7 @@ namespace Twinny.System
 
             await CanvasTransition.FadeScreen(true);
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(0);
         }
 
         /// <summary>

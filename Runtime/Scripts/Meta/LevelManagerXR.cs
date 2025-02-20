@@ -108,7 +108,7 @@ namespace Twinny.XR
                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                     Config.restarting = true;
                     await Task.Delay(4000);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    SceneManager.LoadScene(0);
                     return;
                 }
             }
@@ -176,6 +176,11 @@ namespace Twinny.XR
         {
 
             RPC_ChangeScene(decorado, 0);
+        }
+
+        public override async Task ResetExperience()
+        {
+            await base.ResetExperience();
         }
 
         public override void ResetApplication()

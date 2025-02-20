@@ -116,7 +116,14 @@ namespace Twinny.System
             instance.RPC_StartForAll(PlayerRef.None, "PlatformScene");
         }
 
+        public virtual async Task ResetExperience()
+        {
+            CallBackUI.CallAction(callback => callback.OnExperienceFinished(false));
 
+            await CanvasTransition.FadeScreen(true);
+
+            SceneManager.LoadScene(0);
+        }
         public virtual void ResetApplication()
         {
             Debug.LogWarning("[NetworkedLevelManager] RESET APPLICATION");
