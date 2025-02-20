@@ -99,16 +99,29 @@ namespace Twinny.XR
 
             if (!Config.restarting && isWifiConnected && !Config.startSinglePlayer)
             {
-                _bootstrap.StartSharedClient();
+
+                try
+                {
+                    _bootstrap.StartSharedClient();
+                }
+                catch (global::System.Exception e)
+                {
+                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                    await Task.Delay(4000);
+                    Config.restarting = true;
+                    await ResetExperience();
+                    Debug.LogError(e.Message);
+                }
+
                 await Task.Delay(Config.connectionTimeout * 1000);
 
                 if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
                 else
                 {
                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
-                    Config.restarting = true;
                     await Task.Delay(4000);
-                    SceneManager.LoadScene(0);
+                    Config.restarting = true;
+                    await ResetExperience();
                     return;
                 }
             }

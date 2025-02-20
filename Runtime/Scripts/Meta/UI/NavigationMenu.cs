@@ -46,7 +46,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
         public void SetArrows(LandMarkNode node) {
             if (!SceneFeatureXR.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
-            _navigationMenu.SetActive(node && NetworkedLevelManager.IsManager);
+            _navigationMenu?.SetActive(node && NetworkedLevelManager.IsManager);
             if (!node) return;
             
             _activeNode = node;

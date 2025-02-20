@@ -35,7 +35,7 @@ MonoBehaviour:
   - key: Error
     value: Error
   - key: '%DISCONECTED_MESSAGE'
-    value: '[DISCONNECTED] Application is restarting.'
+    value: DISCONNECTED! RESTARTING APPLICATION.
   - key: DISCONNECTED
     value: DISCONNECTED
   - key: '%BACK_TO_SAFE_AREA'
@@ -48,3 +48,5 @@ MonoBehaviour:
     value: YOU ARE NOT ANCHORED!
   - key: '%NO_NETWORK_MESSAGE'
     value: UNABLE TO CONNECT! STARTING OFFLINE EXPERIENCE.
+  - key: '%ERROR_MESSAGE'
+    value: UNKNOW ERROR! RESTARTING APPLICATION.
