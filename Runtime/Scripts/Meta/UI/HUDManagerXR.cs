@@ -377,7 +377,7 @@ namespace Twinny.UI
             if (_extensionMenu)
                 _extensionMenu.SetActive(isActive);
             else { 
-                _mainMenu?.SetActive(isActive);
+               // _mainMenu?.SetActive(isActive);
                 _banner?.SetActive(isActive);
             }
 

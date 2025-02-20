@@ -46,8 +46,8 @@ namespace Twinny
                     Task.Run(async () =>
                     {
                         await Task.Delay(5000);
-                        Debug.LogWarning("DEVERIA REINICIAR AQUI!");
-                        SceneManager.LoadScene(0);//StartScene always must be 0
+                        Debug.LogWarning("DEVERIA REINICIAR AQUI! Cena: "+ SceneManager.GetActiveScene().name);
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                     });
 
                     return;
