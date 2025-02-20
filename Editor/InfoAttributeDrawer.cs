@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+#if UNITY_EDITOR
 using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
@@ -71,3 +71,4 @@ namespace Twinny.Editor
 
 }
 
+#endif
