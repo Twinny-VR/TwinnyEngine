@@ -48,16 +48,22 @@ namespace Twinny.UI
         private void Awake()
         {
             Init();
-#if OCULUS
-            _centerEyeTransform = FindObjectOfType<OVRCameraRig>()?.centerEyeAnchor;
-#else
-            //TODO Criar um sistema pra ficar no meio da tela.
-#endif
             _initialTime = Time.time;
             _initialPosition = transform.position;
             _initialRotation = transform.rotation;
 
             Hide();
+        }
+
+        private void Start()
+        {
+#if OCULUS
+            OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+            _centerEyeTransform = cameraRig ? cameraRig.centerEyeAnchor : Camera.main.transform;
+#else
+            //TODO Criar um sistema pra ficar no meio da tela.
+#endif
+
         }
 
         public static void PostMessage(string message, MessageType messageType = MessageType.Warning, float time = 10f)

@@ -332,6 +332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
   _keepAllInstances: 0
+  _firstInstancePersistent: 0
   _lastInstancePersistent: 0
   _navigationMenu: {fileID: 2110785382}
   _northArrow: {fileID: 2110785381}
