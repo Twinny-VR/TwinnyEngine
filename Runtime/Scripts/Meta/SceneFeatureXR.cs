@@ -5,6 +5,8 @@ using Twinny.Helpers;
 using Twinny.UI;
 using System.Linq;
 using Twinny.System;
+using System.Threading.Tasks;
+
 
 #if FUSION2
 using Fusion;
@@ -269,14 +271,16 @@ namespace Twinny.XR
 
         public void OnRecenterDetected()
         {
-            StartCoroutine(RecenterSkyBox());
+            _ = RecenterSkyBox();
         }
 
-        private IEnumerator RecenterSkyBox()
+        private async Task RecenterSkyBox()
         {
-            yield return new WaitForEndOfFrame();
+            await Task.Yield();
+            Debug.Log("[SceneFeatureXR] RecenterSkyBox: " + worldTransform);
             SetHDRIRotation(worldTransform.localRotation.eulerAngles.y + transform.rotation.eulerAngles.y);
         }
+
         #endregion
     }
 
