@@ -93,10 +93,18 @@ namespace Twinny.XR
 
             if (layer == -1) return;
 
-            if(sceneType == SceneType.MR)
-                Camera.main.cullingMask &= ~(1 << layer);
+            if(sceneType == SceneType.VR)
+            {
+                    AvatarSpawner.SpawnAvatar();
+                //                Camera.main.cullingMask |= (1 << layer);
+            }
             else
-                Camera.main.cullingMask |= (1 << layer);
+            {
+              AvatarSpawner.DespawnAvatar();
+  //              Camera.main.cullingMask &= ~(1 << layer);
+
+            }
+
 
 
             CheckGameMode();
@@ -155,7 +163,6 @@ namespace Twinny.XR
                 worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -landMark.node.transform.localRotation.eulerAngles.y);
                 NavigationMenu.Instance?.SetArrows(enableNavigationMenu ? landMark.node : null);
 #endif
-                SetHDRI(landMarkIndex);
                 SetHDRIRotation(worldTransform.localRotation.eulerAngles.y + transform.rotation.eulerAngles.y);
             }
             else
@@ -166,6 +173,7 @@ namespace Twinny.XR
 #endif
             }
 
+                SetHDRI(landMarkIndex);
             OnTeleportToLandMark?.Invoke(landMarkIndex);
         }
 
@@ -188,6 +196,7 @@ namespace Twinny.XR
 
         private void SetHDRI(int landMarkIndex)
         {
+
             //TODO Melhorar o sistema de HDRI
             //TODO Arrumar ao troca de cena
 
@@ -195,10 +204,8 @@ namespace Twinny.XR
                 if (landMarkIndex < 0)//If no LandMark to set, reset skybox to Passthroug
                 {
 #if OCULUS && FUSION2
-                RenderSettings.skybox = NetworkedLevelManager.instance.config.defaultSkybox;
+                LevelManagerXR.Instance.SetPassthrough(true);
 #endif
-                Camera.main.backgroundColor = Color.clear;
-                    Camera.main.clearFlags = CameraClearFlags.SolidColor;
                     return;
                 }
 
@@ -219,8 +226,10 @@ namespace Twinny.XR
                     Debug.LogWarning("[SceneFeature] Warning! The Skybox Material has not been defined.");
                 currentLandMark = landMark;
             }
-            Camera.main.backgroundColor = Color.clear;
-            Camera.main.clearFlags = (sceneType == SceneType.MR) ? CameraClearFlags.SolidColor : CameraClearFlags.Skybox;
+
+#if OCULUS && FUSION2
+            LevelManagerXR.Instance.SetPassthrough(sceneType == SceneType.MR);
+#endif
 
         }
 

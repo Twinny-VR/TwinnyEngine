@@ -1,7 +1,7 @@
 {
   "name": "com.twinny.twe25",
   "displayName": "Twinny Engine",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "tool",
   "unity": "2022.3",
   "unityRelease": "34f1",
@@ -23,7 +23,12 @@
     {
       "displayName": "Twinny Essentials",
       "description": "Contains scenes and default configuration for Twinny Experience.",
-      "path": "Samples~"
+      "path": "Samples~/DemoScenes"
+    },
+    {
+      "displayName": "Twinny Avatars",
+      "description": "Contains scenes and default configuration for Twinny Experience.",
+      "path": "Samples~/Characters"
     }
   ]
 }

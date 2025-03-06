@@ -160,8 +160,7 @@ namespace Twinny.System
 
             await CanvasTransition.FadeScreen(false);
 
-
-
+            
 
         }
 
@@ -295,6 +294,12 @@ namespace Twinny.System
                 Debug.LogWarning("Você não tem autoridade pra mudar variaveis");
 
             CallBackUI.CallAction(callback => callback.OnSwitchManager(source.PlayerId));
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_OnPlayerPause(PlayerRef source, int pause, string thread)
+        {
+            Debug.LogWarning($"[NetworkedLevelManager] {source} PAUSED:{pause==1}. IS THREAD:{thread}");
         }
 
 

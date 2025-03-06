@@ -295,9 +295,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
   _keepAllInstances: 0
+  _firstInstancePersistent: 0
   _lastInstancePersistent: 0
   worldTransform: {fileID: 1135092526}
-  sceneType: 0
+  sceneType: 1
   landMarks: []
   enableNavigationMenu: 0
   currentLandMark:

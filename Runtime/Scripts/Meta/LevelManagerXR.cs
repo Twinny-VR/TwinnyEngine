@@ -4,26 +4,25 @@ using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 using System.Threading.Tasks;
-using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.UI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.XR.Management;
+
 namespace Twinny.XR
 {
     public class LevelManagerXR : NetworkedLevelManager
     {
+        public static LevelManagerXR Instance { get => instance as LevelManagerXR; }
 
         public string maquete;
         public string decorado;
 
         public static RuntimeXR Config { get { return instance.config as RuntimeXR; } }
 
+        [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
-        [SerializeField] private NetworkPoseRetargeterSpawnerFusion _spawner;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -88,7 +87,7 @@ namespace Twinny.XR
 
             _ = CanvasTransition.FadeScreen(false);
 
-            
+
         }
 
         public async void ConnectToServer()
@@ -118,7 +117,7 @@ namespace Twinny.XR
                 if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
                 else
                 {
-                   Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                     await Task.Delay(4000);
                     Config.restarting = true;
                     await ResetExperience();
@@ -126,32 +125,26 @@ namespace Twinny.XR
                 }
             }
             Config.restarting = false;
+            try
+            {
                 _bootstrap.StartSinglePlayer();
+            }
+            catch (global::System.Exception e)
+            {
+                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                await Task.Delay(4000);
+                Config.restarting = true;
+                await ResetExperience();
+                Debug.LogError(e.Message);
+            }
+
+
         }
 
         public override void GetReady()
         {
             base.GetReady();
             AnchorManager.SpawnColocation();
-
-            // TODO Criar um sistema de spawn caso houver para cada plataforma 
-            if (_spawner != null && _spawner.isActiveAndEnabled)
-                _spawner.SpawnCharacter();
-/*
-                NetworkRunnerHandler.runner.Spawn(
-                             _playerPrefab,
-                             Vector3.zero,
-                             Quaternion.identity,
-                             NetworkRunnerHandler.runner.LocalPlayer,
-                             (runner, obj) => // onBeforeSpawned
-                             {
-                                 var behaviour = obj.GetComponent<NetworkPoseRetargeterBehaviourFusion>();
-                                 behaviour.CharacterId = _spawner.SelectedCharacterIndex + 1;
-                             }
-                         );
-
-                */
-
         }
 
 
@@ -180,7 +173,7 @@ namespace Twinny.XR
         [ContextMenu("INICIAR")]
         public void Iniciar()
         {
-            StartExperience(maquete, -1); 
+            StartExperience(maquete, -1);
         }
 
 
@@ -198,8 +191,8 @@ namespace Twinny.XR
 
         public override void ResetApplication()
         {
-            
-            Debug.LogWarning("[LevelManagerXR] RESET APPLICATION"); 
+
+            Debug.LogWarning("[LevelManagerXR] RESET APPLICATION");
             if (UnityEngine.Application.isEditor) return;
 
 
@@ -228,7 +221,32 @@ namespace Twinny.XR
 
         }
 
+  
+    public void SetPassthrough(bool status)
+        {
+            Debug.LogWarning("SetPassthrough: " + status);
+            Camera.main.backgroundColor = Color.clear;
+            if (status)
+            {
+                RenderSettings.skybox = NetworkedLevelManager.instance.config.defaultSkybox;
+                Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            }
+            else
+            {
+                Camera.main.clearFlags = CameraClearFlags.Skybox;
 
+            }
+            if (_passThrough)
+            {
+            _passThrough.enabled = status;
+            _passThrough.gameObject.SetActive(status);
+
+            }else {
+                Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
+                    }
+
+        }
     }
+
 }
 #endif

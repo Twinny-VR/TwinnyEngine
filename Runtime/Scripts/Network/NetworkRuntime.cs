@@ -23,6 +23,9 @@ namespace Twinny.System.Network
         public bool tryReconnect = true;
 
 
+        [Header("Avatars")]
+        public GameObject avatarPrefab;
+
 
     }
 }

@@ -31,7 +31,7 @@ namespace Twinny.System.Network
 
         private void Start()
         {
-         //   OVRColocationSession.ColocationSessionDiscovered += OnColocationSessionDiscovered;
+            OVRColocationSession.ColocationSessionDiscovered += OnColocationSessionDiscovered;
             _cameraRigTransform = FindAnyObjectByType<OVRCameraRig>().transform;
         }
 
@@ -94,6 +94,7 @@ namespace Twinny.System.Network
             try
             {
 
+                    Debug.LogWarning("[ColocationManager] Seeking for Nearby Session...");
                 var discoveryResult = await OVRColocationSession.StartDiscoveryAsync();
 
                 if (!discoveryResult.Success)
@@ -102,7 +103,6 @@ namespace Twinny.System.Network
                     return;
                 }
 
-                    Debug.LogWarning("[ColocationManager] Seeking for Nearby Session...");
                     await Task.Delay(3000);
                 if (!_hasSession)
                     DiscoveryNearbySession();
@@ -117,6 +117,7 @@ namespace Twinny.System.Network
 
         private void OnColocationSessionDiscovered(OVRColocationSession.Data session)
         {
+            Debug.Log("DESCOBRIU!");
             _hasSession = true;
             _sharedAnchorGuid = session.AdvertisementUuid;
             Debug.LogWarning($"[ColocationManager] Discovered session with UUID: {_sharedAnchorGuid}.");

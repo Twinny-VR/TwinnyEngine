@@ -63,12 +63,13 @@ namespace Twinny.System.Network
                                
                 safeArea.eulerAngles = new Vector3(0, offsetRotationY, 0);
                 safeArea.position = offsetPosition;
-                AnchorManager.CreateAnchor();
                 //safeArea.position = anchorTransform.TransformPoint(_cameraRigTransform.position - _colocationManager.offsetAnchorPosition);
 
 
                 Debug.LogWarning($"[AlignmentManager] Aligned Camera Rig Position: {_cameraRigTransform.position}, Rotation: {_cameraRigTransform.eulerAngles.y}.");
                 Debug.LogWarning($"[AlignmentManager] Aligned Safe Area Position: {safeArea.position}, Rotation: {safeArea.eulerAngles.y}.");
+
+                //TODO create Temporary OVRSpatial in safe area
 
                 yield return new WaitForEndOfFrame();
             }

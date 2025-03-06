@@ -413,36 +413,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1103088873}
     m_Modifications:
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108662331042128095, guid: c88a3ff1797025c47b4f087d9f8e7160,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5719472355882196184, guid: c88a3ff1797025c47b4f087d9f8e7160,
         type: 3}
       propertyPath: m_Name
