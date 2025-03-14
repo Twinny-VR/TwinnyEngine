@@ -16,6 +16,7 @@ namespace Twinny.System.Cameras
 
         [SerializeField] CameraState cameraType;
         private CinemachineVirtualCameraBase _virtualCamera;
+
         private CinemachineCameraOffset _offset;
         private CinemachinePOV _pov;
         private CinemachineOrbitalTransposer _transposer;
@@ -36,6 +37,7 @@ namespace Twinny.System.Cameras
         private float _zoom = 0;
         public float zoom { get => _zoom; set => _zoom = value; }
 
+        public float fov { get =>  (_virtualCamera as CinemachineVirtualCamera) .m_Lens.FieldOfView; set { (_virtualCamera as CinemachineVirtualCamera).m_Lens.FieldOfView = value; } }
         public Transform follow { get => _virtualCamera.Follow; set { _virtualCamera.Follow = value; } }
         public Transform lookAt { get => _virtualCamera.LookAt; set { _virtualCamera.LookAt = value; } }
         public int priority { get => _virtualCamera.Priority; set { _virtualCamera.Priority = value; } }
@@ -64,6 +66,16 @@ namespace Twinny.System.Cameras
 
             LevelManager.OnExperienceFinished += OnExperienceFinished;
              OnEnterInStandby += SetStandby;
+
+            switch (cameraType)
+            {
+                case CameraState.FPS:
+                    fov = config.fpsDesiredFov; break;
+                case CameraState.PAN:
+                    fov = config.desiredFov; break;
+                case CameraState.THIRD:
+                    fov = config.thirdDesiredFov; break;
+            }
 
         }
 

@@ -6,7 +6,9 @@ namespace Twinny.System.Cameras
 {
     public class InterestItem : MonoBehaviour
     {
-        public Vector2 yawRange = new Vector2(0, 10);
+        public float desiredFov = 75f;
+
+        public Vector2 yawRange = new Vector2(0, 240);
         [Range(1, 10)]
         public float yaySpeedMultiply = 1f;
 

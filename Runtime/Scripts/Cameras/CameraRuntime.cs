@@ -9,6 +9,7 @@ namespace Twinny
     public class CameraRuntime : ScriptableObject
     {
         [Header("General Camera Config")]
+        [SerializeField] public float desiredFov = 75f;
         [SerializeField] public float horizontalSensitivity = .1f;
         [SerializeField] public float verticalSensitivity = .1f;
         [SerializeField] public float zoomSensitivity = .3f;
@@ -19,6 +20,8 @@ namespace Twinny
         [SerializeField] public float standbyLockedDuration = 30f;
         [SerializeField] public float standbyRotationSpeed = 1f;
 
+        [Header("FPS Camera Config")]
+        [SerializeField] public float fpsDesiredFov = 75f;
         [SerializeField] public float navigationSpeed = 100f;
         [SerializeField] public float navigationangularSpeed = 120f;
         [SerializeField] public float navigationAcceleration = 30f;
@@ -26,6 +29,7 @@ namespace Twinny
         [SerializeField] public GameObject hitPointPrefab;
 
         [Header("Third Camera Config")]
+        [SerializeField] public float thirdDesiredFov = 75f;
         [SerializeField] public float thirdZoomLimitMin = 20f;
         [SerializeField] public float thirdZoomLimitMax = 0f;
 

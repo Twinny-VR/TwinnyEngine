@@ -356,7 +356,7 @@ namespace Twinny.System.Cameras
 
             _lockedCamera.follow = building.sensorCentral.transform;
             _lockedCamera.lookAt = building.sensorCentral.transform;
-
+            _lockedCamera.fov = building.sensorCentral.desiredFov;
             state = CameraState.LOCKED;
 
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.transform));

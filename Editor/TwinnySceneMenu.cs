@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using Twinny.System;
@@ -293,3 +294,4 @@ namespace Twinny.Editor
 
     }
 }
+#endif
