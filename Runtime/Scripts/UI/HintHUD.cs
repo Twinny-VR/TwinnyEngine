@@ -26,7 +26,7 @@ public class HintHUD : MonoBehaviour
 
     public void Fold(bool status)
     {
-        _animator.SetBool("folded", status);
+       if(_animator) _animator.SetBool("folded", status);
     }
 
     public void OnClick()

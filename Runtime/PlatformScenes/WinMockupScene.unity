@@ -291,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142ff31d8cda95c45b93ed7b7b132e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desiredFov: 75
   yawRange: {x: 0, y: 240}
   yaySpeedMultiply: 1
   zoomSensitivity: 0.5
@@ -410,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142ff31d8cda95c45b93ed7b7b132e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desiredFov: 75
   yawRange: {x: 0, y: 240}
   yaySpeedMultiply: 1
   zoomSensitivity: 0.5
@@ -845,7 +847,7 @@ Transform:
   m_GameObject: {fileID: 945412914}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 274.79996, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -917,6 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142ff31d8cda95c45b93ed7b7b132e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desiredFov: 75
   yawRange: {x: 0, y: 240}
   yaySpeedMultiply: 1
   zoomSensitivity: 0.5
@@ -1115,7 +1118,7 @@ Transform:
   m_GameObject: {fileID: 1325829530}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -107.33364, y: 22.899994, z: 92.73813}
+  m_LocalPosition: {x: -107.25904, y: 17.076721, z: 92.76711}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1512,6 +1515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142ff31d8cda95c45b93ed7b7b132e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desiredFov: 75
   yawRange: {x: 0, y: 240}
   yaySpeedMultiply: 1
   zoomSensitivity: 0.5
@@ -1543,7 +1547,7 @@ Transform:
   m_GameObject: {fileID: 1607742249}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.38466415, z: -0, w: -0.9230566}
-  m_LocalPosition: {x: 452, y: 22.9, z: 310}
+  m_LocalPosition: {x: 452, y: 0, z: 310}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1927,6 +1931,9 @@ MonoBehaviour:
   _keepAllInstances: 0
   _firstInstancePersistent: 0
   _lastInstancePersistent: 0
+  _sceneType: 2
+  _startLocked: {fileID: 1265685067}
+  _fpsStartPos: {fileID: 1607742250}
   centralBuildings:
   - {fileID: 1255269562}
   - {fileID: 1265685067}

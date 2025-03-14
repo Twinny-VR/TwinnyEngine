@@ -10,6 +10,15 @@ namespace Twinny.System
     {
 
 #if !OCULUS
+        [SerializeField]
+        private CameraState _sceneType;
+        [SerializeField]
+        private BuildingFeature _startLocked;
+
+        [SerializeField] private Transform _fpsStartPos;
+ 
+
+
         public BuildingFeature[] centralBuildings;
 #endif
 
@@ -20,7 +29,15 @@ namespace Twinny.System
         {
             Init();
 #if !OCULUS
-       //     CameraHandler.OnCameraLocked?.Invoke(_sensorLocked);
+                if(_startLocked && _sceneType == CameraState.LOCKED)
+                {
+                    CameraManager.OnCameraLocked(_startLocked);
+                }
+                else
+                if(_fpsStartPos && _sceneType == CameraState.FPS)
+                {
+                    CameraManager.SetFPS(_fpsStartPos);
+                }                  
 #endif
         }
 

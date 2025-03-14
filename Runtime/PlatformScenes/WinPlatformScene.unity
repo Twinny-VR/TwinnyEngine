@@ -181,6 +181,7 @@ MonoBehaviour:
   _firstInstancePersistent: 0
   _lastInstancePersistent: 0
   _state: 2
+  fpsAgent: {fileID: 796435791}
   _config: {fileID: 11400000, guid: d02453ad1f2bdf74894536d10da38d02, type: 2}
   _fpsCamera: {fileID: 1678909979}
   _lockedCamera: {fileID: 1890146173}
@@ -1252,7 +1253,7 @@ PrefabInstance:
     - target: {fileID: 2805254120730277256, guid: 61dce152cc3e2c2428dcebe48b7b901e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3023293665838317920, guid: 61dce152cc3e2c2428dcebe48b7b901e,
         type: 3}

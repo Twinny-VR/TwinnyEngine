@@ -34,6 +34,8 @@ namespace Twinny.System.Cameras
             }
         }
 
+        public FirstPersonAgent fpsAgent;
+
         #region Delegates
         public delegate void onStateChanged(CameraState state);
         public static onStateChanged OnStateChanged;
@@ -106,6 +108,13 @@ namespace Twinny.System.Cameras
         private void SetFpsCamera()
         {
             state = CameraState.FPS;
+        }
+
+        public void SetFpsCamera(Vector3 position)
+        {
+            
+            state = CameraState.FPS;
+
         }
 
         [ContextMenu("Third Camera")]
@@ -425,9 +434,15 @@ namespace Twinny.System.Cameras
         }
 
 
-        public static void SetFPS()
+        public static void SetFPS(Transform node)
         {
             OnCameraLocked?.Invoke(null);
+
+            if (node)
+            {
+                Instance.fpsAgent.transform.position = node.position;
+                Instance.fpsAgent.transform.rotation = node.rotation;
+            }
 
             SwitchCameraState(CameraState.FPS);
 

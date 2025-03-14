@@ -69,7 +69,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     public void SetFPS()
     {
 #if !OCULUS
-        CameraManager.SetFPS();
+        CameraManager.SetFPS(null);
 #endif
     }
 
@@ -112,7 +112,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     void IUICallBacks.OnLoadScene()
     {
-        _animator.SetBool("retracted", false);
+        if(_animator) _animator.SetBool("retracted", false);
         _loadingScreen.SetActive(false);
     }
 
@@ -126,7 +126,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     void IUICallBacks.OnStartLoadScene()
     {
-        _animator.SetBool("retracted", true);
+        if(_animator) _animator.SetBool("retracted", true);
         _loadingScreen.SetActive(true);
     }
 
