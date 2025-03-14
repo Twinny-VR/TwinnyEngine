@@ -87,11 +87,13 @@ namespace Twinny.XR
 #endif
 
             if (extensionMenu)
-                CallBackUI.CallAction(callback => callback.OnLoadExtensionMenu(extensionMenu));
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu));
 
             int layer = LayerMask.NameToLayer("Character");
 
             if (layer == -1) return;
+
+#if OCULUS
 
             if(sceneType == SceneType.VR)
             {
@@ -105,7 +107,7 @@ namespace Twinny.XR
 
             }
 
-
+#endif
 
             CheckGameMode();
         }
@@ -125,7 +127,7 @@ namespace Twinny.XR
         private void OnDestroy()
         {
             SetHDRI(-1);
-            CallBackUI.CallAction(callback => callback.OnLoadExtensionMenu(null));
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(null));
 
 #if OCULUS && FUSION2
             if (OVRManager.display != null)
@@ -134,11 +136,11 @@ namespace Twinny.XR
                 && NetworkRunnerHandler.runner.IsConnectedToServer 
                 && NetworkRunnerHandler.runner.SessionInfo != null)
 #endif
-                CallBackUI.CallAction(callback => callback.OnUnloadSceneFeature());
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
 
         }
 
-        #endregion
+#endregion
 
         #region Public Methods
 

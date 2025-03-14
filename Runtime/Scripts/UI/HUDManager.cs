@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Twinny.System;
@@ -10,8 +11,21 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     #region Fields
 
+    [SerializeField] private GameObject _loadingScreen;
+    [Header("SYSTEM CONTROLS FIELDS:")]
+    [SerializeField] private GameObject _systemControlsPanel;
+    [Header("DEFAULT CONTROLS FIELDS:")]
+    [SerializeField] private GameObject _defaultControlsPanel;
+    [SerializeField] private GameObject _buttonFPS;
     [SerializeField] private GameObject _buttonHome;
+    [SerializeField] private GameObject _buttonPanoramic;
+    [Header("SCENE CONTROLS FIELDS:")]
+    [SerializeField] private GameObject _sceneControlsPanel;
 
+    #endregion
+
+    #region Properties
+    private Animator _animator;
     #endregion
 
     #region MonoBehaviour Methods
@@ -20,6 +34,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     void Start()
     {
         CallBackUI.RegisterCallback(this);
+        _animator = GetComponent<Animator>();
     }
 
     private void OnDestroy()
@@ -44,10 +59,17 @@ public class HUDManager : MonoBehaviour, IUICallBacks
         _ = LevelManager.Instance.ChangeScene(sceneName);
     }
 
-    public void BackToHome()
+    public void SetPanoramic()
     {
 #if !OCULUS
-        CameraHandler.OnCameraLocked?.Invoke(null);
+        CameraManager.OnCameraLocked?.Invoke(null);
+#endif
+    }
+
+    public void SetFPS()
+    {
+#if !OCULUS
+        CameraManager.SetFPS();
 #endif
     }
 
@@ -90,6 +112,8 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     void IUICallBacks.OnLoadScene()
     {
+        _animator.SetBool("retracted", false);
+        _loadingScreen.SetActive(false);
     }
 
     void IUICallBacks.OnLoadSceneFeature()
@@ -102,6 +126,8 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     void IUICallBacks.OnStartLoadScene()
     {
+        _animator.SetBool("retracted", true);
+        _loadingScreen.SetActive(true);
     }
 
 
@@ -117,17 +143,22 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     public void OnCameraChanged(Transform camera, string type)
     {
-
-
+        _buttonFPS.SetActive(type != "FPS" && type != "THIRD");
+        _buttonPanoramic.SetActive(type == "LOCKED");
+        _buttonHome.SetActive(type != "PAN");
+        Debug.LogWarning("Type: " + type);
 
     }
 
     public void OnCameraLocked(Transform target) {
 
-        _buttonHome.SetActive(target != null);
     
     }
 
+    public void OnStandby(bool status)
+    {
+        if(_animator) _animator.SetBool("retracted", status);
+    }
 
     #endregion
 }

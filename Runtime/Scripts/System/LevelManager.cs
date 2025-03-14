@@ -21,7 +21,8 @@ namespace Twinny.System
         public static MultiPlatformRuntime Config { get { return Instance._config; } }
 
 
-
+        public delegate void onExperienceFinished();
+        public static onExperienceFinished OnExperienceFinished;
 
         #region MonoBehaviour Methods
 
@@ -90,10 +91,10 @@ namespace Twinny.System
 
         #region Public Methods
 
-
         public async Task ResetExperience()
         {
-            CallBackUI.CallAction(callback => callback.OnExperienceFinished(false));
+            OnExperienceFinished?.Invoke();
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
 
@@ -108,25 +109,28 @@ namespace Twinny.System
         public async Task ChangeScene(object scene)
         {
 
-            CallBackUI.CallAction(callback => callback.OnStartLoadScene());
-
-
             await CanvasTransition.FadeScreen(true);
+
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+
+
 #if !OCULUS
-            CameraHandler.OnCameraLocked?.Invoke(null);
+           // CameraHandler.OnCameraLocked?.Invoke(null);
 #endif
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
                 await UnloadAdditivesScenes();
-                CallBackUI.CallAction(callback => callback.OnExperienceFinished(true));
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
             }
             else
             {
                 await LoadAdditiveSceneAsync(scene);
 
             }
-
+#if !OCULUS
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+#endif
             await CanvasTransition.FadeScreen(false);
 
         }

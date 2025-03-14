@@ -29,11 +29,14 @@ namespace Twinny.UI
         void OnSwitchManager(int source);
 #endif
 
-#region Camera Callbacks
+        #region Camera Callbacks
+
+        void OnStandby(bool status);
 
         void OnCameraChanged(Transform camera, string type);
         void OnCameraLocked(Transform target);
-#endregion
+        #endregion
+
 
 
     }

@@ -97,7 +97,7 @@ namespace Twinny.System
         {
             isRunning = true;
 
-            CallBackUI.CallAction(callback => callback.OnExperienceReady());
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceReady());
         }
 
         public static void StartExperience(string scene, int landMarkIndex)
@@ -118,7 +118,7 @@ namespace Twinny.System
 
         public virtual async Task ResetExperience()
         {
-            CallBackUI.CallAction(callback => callback.OnExperienceFinished(false));
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
 
@@ -136,7 +136,7 @@ namespace Twinny.System
         /// <param name="landMarkIndex">First LandMark to teleport.</param>
         public async Task ChangeScene(string scene, int landMarkIndex)
         {
-            CallBackUI.CallAction(callback => callback.OnStartLoadScene());
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
             RPC_FadingStatus(1);
             RPC_Message(Runner.LocalPlayer, PlayerRef.None, LocalizationProvider.GetTranslated("%LOADING_SCENE"), time: 90f);
@@ -147,7 +147,7 @@ namespace Twinny.System
             if (scene == "PlatformScene")
             {
                 await NetworkSceneManager.UnloadAdditivesScenes();
-                CallBackUI.CallAction(callback => callback.OnExperienceFinished(isRunning));
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(isRunning));
             }
             else
             {
@@ -226,7 +226,7 @@ namespace Twinny.System
             Debug.LogWarning(IsManager ? "YOU ARE THE MASTER!" : (source != PlayerRef.None ? $"{source} IS THE MASTER!" : "NO MASTERS"));
 
             if (source != PlayerRef.None)
-                CallBackUI.CallAction(callback => callback.OnExperienceStarting());
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceStarting());
 
 
             if (NetworkRunnerHandler.runner.IsSceneAuthority)
@@ -293,7 +293,7 @@ namespace Twinny.System
             else
                 Debug.LogWarning("Você não tem autoridade pra mudar variaveis");
 
-            CallBackUI.CallAction(callback => callback.OnSwitchManager(source.PlayerId));
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnSwitchManager(source.PlayerId));
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]

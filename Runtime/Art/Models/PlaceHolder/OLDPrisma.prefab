@@ -73,10 +73,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4818106957885473086, guid: 9951c8e7bf84e7947941893f3f79ffde,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64c543557d4112e44a8bf2f3727f9427, type: 2}
     - target: {fileID: 919132149155446097, guid: 9951c8e7bf84e7947941893f3f79ffde,
         type: 3}
       propertyPath: m_Name
-      value: PlaceHolder
+      value: Prisma
       objectReference: {fileID: 0}
     - target: {fileID: 3396913584297481876, guid: 9951c8e7bf84e7947941893f3f79ffde,
         type: 3}

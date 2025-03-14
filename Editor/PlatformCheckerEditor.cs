@@ -52,8 +52,10 @@ public class PlatformCheckerEditor : UnityEditor.Editor
     async Task CheckOculusProviderStatus()
     {
 
-        bool hasOculus = await CheckPluginManagement("com.meta.xr.sdk.all");
-        if (hasOculus)
+            BuildTarget currentPlatform = EditorUserBuildSettings.activeBuildTarget;
+
+            bool hasOculus = await CheckPluginManagement("com.meta.xr.sdk.all");
+        if (currentPlatform == BuildTarget.Android && hasOculus)
         {
             AddDefineSymbol("OCULUS");
 

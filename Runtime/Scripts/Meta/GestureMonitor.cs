@@ -277,7 +277,7 @@ namespace Twinny.System
 
         public void OnGrabbingCallBack(bool status)
         {
-            CallBackUI.CallAction(callback => callback.OnHudStatusChanged(status));
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnHudStatusChanged(status));
 
         }
 

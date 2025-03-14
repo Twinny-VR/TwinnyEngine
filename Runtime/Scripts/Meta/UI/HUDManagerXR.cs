@@ -267,12 +267,17 @@ namespace Twinny.UI
         #region UI Buttons Actions
         public void HandleAnchor()
         {
+#if OCULUS
+
             AnchorManager.HandleAnchorPlacement();
+#endif
         }
 
         public void CreateAnchor()
         {
+#if OCULUS
             AnchorManager.CreateAnchor();
+#endif
         }
 
         #endregion
@@ -338,7 +343,7 @@ namespace Twinny.UI
 
             AsyncOperationExtensions.CallDelayedAction(() =>
             {
-                if(SceneManager.sceneCount > 2) //Means experience was started yet
+                if (SceneManager.sceneCount > 2) //Means experience was started yet
                     _banner.SetActive(false);
 
                 //TODO Make inactive and fadeout H.U.D
@@ -387,7 +392,9 @@ namespace Twinny.UI
 #endif
         public void OnPlatformInitialize()
         {
+#if OCULUS
             AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
+#endif
         }
 
         public void OnExperienceReady()
@@ -402,12 +409,13 @@ namespace Twinny.UI
             _mainMenu?.SetActive(isRunning);
         }
 
-    public void OnCameraChanged(Transform camera, string type) {}
+        public void OnCameraChanged(Transform camera, string type) { }
 
-    public void OnCameraLocked(Transform target) {}
+        public void OnCameraLocked(Transform target) { }
 
+        public void OnStandby(bool status) {}
 
-#endregion
+        #endregion
     }
 
 

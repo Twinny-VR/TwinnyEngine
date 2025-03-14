@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using Twinny.System.Cameras;
+using Twinny.UI;
 using UnityEngine;
 
 public class BuildingFeature : MonoBehaviour
@@ -19,19 +20,21 @@ public class BuildingFeature : MonoBehaviour
 
     [Header("CACHED")]
     [SerializeField] private GameObject _prisma;
-
+    [SerializeField] private bool _hidePrismaOnSelect = false;
+    [SerializeField] private HintHUD _hintHUD;
     [Header("SENSORS")]
-    public Transform sensorCentral;
-    public Transform sensorCentralLook;
+    public InterestItem sensorCentral;
+    public Transform facadeTeleportNode;
+    //public Transform sensorCentralLook;
     // Start is called before the first frame update
     void Start()
     {
-        CameraHandler.OnCameraLocked += OnCameralocked;
+        CameraManager.OnCameraLocked += OnCameralocked;
     }
 
     private void OnDestroy()
     {
-        CameraHandler.OnCameraLocked -= OnCameralocked;
+        CameraManager.OnCameraLocked -= OnCameralocked;
 
     }
 
@@ -46,7 +49,12 @@ public class BuildingFeature : MonoBehaviour
     {
       //  Debug.LogWarning($"CAMERA LOCKED: {building} THIS: {building == this}");
         if(_prisma != null) 
-        _prisma.SetActive(building != this);
+        _prisma.SetActive(building != this );
+        if (_hintHUD != null)
+        {
+            _hintHUD.Fold(!building || ( building && building != this));
+
+        }
     }
 
 

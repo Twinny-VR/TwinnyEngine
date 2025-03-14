@@ -9,9 +9,9 @@ namespace Twinny.System
 {
     public static class CallBackUI
     {
-        private static List<IUICallBacks> callBacks = new List<IUICallBacks>();
+        private static List<object> callBacks = new List<object>();
 
-        public static void RegisterCallback(IUICallBacks callback)
+        public static void RegisterCallback<T>(T callback) where T : class
         {
             if (!callBacks.Contains(callback))
             {
@@ -20,7 +20,7 @@ namespace Twinny.System
         }
 
 
-        public static void UnregisterCallback(IUICallBacks callback)
+        public static void UnregisterCallback<T>(T callback) where T : class
         {
             if (callBacks.Contains(callback))
             {
@@ -29,19 +29,19 @@ namespace Twinny.System
         }
 
 
-        public static void CallAction(Action<IUICallBacks> action)
+        public static void CallAction<T>(Action<T> action) where T : class
         {
             foreach (var callback in callBacks)
             {
-                action(callback);
+                if (callback is T) action(callback as T);
             }
         }
 
-        public static async Task CallTask(Func<IUICallBacks, Task> task)
+        public static async Task CallTask<T>(Func<T, Task> task) where T : class
         {
             foreach (var callback in callBacks)
             {
-                await task(callback);
+                await task(callback as T);
             }
         }
 

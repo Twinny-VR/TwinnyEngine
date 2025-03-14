@@ -9,13 +9,8 @@ namespace Twinny.System
     public class SceneFeature : TSingleton<SceneFeature>
     {
 
-        [SerializeField] private Transform _sensorFollow;
-        public Transform sensorFollow {  get { return _sensorFollow; } }
-        [SerializeField] private Transform _sensorLook;
-        public Transform sensorLook {  get { return _sensorLook; } }
 #if !OCULUS
-        [SerializeField] private BuildingFeature _sensorLocked;
-        public BuildingFeature sensorLocked { get { return _sensorLocked; } }
+        public BuildingFeature[] centralBuildings;
 #endif
 
 
@@ -25,7 +20,7 @@ namespace Twinny.System
         {
             Init();
 #if !OCULUS
-            CameraHandler.OnCameraLocked?.Invoke(_sensorLocked);
+       //     CameraHandler.OnCameraLocked?.Invoke(_sensorLocked);
 #endif
         }
 

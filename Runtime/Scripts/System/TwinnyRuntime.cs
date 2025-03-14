@@ -10,7 +10,12 @@ namespace Twinny.System
     public class TwinnyRuntime : ScriptableObject
     {
         [SerializeField]
+        public float fadeTime = 1f;
+
+        [SerializeField]
         public Material defaultSkybox;
+
+
 
     }
 }

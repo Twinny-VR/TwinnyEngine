@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && OCULUS
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;

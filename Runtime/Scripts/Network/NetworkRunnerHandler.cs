@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Twinny.Localization;
 using Twinny.XR;
+using Twinny.UI;
 
 namespace Twinny.System.Network
 {
@@ -217,10 +218,10 @@ namespace Twinny.System.Network
 
                     }
 
-                    CallBackUI.CallAction(callback => callback.OnLoadSceneFeature());
+                    CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadSceneFeature());
 
                 }else
-                    CallBackUI.CallAction(callback => callback.OnLoadScene());
+                    CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
 
             }
 

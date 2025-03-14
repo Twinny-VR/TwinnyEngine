@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twinny.Helpers;
+using Twinny.System;
 using UnityEngine;
 
 namespace Twinny.UI
@@ -12,7 +13,6 @@ namespace Twinny.UI
 
         [SerializeField] private Canvas _overlayScreen;
         [SerializeField] private CanvasGroup _fadeScreen;
-        [SerializeField] private float _fadeTime = 1f;
 
 
         private void Awake()
@@ -48,9 +48,9 @@ namespace Twinny.UI
 
 
             // Smooth fade progress
-            while (elapsedTime < Instance._fadeTime)
+            while (elapsedTime < LevelManager.Config.fadeTime)
             {
-                Instance._fadeScreen.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / Instance._fadeTime);
+                Instance._fadeScreen.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / LevelManager.Config.fadeTime);
 
                 elapsedTime += Time.deltaTime;
 
