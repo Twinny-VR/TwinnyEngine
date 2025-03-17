@@ -69,12 +69,14 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     public void SetFPS()
     {
 #if !OCULUS
-        CameraManager.SetFPS(null);
+        CameraManager.SetAgentPosition(null);
+        CameraManager.SwitchCameraState(State.FPS);
+
 #endif
     }
 
 
-#endregion
+    #endregion
     #region System Callback Methods
 
     void IUICallBacks.OnExperienceFinished(bool isRunning)

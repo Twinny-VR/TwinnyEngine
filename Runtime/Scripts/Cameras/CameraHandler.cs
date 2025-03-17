@@ -14,15 +14,12 @@ namespace Twinny.System.Cameras
     {
         #region Properties
 
-        [SerializeField] CameraState cameraType;
+        [SerializeField] State cameraType;
         private CinemachineVirtualCameraBase _virtualCamera;
 
         private CinemachineCameraOffset _offset;
         private CinemachinePOV _pov;
         private CinemachineOrbitalTransposer _transposer;
-
-        [SerializeField]
-        private InterestItem _interestItem;
 
         private float _initialX = 0f;  // O valor inicial antes de começar o arrasto
         private float _initialY = .5f;  // O valor inicial antes de começar o arrasto
@@ -69,11 +66,11 @@ namespace Twinny.System.Cameras
 
             switch (cameraType)
             {
-                case CameraState.FPS:
+                case State.FPS:
                     fov = config.fpsDesiredFov; break;
-                case CameraState.PAN:
+                case State.PAN:
                     fov = config.desiredFov; break;
-                case CameraState.THIRD:
+                case State.LOCKEDTHIRD:
                     fov = config.thirdDesiredFov; break;
             }
 
@@ -92,22 +89,22 @@ namespace Twinny.System.Cameras
         #region Public Methods
         public void ResetCamera()
         {
-            _interestItem = _virtualCamera.Follow.GetComponent<InterestItem>();
             switch (cameraType)
             {
-                case CameraState.FPS:
+                case State.FPS:
                     _zoom = _initialYaw = 0;
                     _pov.m_VerticalAxis.Value = _initialYaw;
                     break;
-                case CameraState.LOCKED:
-                case CameraState.PAN:
-                    _zoom = _initialZoom = _interestItem.zoomMin;
-                    _initialYaw = _interestItem.yawRange.y / 2;
+                case State.LOCKED:
+                case State.LOCKEDTHIRD:
+                case State.PAN:
+                    _zoom = _initialZoom = cameraType == State.LOCKEDTHIRD? config.thirdZoomLimitMin : interestItem.zoomMin;
+                    _initialYaw = interestItem.yawRange.y / 2;
                     _transposer.m_FollowOffset.y = _initialYaw;
                     _offset.m_Offset.z = _zoom;
                     break;
-
-                case CameraState.THIRD:
+/*
+                case State.THIRD:
 
                     _zoom = _initialZoom = config.thirdZoomLimitMin;
 
@@ -126,6 +123,7 @@ namespace Twinny.System.Cameras
                         Debug.LogError($"[CameraHandler] Offset is missing in {name} game object.");
 
                     break;
+*/
                 default:
                     break;
             }
@@ -174,15 +172,15 @@ namespace Twinny.System.Cameras
 
             switch (cameraType)
             {
-                case CameraState.FPS:
-                case CameraState.THIRD:
+                case State.FPS:
                     if (_pov)
                         _pov.m_HorizontalAxis.Value = _xAxis;
                     else
                         Debug.LogError($"[CameraHandler] POV is missing in {name} game object.");
                     break;
-                case CameraState.LOCKED:
-                case CameraState.PAN:
+                case State.LOCKED:
+                case State.LOCKEDTHIRD:
+                case State.PAN:
                     if (_transposer)
                         _transposer.m_XAxis.Value = _xAxis;
                     else
@@ -203,21 +201,21 @@ namespace Twinny.System.Cameras
 
             switch (cameraType)
             {
-                case CameraState.FPS:
-                case CameraState.THIRD:
+                case State.FPS:
                     _yAxis = _initialY + value * config.verticalSensitivity;
                     if (_pov)
                         _pov.m_VerticalAxis.Value = _yAxis;
                     else
                         Debug.LogError($"[CameraHandler] POV is missing in {name} game object.");
                     break;
-                case CameraState.LOCKED:
-                case CameraState.PAN:
-                    _yAxis = _initialY + value * -config.verticalSensitivity * _interestItem.yaySpeedMultiply;
+                case State.LOCKED:
+                case State.LOCKEDTHIRD:
+                case State.PAN:
+                    _yAxis = _initialY + value * -config.verticalSensitivity * interestItem.yaySpeedMultiply;
                     if (_transposer)
                     {
 
-                        _yAxis = Mathf.Clamp(_yAxis, _interestItem.yawRange.x, _interestItem.yawRange.y);
+                        _yAxis = Mathf.Clamp(_yAxis, interestItem.yawRange.x, interestItem.yawRange.y);
 
                         _transposer.m_FollowOffset.y = _yAxis;
 
@@ -248,19 +246,20 @@ namespace Twinny.System.Cameras
 
             switch (cameraType)
             {
-                case CameraState.FPS: //No zoom for FPS Camera
-                    if (value < 0)
-                        SwitchCameraState(CameraState.THIRD);
+                case State.FPS: //No zoom for FPS Camera
+                    if (interestItem.type == State.LOCKEDTHIRD && value < 0)
+                        SwitchCameraState(State.LOCKEDTHIRD);
                     return;
-                case CameraState.LOCKED:
-                case CameraState.PAN:
+                case State.LOCKED:
+                case State.LOCKEDTHIRD:
+                case State.PAN:
 
 
 
-                    if (_interestItem)
+                    if (interestItem)
                     {
-                        _zoom += value * _interestItem.zoomSensitivity * 100f * _interestItem.zoomSpeedMultiply;
-                        _zoom = Mathf.Clamp(_zoom, _interestItem.zoomMin, _interestItem.zoomMax);
+                        _zoom += value * interestItem.zoomSensitivity * 100f * interestItem.zoomSpeedMultiply;
+                        _zoom = Mathf.Clamp(_zoom, interestItem.zoomMin, interestItem.zoomMax);
 
                     }
                     else
@@ -268,6 +267,10 @@ namespace Twinny.System.Cameras
 
                     if (_offset)
                     {
+                        if (interestItem.type == State.LOCKEDTHIRD &&  _zoom >= interestItem.zoomMax)
+                            SwitchCameraState(State.FPS);
+
+
                         _offset.m_Offset.z = _zoom;
                     }
                     else
@@ -275,14 +278,15 @@ namespace Twinny.System.Cameras
 
 
                     break;
-                case CameraState.THIRD:
+/*
+                case State.THIRD:
                     _zoom += value * config.zoomSensitivity * 100f;
                     _zoom = Mathf.Clamp(_zoom, config.thirdZoomLimitMin, config.thirdZoomLimitMax);
 
                     if (_offset)
                     {
                         if (_zoom >= config.thirdZoomLimitMax)
-                            SwitchCameraState(CameraState.FPS);
+                            SwitchCameraState(State.FPS);
 
                         _offset.m_Offset.z = _zoom;
                     }
@@ -290,7 +294,8 @@ namespace Twinny.System.Cameras
                         Debug.LogError($"[CameraHandler] Offset is missing in {name} game object.");
 
                     break;
-                default:
+  */
+                    default:
                     Debug.LogError($"[CameraHandler] Unknow Camera in {name} game object.");
                     break;
             }
@@ -319,8 +324,7 @@ namespace Twinny.System.Cameras
 
             switch (cameraType)
             {
-                case CameraState.FPS:
-                case CameraState.THIRD:
+                case State.FPS:
                     if (_pov)
                     {
                         _initialX = _pov.m_HorizontalAxis.Value;
@@ -329,8 +333,9 @@ namespace Twinny.System.Cameras
                     else
                         Debug.LogError($"[CameraHandler] POV is missing in {name} game object.");
                     break;
-                case CameraState.LOCKED:
-                case CameraState.PAN:
+                case State.LOCKED:
+                case State.LOCKEDTHIRD:
+                case State.PAN:
                     if (_transposer)
                     {
                         _initialX = _transposer.m_XAxis.Value;

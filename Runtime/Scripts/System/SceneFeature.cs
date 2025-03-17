@@ -12,8 +12,8 @@ namespace Twinny.System
 
 #if !OCULUS
         [SerializeField]
-        private CameraState _sceneType;
-        public CameraState sceneType { get => _sceneType; }
+        private State _sceneType;
+        public State sceneType { get => _sceneType; }
 
 
 #if UNITY_EDITOR
@@ -37,8 +37,8 @@ namespace Twinny.System
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            showLocked = _sceneType == CameraState.PAN || _sceneType == CameraState.LOCKED;
-            showStartPos = _sceneType == CameraState.FPS;
+            showLocked = _sceneType == State.PAN || _sceneType == State.LOCKED;
+            showStartPos = _sceneType == State.FPS;
         }
 #endif
         private void Start()

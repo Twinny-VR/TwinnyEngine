@@ -11,12 +11,12 @@ using static Twinny.System.LevelManager;
 namespace Twinny.System.Cameras
 {
 
-    public enum CameraState
+    public enum State
     {
         FPS,
         LOCKED,
         PAN,
-        THIRD
+        LOCKEDTHIRD
     }
 
 
@@ -24,8 +24,8 @@ namespace Twinny.System.Cameras
     {
 
         [SerializeField]
-        private CameraState _state;
-        public static CameraState state
+        private State _state;
+        public static State state
         {
             get => Instance._state; set
             {
@@ -36,8 +36,12 @@ namespace Twinny.System.Cameras
 
         public FirstPersonAgent fpsAgent;
 
+        [SerializeField]
+        private InterestItem _interestItem;
+        public static InterestItem interestItem { get { return Instance._interestItem; } }
+
         #region Delegates
-        public delegate void onStateChanged(CameraState state);
+        public delegate void onStateChanged(State state);
         public static onStateChanged OnStateChanged;
 
         public delegate void onCameraChanged(CameraHandler camera);
@@ -104,29 +108,30 @@ namespace Twinny.System.Cameras
 
         }
 
+
         [ContextMenu("FPS Camera")]
         private void SetFpsCamera()
         {
-            state = CameraState.FPS;
+            state = State.FPS;
         }
 
         public void SetFpsCamera(Vector3 position)
         {
             
-            state = CameraState.FPS;
+            state = State.FPS;
 
         }
 
         [ContextMenu("Third Camera")]
         private void SetThirdCamera()
         {
-            state = CameraState.THIRD;
+            state = State.LOCKEDTHIRD;
         }
 
         [ContextMenu("Panoramic Camera")]
         private void SetPanCamera()
         {
-            state = CameraState.PAN;
+            state = State.PAN;
         }
 
 
@@ -265,26 +270,26 @@ namespace Twinny.System.Cameras
         {
             StopAllCoroutines();
         }
-        private void OnStateChange(CameraState state)
+        private void OnStateChange(State state)
         {
 
             CameraHandler camera = null;
 
             switch (state)
             {
-                case CameraState.FPS:
+                case State.FPS:
                     camera = Instance._fpsCamera;
                     Debug.Log("[CameraManager] First Person Camera.");
                     break;
-                case CameraState.LOCKED:
+                case State.LOCKED:
                     camera = Instance._lockedCamera;
                     Debug.Log("[CameraManager] CloseUp Camera.");
                     break;
-                case CameraState.PAN:
+                case State.PAN:
                     camera = Instance._panoramicCamera;
                     Debug.Log("[CameraManager] Panoramic Camera.");
                     break;
-                case CameraState.THIRD:
+                case State.LOCKEDTHIRD:
                     camera = Instance._thirdCamera;
                     Debug.Log("[CameraManager] Third Person Camera.");
                     break;
@@ -324,7 +329,8 @@ namespace Twinny.System.Cameras
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraChanged(camera.transform, "LOCKED"));
             }
             */
-
+            if(_state != State.FPS)
+            _interestItem = camera.follow.GetComponent<InterestItem>();
             camera.ResetCamera();
 
         }
@@ -337,7 +343,7 @@ namespace Twinny.System.Cameras
             if (building == null)
             {
                 //  _lockedCameraTarget.Select(false);
-                state = CameraState.PAN;
+                state = State.PAN;
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(null));
                 return;
             }
@@ -362,13 +368,24 @@ namespace Twinny.System.Cameras
                 }, (int)(building.customBlend.m_Time * 1000) + 100);
             }
             */
-
+            if(building.sensorCentral.type == State.LOCKED)
+            {
             _lockedCamera.follow = building.sensorCentral.transform;
             _lockedCamera.lookAt = building.sensorCentral.transform;
             _lockedCamera.fov = building.sensorCentral.desiredFov;
-            state = CameraState.LOCKED;
+            state = State.LOCKED;
+            }else
 
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.transform));
+            if (building.sensorCentral.type == State.LOCKEDTHIRD)
+            {
+                _thirdCamera.follow = building.sensorCentral.transform;
+                _thirdCamera.lookAt = building.sensorCentral.transform;
+                _thirdCamera.fov = building.sensorCentral.desiredFov;
+                state = State.LOCKEDTHIRD;
+            }
+            else
+
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.transform));
 
 
         }
@@ -398,7 +415,7 @@ namespace Twinny.System.Cameras
 
         #region Public Methods
 
-        public static void SwitchCameraState(CameraState newState)
+        public static void SwitchCameraState(State newState)
         {
             state = newState;
 
@@ -434,7 +451,7 @@ namespace Twinny.System.Cameras
         }
 
 
-        public static void SetFPS(Transform node)
+        public static void SetAgentPosition(Transform node)
         {
             OnCameraLocked?.Invoke(null);
 
@@ -443,11 +460,7 @@ namespace Twinny.System.Cameras
                 Instance.fpsAgent.transform.position = node.position;
                 Instance.fpsAgent.transform.rotation = node.rotation;
             }
-
-            SwitchCameraState(CameraState.FPS);
-
         }
-
 
         #endregion
 
@@ -466,7 +479,7 @@ namespace Twinny.System.Cameras
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStandby(true));
 
             OnEnterInStandby?.Invoke();
-            if (state == CameraState.PAN && SceneFeature.Instance && SceneFeature.Instance.centralBuildings.Length > 0)
+            if (state == State.PAN && SceneFeature.Instance && SceneFeature.Instance.centralBuildings.Length > 0)
             {
                 yield return new WaitForSeconds(config.standbyPanoramicDuration);
 
@@ -487,7 +500,7 @@ namespace Twinny.System.Cameras
                 }
                 restart = true;
             }else
-                if(state == CameraState.LOCKED)
+                if(state == State.LOCKED)
             {
                     yield return new WaitForSeconds(config.standbyLockedDuration);
                 restart = true;

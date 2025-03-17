@@ -94,9 +94,9 @@ namespace Twinny.System.Cameras
         }
     */
         #endregion
-        private void OnCameraStateChanged(CameraState state)
+        private void OnCameraStateChanged(State state)
         {
-            _navMeshAgent.enabled = state == CameraState.FPS || state == CameraState.THIRD;
+            _navMeshAgent.enabled = state == State.FPS;
         }
 
         private void OnLockedInBuilding(BuildingFeature building)
@@ -123,13 +123,12 @@ namespace Twinny.System.Cameras
             {
                 Vector3 navMeshPosition = navMeshHit.position;
 
-                float multiply = (state == CameraState.THIRD ? Mathf.Abs(zoom) : 1f);
+                //float multiply = (state == State.THIRD ? Mathf.Abs(zoom) : 1f);
 
-                Debug.LogWarning(state + " "+ zoom + " " + multiply);
 
                 float distance = Vector3.Distance(transform.position, navMeshPosition);
 
-                if(distance < config.navigationDistanceMax * multiply)
+                if(distance < config.navigationDistanceMax)
                     NavigateTo(navMeshPosition);
 
 

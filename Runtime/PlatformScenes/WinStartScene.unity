@@ -7138,7 +7138,7 @@ MonoBehaviour:
   showParameter: 0
   parameter: 
   showIndex: 1
-  landMarkIndex: 3
+  landMarkIndex: 2
 --- !u!114 &1555787046
 MonoBehaviour:
   m_ObjectHideFlags: 0

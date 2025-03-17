@@ -6,6 +6,12 @@ namespace Twinny.System.Cameras
 {
     public class InterestItem : MonoBehaviour
     {
+
+        [SerializeField]
+        private State _type = State.LOCKED;
+        public State type { get => _type; }
+
+
         public float desiredFov = 75f;
 
         public Vector2 yawRange = new Vector2(0, 240);

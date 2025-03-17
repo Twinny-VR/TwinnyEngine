@@ -136,18 +136,26 @@ namespace Twinny.System
             if (feature)
             {
 
-                if (feature.sceneType == CameraState.LOCKED)
+                if (feature.sceneType == State.LOCKED)
                 {
-                    Debug.LogWarning("SCENE FEATURE");
                     if (feature.centralBuildings.Length > 0)
-                        CameraManager.OnCameraLocked(feature.centralBuildings[landMarkIndex]);
+                    {
+                        BuildingFeature targetbuilding = feature.centralBuildings[landMarkIndex];
+                        if(targetbuilding.sensorCentral.type == State.LOCKED || targetbuilding.sensorCentral.type == State.LOCKEDTHIRD)
+                        CameraManager.OnCameraLocked(targetbuilding);
+                        else
+                            Debug.LogError("[LevelManager] Wrong building format for Locked scene. Only LOCKED or THIRD are supported.");
+
+                    }
                     else
-                        Debug.LogError("[SceneFeature] Locked Scenes must at least on centralBuilding set!");
+                        Debug.LogError("[LevelManager] Locked Scenes must at least on centralBuilding set in SceneFeature!");
                 }
                 else
-                if (feature.sceneType == CameraState.FPS)
+                if (feature.sceneType == State.FPS)
                 {
-                    CameraManager.SetFPS(feature.fpsStartPos);
+                    CameraManager.SetAgentPosition(feature.fpsStartPos);
+                    CameraManager.SwitchCameraState(State.FPS);
+
                 }
             }
 
