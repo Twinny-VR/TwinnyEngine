@@ -150,6 +150,7 @@ namespace Twinny.XR
         /// <param name="landMarkIndex">Index on landMarks array.</param>
         public void TeleportToLandMark(int landMarkIndex)
         {
+                SetHDRI(landMarkIndex);
             if (landMarks.Length > 0)
             {
                 Vector3 localAnchor = transform.position;
@@ -175,7 +176,6 @@ namespace Twinny.XR
 #endif
             }
 
-                SetHDRI(landMarkIndex);
             OnTeleportToLandMark?.Invoke(landMarkIndex);
         }
 

@@ -30,24 +30,24 @@ namespace Twinny.System
 #if UNITY_EDITOR
         private void OnValidate()
         {
-                if (AssetDatabase.IsValidFolder("Resources"))
-                {
-                    AssetDatabase.CreateFolder("Assets", "Resources");
-                }
+            if (AssetDatabase.IsValidFolder("Resources"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Resources");
+            }
 
-                string fileName = "MultiPlatformRuntimePreset.asset";
-                string assetPath = "Assets/Resources/" + fileName;
-                MultiPlatformRuntime preset = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
+            string fileName = "MultiPlatformRuntimePreset.asset";
+            string assetPath = "Assets/Resources/" + fileName;
+            MultiPlatformRuntime preset = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
 
-                if (preset == null)
-                {
-                    preset = ScriptableObject.CreateInstance<MultiPlatformRuntime>();
-                    AssetDatabase.CreateAsset(preset, assetPath);
-                    AssetDatabase.SaveAssets();
-                    Debug.Log("Novo preset 'MultiPlatformRuntimePreset' criado e salvo em: " + assetPath);
-                }
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<MultiPlatformRuntime>();
+                AssetDatabase.CreateAsset(preset, assetPath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("Novo preset 'MultiPlatformRuntimePreset' criado e salvo em: " + assetPath);
+            }
 
-                _config = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
+            _config = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
 
 
 
@@ -91,6 +91,7 @@ namespace Twinny.System
 
         #region Public Methods
 
+
         public async Task ResetExperience()
         {
             OnExperienceFinished?.Invoke();
@@ -106,7 +107,7 @@ namespace Twinny.System
         /// </summary>
         /// <param name="scene">Scene Name</param>
         /// <param name="landMarkIndex">First LandMark to teleport.</param>
-        public async Task ChangeScene(object scene)
+        public async Task ChangeScene(object scene, int landMarkIndex)
         {
 
             await CanvasTransition.FadeScreen(true);
@@ -115,7 +116,7 @@ namespace Twinny.System
 
 
 #if !OCULUS
-           // CameraHandler.OnCameraLocked?.Invoke(null);
+            // CameraHandler.OnCameraLocked?.Invoke(null);
 #endif
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
@@ -130,6 +131,27 @@ namespace Twinny.System
             }
 #if !OCULUS
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+
+            SceneFeature feature = SceneFeature.Instance;
+            if (feature)
+            {
+
+                if (feature.sceneType == CameraState.LOCKED)
+                {
+                    Debug.LogWarning("SCENE FEATURE");
+                    if (feature.centralBuildings.Length > 0)
+                        CameraManager.OnCameraLocked(feature.centralBuildings[landMarkIndex]);
+                    else
+                        Debug.LogError("[SceneFeature] Locked Scenes must at least on centralBuilding set!");
+                }
+                else
+                if (feature.sceneType == CameraState.FPS)
+                {
+                    CameraManager.SetFPS(feature.fpsStartPos);
+                }
+            }
+
+
 #endif
             await CanvasTransition.FadeScreen(false);
 
@@ -146,7 +168,7 @@ namespace Twinny.System
         {
             await Task.Delay(500); // Similar "yield return new WaitForSeconds(.5f)"
 
-                await UnloadAdditivesScenes();
+            await UnloadAdditivesScenes();
 
 
             if (scene is string name)
@@ -172,8 +194,19 @@ namespace Twinny.System
 
         }
 
+        /// <summary>
+        /// This method is only for handle the Fade Screen during the teleporting
+        /// </summary>
+        /// <param name="landMarkIndex">LandMark to Teleport</param>
+        public async void NavigateTo(int landMarkIndex)
+        {
+            await CanvasTransition.FadeScreen(true);
+            SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
+            await CanvasTransition.FadeScreen(false);
+        }
 
-#endregion
+
+        #endregion
 
 
         #region CallBack Methods
@@ -182,9 +215,10 @@ namespace Twinny.System
         {
             if (_config.autoStart)
             {
-                _ = ChangeScene(2);
-            }   else         
-            _ = CanvasTransition.FadeScreen(false);
+                _ = ChangeScene(2, 0);
+            }
+            else
+                _ = CanvasTransition.FadeScreen(false);
         }
         #endregion
 

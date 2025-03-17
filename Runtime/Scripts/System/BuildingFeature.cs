@@ -8,10 +8,11 @@ using UnityEngine;
 
 public class BuildingFeature : MonoBehaviour
 {
+/*
     [Header("Camera Overrides")]
     [SerializeField] private float _zoomLimitMin = -20f;
     [SerializeField] private float _zoomLimitMax = 100f;
-
+*/
     [SerializeField] private bool _overrideBlend;
     public bool overrideBlend { get { return _overrideBlend; } }
     public CinemachineBlendDefinition customBlend;
@@ -56,13 +57,5 @@ public class BuildingFeature : MonoBehaviour
 
         }
     }
-
-
-    public Vector2 GetLimiters()
-    {
-
-        return new Vector2(_zoomLimitMin, _zoomLimitMax);
-    }
-
 }
 #endif

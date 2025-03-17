@@ -9,7 +9,6 @@ namespace Twinny.System
     public class MultiPlatformRuntime : TwinnyRuntime
     {
         public bool autoStart = true;
-
         [SerializeField]
         public bool teste;
     }

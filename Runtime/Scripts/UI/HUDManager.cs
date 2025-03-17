@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Twinny.Helpers;
 using Twinny.System;
 using Twinny.System.Cameras;
 using Twinny.UI;
@@ -35,11 +36,17 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     {
         CallBackUI.RegisterCallback(this);
         _animator = GetComponent<Animator>();
+
+        ActionManager.RegisterAction("SetPanoramic", SetPanoramic);
+        ActionManager.RegisterAction("SetFPS", SetFPS);
     }
 
     private void OnDestroy()
     {
         CallBackUI.UnregisterCallback(this);
+        ActionManager.RemoveAction("SetPanoramic");
+        ActionManager.RemoveAction("SetFPS");
+
     }
 
     // Update is called once per frame
@@ -51,13 +58,6 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     #endregion
 
     #region UI Callback Methods
-
-
-
-    public void ChangeScene(string sceneName)
-    {
-        _ = LevelManager.Instance.ChangeScene(sceneName);
-    }
 
     public void SetPanoramic()
     {
@@ -73,15 +73,6 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 #endif
     }
 
-    public void ResetExperience()
-    {
-        _ = LevelManager.Instance.ResetExperience();
-    }
-
-    public void QuitApplication()
-    {
-        Application.Quit();
-    }
 
 #endregion
     #region System Callback Methods

@@ -6,6 +6,31 @@ using UnityEngine;
 namespace Twinny.Editor
 {
 
+    [CustomPropertyDrawer(typeof(ShowIfAttribute))]
+    public class ShowIfAttributeDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            var showIfAttribute = (ShowIfAttribute)attribute;
+
+            var conditionProperty = property.serializedObject.FindProperty(showIfAttribute.condition);
+
+            if (conditionProperty != null)
+            {
+                // Se for do tipo bool
+                if (conditionProperty.propertyType == SerializedPropertyType.Boolean)
+                {
+                    if (!conditionProperty.boolValue)
+                    {
+                        return;  // Não desenha a propriedade se a condição booleana for falsa
+                    }
+                }
+            }
+
+            // Se a condição for atendida, desenha a propriedade normalmente
+            EditorGUI.PropertyField(position, property, label);
+        }
+    }
 
     [CustomPropertyDrawer(typeof(InfoAttribute))]
     public class InfoAttributeDrawer : PropertyDrawer
@@ -34,7 +59,7 @@ namespace Twinny.Editor
 
             // Ajusta a posição do texto com base na largura da label
             Rect infoRect = new Rect(position.x + labelSize.x, position.y, fieldWidth, 20f);
-           
+
             GUIContent content = new GUIContent($"<i><size=10>({infoAttribute.message})</size></i>");
 
             GUIStyle style = new GUIStyle(EditorStyles.label)
