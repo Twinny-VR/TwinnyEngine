@@ -6,19 +6,8 @@ using Twinny.System.Cameras;
 using Twinny.UI;
 using UnityEngine;
 
-public class BuildingFeature : MonoBehaviour
+public class BuildingFeature : InterestItem
 {
-    /*
-        [Header("Camera Overrides")]
-        [SerializeField] private float _zoomLimitMin = -20f;
-        [SerializeField] private float _zoomLimitMax = 100f;
-    */
-
-
-    [SerializeField] private bool _overrideBlend;
-    public bool overrideBlend { get { return _overrideBlend; } }
-    public CinemachineBlendDefinition customBlend;
-
 
 
     [Header("CACHED")]
@@ -26,7 +15,7 @@ public class BuildingFeature : MonoBehaviour
     [SerializeField] private bool _hidePrismaOnSelect = false;
     [SerializeField] private HintHUD _hintHUD;
     [Header("SENSORS")]
-    public InterestItem sensorCentral;
+    public Transform centralSensor;
     public Transform facadeTeleportNode;
     //public Transform sensorCentralLook;
     // Start is called before the first frame update
@@ -52,7 +41,7 @@ public class BuildingFeature : MonoBehaviour
     {
       //  Debug.LogWarning($"CAMERA LOCKED: {building} THIS: {building == this}");
         if(_prisma != null) 
-        _prisma.SetActive(building != this );
+        _prisma.SetActive(building == null);
         if (_hintHUD != null)
         {
             _hintHUD.Fold(!building || ( building && building != this));

@@ -130,37 +130,40 @@ namespace Twinny.System
 
             }
 #if !OCULUS
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
 
             SceneFeature feature = SceneFeature.Instance;
+
             if (feature)
             {
 
-                if (feature.sceneType == State.LOCKED)
+                if (feature.interestPoints.Length > 0)
                 {
-                    if (feature.centralBuildings.Length > 0)
+                    InterestItem interest = feature.interestPoints[landMarkIndex];
+                    if (interest is BuildingFeature)
                     {
-                        BuildingFeature targetbuilding = feature.centralBuildings[landMarkIndex];
-                        if(targetbuilding.sensorCentral.type == State.LOCKED || targetbuilding.sensorCentral.type == State.LOCKEDTHIRD)
-                        CameraManager.OnCameraLocked(targetbuilding);
+                        BuildingFeature building = interest as BuildingFeature;
+                        if (interest.type == State.LOCKED || interest.type == State.LOCKEDTHIRD)
+                        {
+                            CameraManager.OnCameraLocked(building);
+                        }
                         else
                             Debug.LogError("[LevelManager] Wrong building format for Locked scene. Only LOCKED or THIRD are supported.");
-
                     }
                     else
-                        Debug.LogError("[LevelManager] Locked Scenes must at least on centralBuilding set in SceneFeature!");
+                    {
+                        CameraManager.SwitchCamera(interest);
+                    }
                 }
                 else
-                if (feature.sceneType == State.FPS)
-                {
-                    CameraManager.SetAgentPosition(feature.fpsStartPos);
-                    CameraManager.SwitchCameraState(State.FPS);
+                    Debug.LogError("[LevelManager] Locked Scenes must at least on centralBuilding set in SceneFeature!");
 
-                }
             }
 
 
 #endif
+
+            await Task.Delay(1500);
+            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false);
 
         }

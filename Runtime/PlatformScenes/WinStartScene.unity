@@ -1729,9 +1729,9 @@ MonoBehaviour:
   type: 3
   _button: {fileID: 1223400012}
   showParameter: 1
-  parameter: Teste
+  parameter: Apartamento2QuartosClassic
   showIndex: 1
-  landMarkIndex: 1
+  landMarkIndex: 0
 --- !u!1 &1374727153
 GameObject:
   m_ObjectHideFlags: 0

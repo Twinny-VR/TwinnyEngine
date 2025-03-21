@@ -1,29 +1,59 @@
+#if !OCULUS
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using TreeEditor;
+using Twinny.UI;
 using UnityEngine;
 
 namespace Twinny.System.Cameras
 {
     public class InterestItem : MonoBehaviour
     {
+        [Header("Camera Configuration")]
 
         [SerializeField]
-        private State _type = State.LOCKED;
+        protected State _type = State.LOCKED;
         public State type { get => _type; }
 
+        public bool overrideCameraSettings;
 
+        [ShowIf("overrideCameraSettings")]
         public float desiredFov = 75f;
 
-        public Vector2 yawRange = new Vector2(0, 240);
-        [Range(1, 10)]
-        public float yaySpeedMultiply = 1f;
+        [ShowIf("overrideCameraSettings")]
+        public Vector3 yawRange = new Vector3(0, 250,600);
 
-        [Range(0, 1)]
-        public float zoomSensitivity = .5f;
-        [Range(1,10)]
+        [ShowIf("overrideCameraSettings")]
+        public float yawSpeedMultiply = 1f;
+
+#if UNITY_EDITOR
+        [HideInInspector]
+        public bool showCameraSettings;
+#endif
+
+        [ShowIf("showZoomSettings")]
+        public Vector2 zoomRange = new Vector2(0, 100);
+
+        [ShowIf("showZoomSettings")]
         public float zoomSpeedMultiply = 1f;
-        public float zoomMin = 0f;
-        public float zoomMax = 10f;
+
+        public bool overrideCameraBlend;
+        [ShowIf("overrideCameraBlend")]
+        public CinemachineBlendDefinition cameraBlend = new CinemachineBlendDefinition();
+
+
+        #region MonoBehaviour Methods
+#if UNITY_EDITOR
+
+        protected virtual void OnValidate()
+        {
+            showCameraSettings = overrideCameraSettings && _type != State.FPS;
+        }
+
+#endif
+        #endregion
 
     }
 }
+#endif

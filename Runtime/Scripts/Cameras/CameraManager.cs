@@ -1,5 +1,6 @@
 #if !OCULUS
 using System.Collections;
+using System.Threading.Tasks;
 using Cinemachine;
 using Twinny.Helpers;
 using Twinny.UI;
@@ -13,10 +14,10 @@ namespace Twinny.System.Cameras
 
     public enum State
     {
-        FPS,
-        LOCKED,
-        PAN,
-        LOCKEDTHIRD
+        FPS = 0,
+        LOCKEDTHIRD = 1,
+        LOCKED = 2,
+        PAN = 3,
     }
 
 
@@ -57,16 +58,17 @@ namespace Twinny.System.Cameras
         #endregion
 
         [SerializeField] private CameraRuntime _config;
-        public static CameraRuntime config { get => Instance._config; }
+        public static CameraRuntime config { get => Instance?._config; }
 
         private CinemachineBrain _brain;
-        public static CinemachineBrain brain { get => Instance._brain; }
+        public static CinemachineBrain brain { get => Instance?._brain; }
 
 
         [Header("CAMERAS")]
         private CameraHandler _currentCamera;
         //private CinemachineVirtualCamera currentCamera { get => _currentCamera; set { _currentCamera = value; OnCameraChanged?.Invoke(value); } }
         [SerializeField] private CameraHandler _fpsCamera;
+        public static CameraHandler fpsCamera { get => Instance._fpsCamera; }
         [SerializeField] private CameraHandler _lockedCamera;
         [SerializeField] private CameraHandler _panoramicCamera;
         [SerializeField] private CameraHandler _thirdCamera;
@@ -81,7 +83,7 @@ namespace Twinny.System.Cameras
         */
 
         public static float zoom { get => Instance._currentCamera.zoom; }
-        
+
         #region MonoBehaviour Methods
 
 #if UNITY_EDITOR
@@ -107,34 +109,6 @@ namespace Twinny.System.Cameras
             _config = AssetDatabase.LoadAssetAtPath<CameraRuntime>(assetPath);
 
         }
-
-
-        [ContextMenu("FPS Camera")]
-        private void SetFpsCamera()
-        {
-            state = State.FPS;
-        }
-
-        public void SetFpsCamera(Vector3 position)
-        {
-            
-            state = State.FPS;
-
-        }
-
-        [ContextMenu("Third Camera")]
-        private void SetThirdCamera()
-        {
-            state = State.LOCKEDTHIRD;
-        }
-
-        [ContextMenu("Panoramic Camera")]
-        private void SetPanCamera()
-        {
-            state = State.PAN;
-        }
-
-
 
 #endif
 
@@ -166,9 +140,6 @@ namespace Twinny.System.Cameras
             InputMonitor.OnRelease += OnRelease;
             InputMonitor.OnCancelDrag += OnCancelDrag;
             GetComponent<CinemachineFreeLook>();
-
-            state = _state;
-            StartStandby();
         }
 
         private void OnDestroy()
@@ -183,85 +154,6 @@ namespace Twinny.System.Cameras
 
         }
 
-        /*
-        private void Update()
-        {
-            if (Input.GetMouseButton(0) || Input.touchCount > 0)
-            {
-                Ray ray = default;
-                RaycastHit hit;
-
-
-
-                if (Input.touchCount == 1) // Para um toque, movimento horizontal e vertical
-                {
-                    Touch touch = Input.GetTouch(0);  // Captura o primeiro toque
-                    switch (touch.phase)
-                    {
-                        case TouchPhase.Began:
-                            _isDragging = true;
-
-                            ray = Camera.main.ScreenPointToRay(touch.position);
-
-
-                            if (Physics.Raycast(ray, out hit))
-                            {
-
-                                BuildingFeature building = hit.collider.gameObject.GetComponent<BuildingFeature>();
-
-                                if (building && !_lockedCameraTarget)
-                                {
-                                    OnCameraLocked?.Invoke(building);
-                                }
-                            }
-                            break;
-                        case TouchPhase.Ended:
-                        case TouchPhase.Canceled:
-                            _isDragging = false;
-                            break;
-                    }
-
-                    // Verifica se um objeto foi clicado
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                    {
-                        GameObject clickedObject = hit.collider.gameObject;
-                        SelectObject(clickedObject);
-                    }
-                }
-                else if (Input.touchCount == 2) // Zoom com dois toques
-                {
-                }
-                else // Para o mouse, quando não há toque
-                {
-                    Vector2 mousePosition = Input.mousePosition;
-                    ray = Camera.main.ScreenPointToRay(mousePosition);
-
-
-
-
-                    if (!_isDragging)
-                    {
-
-                        _isDragging = true;
-
-
-                        if (Physics.Raycast(ray, out hit))
-                        {
-
-                            BuildingFeature building = hit.collider.gameObject.GetComponent<BuildingFeature>();
-
-                            if (building && _lockedCameraTarget == null)
-                            {
-                                OnCameraLocked?.Invoke(building);
-                            }
-                        }
-                    }
-                }
-            } else
-                _isDragging = false;
-
-        }
-        */
         #endregion
 
         #region Private Methods
@@ -329,9 +221,11 @@ namespace Twinny.System.Cameras
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraChanged(camera.transform, "LOCKED"));
             }
             */
-            if(_state != State.FPS)
-            _interestItem = camera.follow.GetComponent<InterestItem>();
+
+
+            Debug.LogWarning("RESETA PRA: " + _interestItem.name);
             camera.ResetCamera();
+            StartStandby();
 
         }
 
@@ -368,34 +262,21 @@ namespace Twinny.System.Cameras
                 }, (int)(building.customBlend.m_Time * 1000) + 100);
             }
             */
-            if(building.sensorCentral.type == State.LOCKED)
-            {
-            _lockedCamera.follow = building.sensorCentral.transform;
-            _lockedCamera.lookAt = building.sensorCentral.transform;
-            _lockedCamera.fov = building.sensorCentral.desiredFov;
-            state = State.LOCKED;
-            }else
 
-            if (building.sensorCentral.type == State.LOCKEDTHIRD)
+            if (building.type == State.LOCKED || building.type == State.LOCKEDTHIRD)
             {
-                _thirdCamera.follow = building.sensorCentral.transform;
-                _thirdCamera.lookAt = building.sensorCentral.transform;
-                _thirdCamera.fov = building.sensorCentral.desiredFov;
-                state = State.LOCKEDTHIRD;
+
+                SwitchCamera(building);
+                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.centralSensor));
+
             }
             else
+                Debug.LogError("[CameraManager] Locked camera error! Only 'BuildingFeature' type 'Locked' or 'LockedThird' are supported.");
 
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.transform));
 
 
         }
 
-        private void LockCentralCamera(Transform follow, Transform look)
-        {
-            Debug.Log($"[CameraHandler] Central Camera locked in: {follow} LookAt: {look}");
-            _panoramicCamera.follow = follow;
-            _panoramicCamera.lookAt = look;
-        }
 
         private void StartStandby()
         {
@@ -415,11 +296,27 @@ namespace Twinny.System.Cameras
 
         #region Public Methods
 
-        public static void SwitchCameraState(State newState)
+        public static void SwitchCamera(InterestItem interest)
         {
-            state = newState;
+            if (interest && Instance)
+            {
+                Instance._interestItem = interest;
+
+                if (interest.type != State.PAN)
+                {
+                    Transform nodePosition = (interest is BuildingFeature) ? (interest as BuildingFeature).facadeTeleportNode : interest.transform;
+                    SetAgentPosition(nodePosition);
+
+                }
+//                if (interest.type == State.FPS || interest.type == State.LOCKEDTHIRD) SetAgentPosition(interest.transform);
+
+            }
+
+
+            state = interest == null ? State.FPS : interest.type;
 
         }
+
 
         public void OnTouch(float x, float y)
         {
@@ -443,7 +340,7 @@ namespace Twinny.System.Cameras
 
 
             BuildingFeature building = hit.collider.gameObject.GetComponent<BuildingFeature>();
-            if (building)
+            if (_state == State.PAN &&  building)
             {
                 OnCameraLocked?.Invoke(building);
                 return;
@@ -453,8 +350,8 @@ namespace Twinny.System.Cameras
 
         public static void SetAgentPosition(Transform node)
         {
-            OnCameraLocked?.Invoke(null);
 
+           // OnCameraLocked?.Invoke(null);
             if (node)
             {
                 Instance.fpsAgent.transform.position = node.position;
@@ -479,30 +376,35 @@ namespace Twinny.System.Cameras
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStandby(true));
 
             OnEnterInStandby?.Invoke();
-            if (state == State.PAN && SceneFeature.Instance && SceneFeature.Instance.centralBuildings.Length > 0)
+            if (state == State.PAN && SceneFeature.Instance && SceneFeature.Instance.interestPoints.Length > 0)
             {
                 yield return new WaitForSeconds(config.standbyPanoramicDuration);
 
-                foreach (var building in SceneFeature.Instance.centralBuildings)
+                foreach (var building in SceneFeature.Instance.interestPoints)
                 {
-                    _ = CanvasTransition.FadeScreen(true);
-                    yield return new WaitForSeconds(Config.fadeTime);
-                    OnCameraLocked?.Invoke(building);
-                    yield return new WaitForSeconds(1f);
-                    while (brain.IsBlending)
+                    if (building is BuildingFeature)
                     {
-                        yield return null;
+
+                        _ = CanvasTransition.FadeScreen(true);
+                        yield return new WaitForSeconds(Config.fadeTime);
+                        OnCameraLocked?.Invoke(building as BuildingFeature);
+                        yield return new WaitForSeconds(1f);
+                        while (brain.IsBlending)
+                        {
+                            yield return null;
+                        }
+                        _ = CanvasTransition.FadeScreen(false);
+                        yield return new WaitForSeconds(3f);
+                        OnEnterInStandby?.Invoke();
+                        yield return new WaitForSeconds(config.standbyLockedDuration);
                     }
-                    _ = CanvasTransition.FadeScreen(false);
-                    yield return new WaitForSeconds(3f);
-                    OnEnterInStandby?.Invoke();
-                    yield return new WaitForSeconds(config.standbyLockedDuration);
                 }
                 restart = true;
-            }else
-                if(state == State.LOCKED)
+            }
+            else
+                if (state == State.LOCKED)
             {
-                    yield return new WaitForSeconds(config.standbyLockedDuration);
+                yield return new WaitForSeconds(config.standbyLockedDuration);
                 restart = true;
             }
 

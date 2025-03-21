@@ -44,9 +44,12 @@ namespace Twinny.System.Cameras
 
             OnArrived += OnArrivedAtDestination;
 
-            _navMeshAgent.speed = config.navigationSpeed;
-            _navMeshAgent.angularSpeed = config.navigationangularSpeed;
-            _navMeshAgent.acceleration = config.navigationAcceleration;
+            if (config)
+            {
+                _navMeshAgent.speed = config.navigationSpeed;
+                _navMeshAgent.angularSpeed = config.navigationangularSpeed;
+                _navMeshAgent.acceleration = config.navigationAcceleration;
+            }
         }
 
 
@@ -101,11 +104,11 @@ namespace Twinny.System.Cameras
 
         private void OnLockedInBuilding(BuildingFeature building)
         {
-                if (building)
-                {
-                    transform.position = building.facadeTeleportNode.position;
-                    transform.rotation = building.facadeTeleportNode.rotation;
-                }
+            if (building)
+            {
+                transform.position = building.facadeTeleportNode.position;
+                transform.rotation = building.facadeTeleportNode.rotation;
+            }
 
         }
 
@@ -116,8 +119,8 @@ namespace Twinny.System.Cameras
 
 
             Debug.LogWarning($"SELECTED: {hit.collider.gameObject}.");
-           
-            
+
+
             NavMeshHit navMeshHit;
             if (NavMesh.SamplePosition(hit.point, out navMeshHit, 1.0f, NavMesh.AllAreas))
             {
@@ -128,7 +131,7 @@ namespace Twinny.System.Cameras
 
                 float distance = Vector3.Distance(transform.position, navMeshPosition);
 
-                if(distance < config.navigationDistanceMax)
+                if (distance < config.navigationDistanceMax)
                     NavigateTo(navMeshPosition);
 
 
@@ -139,8 +142,8 @@ namespace Twinny.System.Cameras
 
         private void NavigateTo(Vector3 position)
         {
-            if(_hitPoint) Destroy(_hitPoint);
-           _hitPoint =  Instantiate(config.hitPointPrefab, position, config.hitPointPrefab.transform.rotation);    
+            if (_hitPoint) Destroy(_hitPoint);
+            _hitPoint = Instantiate(config.hitPointPrefab, position, config.hitPointPrefab.transform.rotation);
             _navMeshAgent.destination = position;
             _isMoving = true;
 

@@ -11,23 +11,8 @@ namespace Twinny.System
     {
 
 #if !OCULUS
-        [SerializeField]
-        private State _sceneType;
-        public State sceneType { get => _sceneType; }
 
-
-#if UNITY_EDITOR
-        [HideInInspector] public bool showStartPos;
-        [ShowIf("showStartPos")]
-#endif
-        [SerializeField] private Transform _fpsStartPos;
-        public Transform fpsStartPos { get => _fpsStartPos; }
-
-#if UNITY_EDITOR
-        [HideInInspector] public bool showLocked;
-        [ShowIf("showLocked")]
-#endif
-        public BuildingFeature[] centralBuildings;
+        public InterestItem[] interestPoints;
 
 #endif
 
@@ -37,8 +22,6 @@ namespace Twinny.System
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            showLocked = _sceneType == State.PAN || _sceneType == State.LOCKED;
-            showStartPos = _sceneType == State.FPS;
         }
 #endif
         private void Start()
@@ -56,11 +39,14 @@ namespace Twinny.System
         /// <param name="landMarkIndex">Index on landMarks array.</param>
         public void TeleportToLandMark(int landMarkIndex)
         {
-            if (centralBuildings.Length > 0)
+            if (interestPoints.Length > 0)
             {
-                BuildingFeature building = centralBuildings[landMarkIndex];
+                if(interestPoints[landMarkIndex] is BuildingFeature)
+                {
+                        BuildingFeature building = interestPoints[landMarkIndex] as BuildingFeature;
+                        CameraManager.OnCameraLocked(building);
+                }
                 
-                CameraManager.OnCameraLocked(building);
             }
         }
 

@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Reflection;
 using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
@@ -6,94 +7,301 @@ using UnityEngine;
 namespace Twinny.Editor
 {
 
-    [CustomPropertyDrawer(typeof(ShowIfAttribute))]
-    public class ShowIfAttributeDrawer : PropertyDrawer
+    /// <summary>
+    /// A drawer to handle drawing fields with a [HideIf] attribute. When fields have this attribute they will be hidden
+    /// in the inspector conditionally based on the evaluation of a field or property.
+    /// </summary>
+    [CustomPropertyDrawer(typeof(HideIfAttribute))]
+    public class HideIfDrawer : PropertyDrawer
     {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        private bool IsVisible(SerializedProperty property)
         {
-            var showIfAttribute = (ShowIfAttribute)attribute;
-
-            var conditionProperty = property.serializedObject.FindProperty(showIfAttribute.condition);
+            HideIfAttribute hideIf = attribute as HideIfAttribute;
+            SerializedProperty conditionProperty =
+                property.GetParent()?.FindPropertyRelative(hideIf.condition);
+            // If it wasn't found relative to the property, check siblings.
+            if (null == conditionProperty)
+            {
+                conditionProperty = property.serializedObject.FindProperty(hideIf.condition);
+            }
 
             if (conditionProperty != null)
             {
-                // Se for do tipo bool
-                if (conditionProperty.propertyType == SerializedPropertyType.Boolean)
-                {
-                    if (!conditionProperty.boolValue)
-                    {
-                        return;  // Não desenha a propriedade se a condição booleana for falsa
-                    }
-                }
+                if (conditionProperty.type == "bool") return !conditionProperty.boolValue;
+                return conditionProperty.objectReferenceValue == null;
             }
 
-            // Se a condição for atendida, desenha a propriedade normalmente
-            EditorGUI.PropertyField(position, property, label);
+            return true;
         }
-    }
 
-    [CustomPropertyDrawer(typeof(InfoAttribute))]
-    public class InfoAttributeDrawer : PropertyDrawer
-    {
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (IsVisible(property))
+            {
+                EditorGUI.PropertyField(position, property, label, true);
+            }
+        }
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return base.GetPropertyHeight(property, label); // Ajusta a altura para o texto
-        }
-
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            var infoAttribute = (InfoAttribute)attribute;
-
-            // Ajusta a altura da posição para o campo
-            position.height = EditorGUI.GetPropertyHeight(property, label, true);
-
-            // Calcula a largura do texto da label
-            Vector2 labelSize = GUI.skin.label.CalcSize(label); // Calcula a largura do texto da label
-
-            // Exibe a propriedade normalmente (campo e rótulo)
-            EditorGUI.PropertyField(position, property, label);
-
-            // Calcula a largura do campo, subtraindo a largura da label
-            float fieldWidth = position.width - labelSize.x;
-
-            // Ajusta a posição do texto com base na largura da label
-            Rect infoRect = new Rect(position.x + labelSize.x, position.y, fieldWidth, 20f);
-
-            GUIContent content = new GUIContent($"<i><size=10>({infoAttribute.message})</size></i>");
-
-            GUIStyle style = new GUIStyle(EditorStyles.label)
+            if (IsVisible(property))
             {
-                richText = true
-            };
+                return EditorGUI.GetPropertyHeight(property, label, true);
+            }
 
-            // Exibe o texto do Info ao lado da propriedade
-            EditorGUI.LabelField(infoRect, content, style);
+            return 0f;
         }
-
-
-        /*
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            var infoAttribute = (InfoAttribute)attribute;
-            position.height = EditorGUI.GetPropertyHeight(property, label, true);
-
-            // Exibe a variável normalmente
-            EditorGUI.PropertyField(position, property, label);
-            Vector2 labelSize = GUI.skin.label.CalcSize(label);
-            
-            GUI.skin.label.richText = true;
-
-            label.text += "CUZINHO";
-                
-            float labelWidth = position.width - labelSize.x;
-
-            // Adiciona o texto do Info abaixo da propriedade
-            Rect infoRect = new Rect(labelWidth, position.y, position.width, 20f);
-            EditorGUI.LabelField(infoRect, infoAttribute.message, EditorStyles.helpBox);
-        }*/
     }
 
+
+
+    [CustomPropertyDrawer(typeof(ShowIfAttribute))]
+    public class ShowIfAttributeDrawer : PropertyDrawer
+    {
+        private bool IsVisible(SerializedProperty property)
+        {
+            ShowIfAttribute hideIf = attribute as ShowIfAttribute;
+            SerializedProperty conditionProperty =
+                property.FindPropertyRelative(hideIf.condition);
+                //property.serializedObject.FindProperty(hideIf.condition);
+            // If it wasn't found relative to the property, check siblings.
+            if (null == conditionProperty)
+            {
+                conditionProperty = property.serializedObject.FindProperty(hideIf.condition);
+            }
+
+            if (conditionProperty != null)
+            {
+                if (conditionProperty.type == "bool") return !conditionProperty.boolValue;
+                return conditionProperty.objectReferenceValue == null;
+            }
+
+            return true;
+        }
+
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (!IsVisible(property))
+            {
+                EditorGUI.PropertyField(position, property, label, true);
+            }
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            if (!IsVisible(property))
+            {
+                return EditorGUI.GetPropertyHeight(property, label, true);
+            }
+
+            return 0f;
+        }
+
+
+    }
+        /*
+            public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+            {
+
+
+                var showIfAttribute = (ShowIfAttribute)attribute;
+
+                var conditionProperty = property.serializedObject.FindProperty(showIfAttribute.condition);
+
+                if (conditionProperty != null)
+                {
+                    // Se for do tipo bool
+                    if (conditionProperty.propertyType == SerializedPropertyType.Boolean)
+                    {
+                        if (!conditionProperty.boolValue)
+                        {
+                            return;  // Não desenha a propriedade se a condição booleana for falsa
+                        }
+                    }
+                }
+
+                // Se for um objeto ou struct, precisamos "expandir" o conteúdo
+                if (property.propertyType == SerializedPropertyType.ObjectReference || property.propertyType == SerializedPropertyType.Generic)
+                {
+                    Debug.LogWarning($"{property.name} StartY: {position.y}");
+
+                    Color originalColor = GUI.color;
+
+                    GUIStyle boldLabelStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
+
+                    GUI.Label(new Rect(position.x, position.y, position.width, 16f), property.displayName + ":", boldLabelStyle); // Aplica a label com o estilo
+                    position.y += 16f;
+
+                    var y = DrawStructFields(position, property);
+
+
+                    Debug.LogWarning($"{property.name} Height: {y}");
+                    position.y = y + 16f;
+
+                    Debug.LogWarning($"{property.name} FinalY: {position.y}");
+
+                }
+                else
+                {
+                    // Caso a propriedade não seja um objeto, desenha normalmente
+                    EditorGUI.PropertyField(position, property, label);
+                    position.y += EditorGUI.GetPropertyHeight(property, true);
+                }
+
+
+                // Se a condição for atendida, desenha a propriedade normalmente
+                //  EditorGUI.PropertyField(position, property, label);
+            }
+
+
+            private float DrawStructFields(Rect position, SerializedProperty property)
+            {
+                // Desenha os campos internos de uma struct
+                if (property.hasChildren)
+                {
+                    SerializedProperty iterator = property.Copy();
+                    iterator.NextVisible(true);  // Avança para o primeiro campo
+
+                    bool first = true;
+
+                    // Itera por todos os campos visíveis e os desenha
+                    while (iterator.NextVisible(first))
+                    {
+                        first = false;
+
+                        Rect newPosition = new Rect(position.x, position.y, position.width, EditorGUI.GetPropertyHeight(iterator, true));
+                        EditorGUI.PropertyField(newPosition, iterator, true);
+                        position.y += 100f;
+                    }
+
+                }
+                return position.y;
+            }
+
+        }
+        */
+
+        [CustomPropertyDrawer(typeof(SubPanelAttribute))]
+    public class SubPanelPropertyDrawer : PropertyDrawer
+    {
+
+
+
+        // Método principal para desenhar o conteúdo no inspector
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+
+            // Verifica se esta propriedade está em um subpainel
+            var subPanelAttribute = (SubPanelAttribute)attribute;
+            bool isSubPanel = subPanelAttribute != null;
+
+            if (isSubPanel && PropertyDrawerExtensions.isInSubPanel && PropertyDrawerExtensions.currentCaption != subPanelAttribute.caption)
+            {
+                PropertyDrawerExtensions.isInSubPanel = false;
+
+            }
+
+            Rect titleRect = new Rect(position.x, position.y, position.width, 16f);
+            // Se estiver no início de um subpainel, desenha o título
+            if (isSubPanel && !PropertyDrawerExtensions.isInSubPanel)
+            {
+
+                PropertyDrawerExtensions.currentCaption = subPanelAttribute.caption;
+                Color originalColor = GUI.color;
+                // Define o título do subpainel (label)
+
+                // Ajuste o espaço para a label do subpainel
+                EditorGUI.DrawRect(titleRect, subPanelAttribute.backgroundColor);
+
+                // Aqui está a label personalizada que será desenhada antes da propriedade
+                GUIStyle boldLabelStyle = new GUIStyle(EditorStyles.boldLabel); // Cria uma nova GUIStyle para negrito
+                boldLabelStyle.fontSize = 14; // Opcional: Defina o tamanho da fonte, caso queira personalizar
+
+                GUI.color = subPanelAttribute.color;
+                GUI.Label(titleRect, PropertyDrawerExtensions.currentCaption, boldLabelStyle); // Aplica a label com o estilo
+                GUI.color = originalColor;
+                position.y += 5f;
+
+                // Atualiza a posição para desenhar a propriedade abaixo da label
+
+
+                PropertyDrawerExtensions.isInSubPanel = true;  // Marca que estamos dentro de um subpainel
+            }
+
+
+
+
+            position.y += 16f;
+            EditorGUI.PropertyField(position, property, label);
+
+            if (isSubPanel && PropertyDrawerExtensions.isInSubPanel && PropertyDrawerExtensions.currentCaption != subPanelAttribute.caption)
+            {
+                position.y += 160f;
+                PropertyDrawerExtensions.isInSubPanel = false;
+                GUI.Label(titleRect, "CARALHO"); // Aplica a label com o estilo
+
+            }
+
+
+
+
+        }
+
+
+        private bool IsPrimitive(SerializedProperty property)
+        {
+            switch (property.propertyType)
+            {
+                case SerializedPropertyType.Integer:
+                case SerializedPropertyType.Float:
+                case SerializedPropertyType.Boolean:
+                case SerializedPropertyType.String:
+                case SerializedPropertyType.Enum:
+                    return true;  // Tipos primitivos conhecidos
+                default:
+                    return false; // Outros tipos são considerados não primitivos (referências de objetos, structs, etc.)
+            }
+        }
+
+    }
+
+    public static class PropertyDrawerExtensions
+    {
+
+
+
+        public static bool isInSubPanel = false;
+        public static string currentCaption = "";
+        public static float spaceAfterSubPanelTitle = 5f;
+
+
+            /// <summary>
+            /// Gets the parent property of a SerializedProperty
+            /// </summary>
+            /// <param name="property"></param>
+            /// <returns></returns>
+            public static SerializedProperty GetParent(this SerializedProperty property)
+            {
+                var segments = property.propertyPath.Split(new char[] { '.' });
+                SerializedProperty matchedProperty = property.serializedObject.FindProperty(segments[0]);
+                for (int i = 1; i < segments.Length - 1 && null != matchedProperty; i++)
+                {
+                    matchedProperty = matchedProperty.FindPropertyRelative(segments[i]);
+                }
+
+                return matchedProperty;
+            }
+
+            public static T GetAttribute<T>(this SerializedProperty property) where T : PropertyAttribute
+        {
+            var fieldInfo = property.serializedObject.targetObject.GetType().GetField(property.name);
+            return fieldInfo?.GetCustomAttribute<T>();
+        }
+    }
+
+  
 }
 
 #endif

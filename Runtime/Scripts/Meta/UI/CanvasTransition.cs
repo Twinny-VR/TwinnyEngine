@@ -26,6 +26,8 @@ namespace Twinny.UI
             if( _overlayScreen == null ) _overlayScreen = GetComponent<Canvas>();
                 _overlayScreen.worldCamera = Camera.main;
 
+            _fadeScreen.alpha = 1.0f;
+
         }
 
 
