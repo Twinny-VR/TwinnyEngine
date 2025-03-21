@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using Twinny.UI;
 using UnityEditor;
@@ -107,3 +108,4 @@ public class VectorLabelsAttributeDrawer : PropertyDrawer
 }
 
 }
+#endif

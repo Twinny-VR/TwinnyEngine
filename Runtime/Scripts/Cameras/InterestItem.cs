@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using TreeEditor;
 using Twinny.UI;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ namespace Twinny.System.Cameras
 
 #if UNITY_EDITOR
         [HideInInspector]
-        public bool showCameraSettings;
+        public bool showZoomSettings;
 #endif
 
         [ShowIf("showZoomSettings")]
@@ -48,7 +47,7 @@ namespace Twinny.System.Cameras
 
         protected virtual void OnValidate()
         {
-            showCameraSettings = overrideCameraSettings && _type != State.FPS;
+            showZoomSettings = overrideCameraSettings && _type != State.FPS;
         }
 
 #endif

@@ -1,13 +1,9 @@
 #if !OCULUS
 using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using static Twinny.System.Cameras.CameraManager;
-using UnityEngine.EventSystems;
 using Twinny.UI;
-using System;
-using static PlasticPipe.PlasticProtocol.Messages.Serialization.ItemHandlerMessagesSerialization;
 using Twinny.Helpers;
 
 namespace Twinny.System.Cameras
