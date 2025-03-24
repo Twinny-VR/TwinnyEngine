@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static Oculus.Interaction.Context;
 using static Twinny.System.Cameras.CameraManager;
 
 namespace Twinny.System.Cameras
@@ -97,6 +98,10 @@ namespace Twinny.System.Cameras
         }
     */
         #endregion
+
+
+
+
         private void OnCameraStateChanged(State state)
         {
             _navMeshAgent.enabled = state == State.FPS;
@@ -137,6 +142,20 @@ namespace Twinny.System.Cameras
 
             }
 
+        }
+
+
+        public void TeleportTo(Transform node)
+        {
+
+            // OnCameraLocked?.Invoke(null);
+            if (node)
+            {
+                _navMeshAgent.enabled = false;
+                transform.position = node.position;
+                transform.rotation = node.rotation;
+                _navMeshAgent.enabled = true;
+            }
         }
 
 

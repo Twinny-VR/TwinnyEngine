@@ -259,11 +259,11 @@ namespace Twinny.System.Cameras
         {
             if (!isActiveAndEnabled) return;
 
-            _xAxis = _initialX + value * config.sesitivity.x;
 
             switch (cameraType)
             {
                 case State.FPS:
+                    _xAxis = _initialX - value * config.sesitivity.x;
                     if (_pov)
                         _pov.m_HorizontalAxis.Value = _xAxis;
                     else
@@ -272,6 +272,7 @@ namespace Twinny.System.Cameras
                 case State.LOCKED:
                 case State.LOCKEDTHIRD:
                 case State.PAN:
+            _xAxis = _initialX + value * config.sesitivity.x;
                     if (_transposer)
                         _transposer.m_XAxis.Value = _xAxis;
                     else

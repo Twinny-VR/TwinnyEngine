@@ -305,7 +305,7 @@ namespace Twinny.System.Cameras
                 if (interest.type != State.PAN)
                 {
                     Transform nodePosition = (interest is BuildingFeature) ? (interest as BuildingFeature).facadeTeleportNode : interest.transform;
-                    SetAgentPosition(nodePosition);
+                    Instance.fpsAgent.TeleportTo(nodePosition);
 
                 }
 //                if (interest.type == State.FPS || interest.type == State.LOCKEDTHIRD) SetAgentPosition(interest.transform);
@@ -348,16 +348,6 @@ namespace Twinny.System.Cameras
         }
 
 
-        public static void SetAgentPosition(Transform node)
-        {
-
-           // OnCameraLocked?.Invoke(null);
-            if (node)
-            {
-                Instance.fpsAgent.transform.position = node.position;
-                Instance.fpsAgent.transform.rotation = node.rotation;
-            }
-        }
 
         #endregion
 

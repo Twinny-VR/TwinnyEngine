@@ -69,7 +69,7 @@ public class HUDManager : MonoBehaviour, IUICallBacks
     public void SetFPS()
     {
 #if !OCULUS
-        CameraManager.SetAgentPosition(null);
+        CameraManager.Instance.fpsAgent.TeleportTo(null);
         CameraManager.SwitchCamera(null);
 
 #endif
