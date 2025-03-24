@@ -104,8 +104,12 @@ namespace Twinny.System.Cameras
             {
 
                 Transform target = (interestItem is BuildingFeature) ? (interestItem as BuildingFeature).centralSensor : interestItem.transform;
-                follow = target;
-                lookAt = target;
+
+                if (cameraType != State.FPS)
+                {
+                    follow = target;
+                    lookAt = target;
+                }
 
 
                 if (interestItem.overrideCameraSettings)
@@ -355,7 +359,7 @@ namespace Twinny.System.Cameras
                     if (_offset)
                     {
                         if (interestItem.type == State.LOCKEDTHIRD && _zoom >= _zoomMax)
-                            SwitchCamera(interestItem);
+                            SwitchCamera(null);
 
 
                         _offset.m_Offset.z = _zoom;

@@ -221,6 +221,7 @@ namespace Twinny.System
                 }
                 else
                 {
+                    if(_isDragging)
                     _isDragging = false;
                     CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(mousePosition.x, mousePosition.y));
                     OnCancelDrag?.Invoke(mousePosition.x, mousePosition.y);
