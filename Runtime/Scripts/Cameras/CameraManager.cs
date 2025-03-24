@@ -73,6 +73,8 @@ namespace Twinny.System.Cameras
         [SerializeField] private CameraHandler _panoramicCamera;
         [SerializeField] private CameraHandler _thirdCamera;
 
+        private InterestItem _defaultCentralSensor;
+
         private Coroutine _standbyCor;
         /*
         private bool _isInStandby = false;
@@ -140,6 +142,7 @@ namespace Twinny.System.Cameras
             InputMonitor.OnRelease += OnRelease;
             InputMonitor.OnCancelDrag += OnCancelDrag;
             GetComponent<CinemachineFreeLook>();
+            _defaultCentralSensor = _panoramicCamera.follow.GetComponent<InterestItem>(); 
         }
 
         private void OnDestroy()
@@ -238,7 +241,11 @@ namespace Twinny.System.Cameras
             {
                 //  _lockedCameraTarget.Select(false);
                 state = State.PAN;
+                var feature = SceneFeature.Instance;
+                 
+                SwitchCamera(feature ? feature.interestPoints[0] : _defaultCentralSensor);
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(null));
+
                 return;
             }
 
@@ -298,6 +305,7 @@ namespace Twinny.System.Cameras
 
         public static void SwitchCamera(InterestItem interest)
         {
+
             if (interest && Instance)
             {
                 Instance._interestItem = interest;

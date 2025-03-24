@@ -99,7 +99,6 @@ namespace Twinny.System.Cameras
         #region Public Methods
         public void ResetCamera()
         {
-            Debug.LogWarning("RESET: "+ gameObject.name);
             if (interestItem)
             {
 

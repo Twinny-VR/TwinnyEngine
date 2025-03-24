@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static Oculus.Interaction.Context;
 using static Twinny.System.Cameras.CameraManager;
 
 namespace Twinny.System.Cameras

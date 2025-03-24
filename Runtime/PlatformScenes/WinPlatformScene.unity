@@ -1537,12 +1537,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142ff31d8cda95c45b93ed7b7b132e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1
+  _type: 3
   overrideCameraSettings: 0
   desiredFov: 75
   yawRange: {x: 240, y: 600, z: 600}
   yawSpeedMultiply: 1
-  showCameraSettings: 0
+  showZoomSettings: 0
   zoomRange: {x: 0, y: 100}
   zoomSpeedMultiply: 1
   overrideCameraBlend: 0

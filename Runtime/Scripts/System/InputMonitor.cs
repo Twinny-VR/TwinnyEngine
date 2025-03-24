@@ -108,6 +108,7 @@ namespace Twinny.System
                             }
                             else
                             {
+                               
                                 _isDragging = false;
                                 CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(touch.position.x, touch.position.y));
                                 OnCancelDrag?.Invoke(touch.position.x, touch.position.y);
@@ -159,6 +160,10 @@ namespace Twinny.System
 
 
             }
+            else
+            {
+
+
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -227,7 +232,6 @@ namespace Twinny.System
                     OnCancelDrag?.Invoke(mousePosition.x, mousePosition.y);
                 }
 
-
             }
 
             // Controle de zoom com sensibilidade ajustada
@@ -237,6 +241,7 @@ namespace Twinny.System
 
                 CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnPinching(scrollInput));
 
+            }
             }
 
         }
