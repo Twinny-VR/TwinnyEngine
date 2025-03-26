@@ -4,7 +4,6 @@ using Twinny.Helpers;
 using Twinny.System.Cameras;
 using Twinny.UI;
 using UnityEngine;
-using static Oculus.Interaction.Context;
 
 namespace Twinny.System
 {

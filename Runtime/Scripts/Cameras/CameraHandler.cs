@@ -180,6 +180,8 @@ namespace Twinny.System.Cameras
                 {
                     _transposer.m_FollowOffset.y = _initialYaw;
                     _transposer.m_FollowOffset.z = _yawRadius;
+                    _transposer.m_XAxis.Value = target.eulerAngles.y;
+
                 }
 
 
