@@ -50,3 +50,27 @@ MonoBehaviour:
     value: "NO SE PUEDE CONECTAR! INICIANDO LA EXPERIENCIA SIN CONEXI\xD3N."
   - key: '%ERROR_MESSAGE'
     value: "\xA1ERROR DESCONOCIDO! REINICIAR LA EXPERIENCIA."
+  - key: '%INSTALL_PLATFORM'
+    value: "Instalaci\xF3n the la plataforma {0}."
+  - key: '%INSTALL_PLATFORM_MESSAGE'
+    value: "\xBFQuieres instalar la plataforma {0}?"
+  - key: '%PLATFORM_INSTALLED'
+    value: "La plataforma ya est\xE1 instalada. \xBFQuieres establecer estas escenas
+      de plataformas en Scene Builder?"
+  - key: YES
+    value: "S\xED"
+  - key: NO
+    value: No
+  - key: '%INSTALL_NETWORK'
+    value: Multijugador
+  - key: '%INSTALL_NETWORK_MESSAGE'
+    value: "\xBFQuieres instalar la plataforma multijugador?"
+  - key: '%INSTALL_NETWORK_NO_FUSION_MESSAGE'
+    value: "El sistema ha verificado que no tiene Fusion 2 instalado, \xBFdesea instalar
+      la plataforma multijugador de todos modos?"
+  - key: Oculus
+    value: Meta Quest
+  - key: Win
+    value: Windows
+  - key: Network
+    value: Multijugador

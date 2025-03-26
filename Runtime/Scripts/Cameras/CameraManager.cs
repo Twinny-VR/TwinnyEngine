@@ -1,4 +1,3 @@
-#if !OCULUS
 using System.Collections;
 using System.Threading.Tasks;
 using Cinemachine;
@@ -241,7 +240,7 @@ namespace Twinny.System.Cameras
             {
                 //  _lockedCameraTarget.Select(false);
                 state = State.PAN;
-                var feature = SceneFeature.Instance;
+                var feature = SceneFeature.Instance as SceneFeatureMulti;
                  
                 SwitchCamera(feature ? feature.interestPoints[0] : _defaultCentralSensor);
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(null));
@@ -374,11 +373,12 @@ namespace Twinny.System.Cameras
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStandby(true));
 
             OnEnterInStandby?.Invoke();
-            if (state == State.PAN && SceneFeature.Instance && SceneFeature.Instance.interestPoints.Length > 0)
+            var feature = SceneFeature.Instance as SceneFeatureMulti;
+            if (state == State.PAN && feature && feature.interestPoints.Length > 0)
             {
                 yield return new WaitForSeconds(config.standbyPanoramicDuration);
 
-                foreach (var building in SceneFeature.Instance.interestPoints)
+                foreach (var building in feature.interestPoints)
                 {
                     if (building is BuildingFeature)
                     {
@@ -443,5 +443,3 @@ namespace Twinny.System.Cameras
     }
 
 }
-
-#endif

@@ -1,4 +1,3 @@
-#if !OCULUS
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -49,4 +48,3 @@ public class BuildingFeature : InterestItem
         }
     }
 }
-#endif

@@ -1,4 +1,3 @@
-#if !OCULUS
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,13 +60,25 @@ namespace Twinny.System.Cameras
 
         }
 
+
+        [ContextMenu("GET DISTANCE")]
+        public void GetDistance() {
+
+            Debug.LogWarning($"MOVING: {_isMoving} DISTANCE:{Vector3.Distance(transform.position,_navMeshAgent.destination)} REMAINING:{_navMeshAgent.remainingDistance} PENDING:{_navMeshAgent.pathPending}");
+
+        }
+
         // Update is called once per frame
         void Update()
         {
-            if (_isMoving && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance <= .1f && !_navMeshAgent.pathPending)
+            if (_isMoving && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance <= .25f && !_navMeshAgent.pathPending)
             {
                 OnArrived?.Invoke(transform.position);
+                Debug.LogWarning("CHEGOU!");
             }
+
+            if(_navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance < .25f) 
+                Debug.LogWarning("CHEGANDO!");
 
         }
         /*
@@ -175,4 +186,3 @@ namespace Twinny.System.Cameras
         }
     }
 }
-#endif

@@ -2,11 +2,15 @@
 using UnityEditor;
 using UnityEngine;
 using Twinny.System;
-using Twinny.XR;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
+using Twinny.Localization;
+#if OCULUS
+using Twinny.XR;
+#endif
 
 namespace Twinny.Editor
 {
@@ -17,20 +21,55 @@ namespace Twinny.Editor
         public const string WORLD_NAME = "world";
 
 
+#if !WIN
+        [MenuItem("Twinny/Platforms/Windows/Install Windows Platform")]
+        private static void InstallWindows()
+        {
+            InstallPlatform("Win");
+        }
 
-#if OCULUS
+#else
+
+    [MenuItem("Twinny/Platforms/Windows/Set Windows Platform")]
+        private static void SetWinPlatform()
+        {
+            SetPlatformScenes("Win");
+        }
+
+
+
+        [MenuItem("Twinny/Platforms/Windows/Uninstall Windows Platform")]
+        private static void UninstallWindows()
+        {
+            UninstallPlatform("Win");
+        }
+
+
+#endif
+
+#if !OCULUS
+        [MenuItem("Twinny/Platforms/Meta Quest/Install Meta Quest Platform")]
+        private static void InstallMetaQuest()
+        {
+            InstallPlatform("Oculus");
+        }
+
+
+
+
+#else
         [MenuItem("Twinny/Platforms/Set Meta Quest Platform")]
         private static void SetMetaQuest()
         {
             SetPlatformScenes("MetaQuest");
-            string oculusFolder = "Assets/Oculus";
+            string oculusFolder = "Assets/Meta/Oculus";
             if (!AssetDatabase.IsValidFolder(oculusFolder))
             {
-                AssetDatabase.CreateFolder("Assets", "Oculus");
+                AssetDatabase.CreateFolder("Assets", "Meta/Oculus");
             }
-            string originalProjectConfig = $"Packages/com.twinny.twe25/Runtime/Oculus/OculusProjectConfig.asset";
+            string originalProjectConfig = $"Packages/com.twinny.twe25/Runtime/Meta/Oculus/OculusProjectConfig.asset";
             string destinyPath = Path.Combine(oculusFolder, "OculusProjectConfig.asset");
-            //            if (AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Oculus/") == null)
+            //            if (AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/Meta/Oculus/") == null)
             if (!AssetDatabase.CopyAsset(originalProjectConfig, destinyPath))
             {
                 Debug.LogError($"Failed to copy '{originalProjectConfig}' to '{destinyPath}.");
@@ -40,13 +79,13 @@ namespace Twinny.Editor
 
         }
 
-        [MenuItem("Twinny/Platforms/Create Meta Quest Platform Preset")]
+        [MenuItem("Twinny/Platforms/Meta Quest/Create Meta Quest Platform Preset")]
         public static void CreateMetaPreset()
         {
             CreateRuntimePreset<RuntimeXR>();
         }
 
-                [MenuItem("Twinny/Scenes/New VR Scene")]
+                [MenuItem("Twinny/Platforms/Meta Quest/Scenes/New VR Scene")]
         [MenuItem("Assets/Create/Twinny/Scenes/New VR Scene")]
         private static void CreateVRScene()
         {
@@ -54,20 +93,140 @@ namespace Twinny.Editor
         }
 
         [MenuItem("Twinny/Scenes/New MR Scene")]
-        [MenuItem("Assets/Create/Twinny/Scenes/New MR Scene")]
+        [MenuItem("Assets/Create/Twinny/Platforms/Meta Quest/Scenes/New MR Scene")]
         private static void CreateMRScene()
         {
             CreateScene(SceneType.MR);
         }
 
+        [MenuItem("Twinny/Platforms/Meta Quest/Uninstall Meta Quest Platform")]
+        private static void UninstallMetaQuest()
+        {
+
+            UninstallPlatform("Oculus");
+
+
+
+        }
+
+
+#endif
+
+
+
+#if !NETWORK
+        [MenuItem("Twinny/Platforms/Network/Install Multiplayer Platform")]
+        private static void InstallNetwork()
+        {
+            InstallPlatform("Network");
+        }
+
 #else
 
-
-        [MenuItem("Twinny/Platforms/Set Windows Platform")]
-        private static void SetWinPlatform()
+        [MenuItem("Twinny/Platforms/Network/Uninstall Multiplayer Platform")]
+        private static void UninstallNetwork()
         {
-            SetPlatformScenes("Win");
+            UninstallPlatform("Network");
         }
+
+
+#endif
+
+
+        public static void InstallPlatform(string platform, bool prompt = true)
+        {
+
+            bool shouldInstallPlatform = true;
+
+            if (prompt) shouldInstallPlatform = EditorUtility.DisplayDialog(
+                string.Format(LocalizationProvider.GetTranslated("%INSTALL_PLATFORM"), LocalizationProvider.GetTranslated(platform)),
+                string.Format(LocalizationProvider.GetTranslated("%INSTALL_PLATFORM_MESSAGE"), LocalizationProvider.GetTranslated(platform)),
+                LocalizationProvider.GetTranslated("YES"),
+                LocalizationProvider.GetTranslated("NO")
+            );
+
+            if (shouldInstallPlatform)
+            {
+
+
+
+                string path = $"Packages/com.twinny.twe25/Runtime/{platform}~";
+                string newPath = path.TrimEnd('~');
+                if (Directory.Exists(path))
+                {
+
+                    try
+                    {
+                        if (Directory.Exists(newPath) && Directory.GetFiles(newPath).Length == 0 && Directory.GetDirectories(newPath).Length == 0)
+                        {
+                            Directory.Delete(newPath);
+                        }
+
+
+                        Directory.Move(path, newPath);
+                        AssetDatabase.Refresh();
+
+
+                        if (platform != "Network")
+                        {
+
+                            bool shouldSetPlatform = EditorUtility.DisplayDialog(
+                               string.Format(LocalizationProvider.GetTranslated("%INSTALL_PLATFORM"), LocalizationProvider.GetTranslated(platform)),
+                               LocalizationProvider.GetTranslated("%PLATFORM_INSTALLED"),
+                               LocalizationProvider.GetTranslated("YES"),
+                               LocalizationProvider.GetTranslated("NO")
+                            );
+                            
+                            if (shouldSetPlatform) SetPlatformScenes(platform);
+                        }
+
+                        PlatformCheckerEditor.AddDefineSymbol(platform.ToUpper());
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Failed to rename orginal path: {e.Message}");
+                    }
+                }
+                else
+                    Debug.LogError($"Directory not found: {path}");
+
+#if FUSION2 && !NETWORK
+              if(platform != "Network") InstallPlatform("Network");
+
+
+#endif
+            }
+
+        }
+        public static void UninstallPlatform(string platform)
+        {
+
+
+            string path = $"Packages/com.twinny.twe25/Runtime/{platform}";
+            if (Directory.Exists(path))
+            {
+
+                try
+                {
+                    Directory.Move(path, path + '~');
+                    AssetDatabase.Refresh();
+
+                    PlatformCheckerEditor.RemoveDefineSymbol(platform.ToUpper());
+
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to rename orginal path: {e.Message}");
+                }
+            }
+            else
+                Debug.LogError($"Directory not found: {path}");
+
+        }
+
+
+
 
 
         [MenuItem("Twinny/Platforms/Create Multi-Platform Preset")]
@@ -75,15 +234,14 @@ namespace Twinny.Editor
         {
             CreateRuntimePreset<MultiPlatformRuntime>();
         }
-#endif
         private static void SetPlatformScenes(string platform)
         {
             var newScenes = new List<EditorBuildSettingsScene>();
 
 
-            string originalPlatformScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}PlatformScene.unity";
-            string originalPlatformStartScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}StartScene.unity";
-            string originalPlatformMockupScene = $"Packages/com.twinny.twe25/Runtime/PlatformScenes/{platform}MockupScene.unity";
+            string originalPlatformScene = $"Packages/com.twinny.twe25/Runtime/{platform}/Scenes/{platform}PlatformScene.unity";
+            string originalPlatformStartScene = $"Packages/com.twinny.twe25/Runtime/{platform}/Scenes/{platform}StartScene.unity";
+            string originalPlatformMockupScene = $"Packages/com.twinny.twe25/Runtime/{platform}/Scenes/{platform}MockupScene.unity";
 
 
             string scenesFolder = "Assets/Scenes";
@@ -186,7 +344,7 @@ namespace Twinny.Editor
 
 
 
-        [MenuItem("Twinny/Scenes/New Mobile Scene")]
+        [MenuItem("Twinny/Platforms/Mobile/New Mobile Scene")]
         [MenuItem("Assets/Create/Twinny/Scenes/New Mobile Scene")]
         private static void CreateMobileScene()
         {
@@ -269,6 +427,7 @@ namespace Twinny.Editor
         // Método para adicionar objetos predefinidos à cena
         private static void AddPredefinedObjectsToScene(SceneType type)
         {
+            /*
             GameObject root = new GameObject();
             root.name = ROOT_NAME;
             SceneFeatureXR feature = root.AddComponent<SceneFeatureXR>();
@@ -288,7 +447,7 @@ namespace Twinny.Editor
             else
                 Debug.LogWarning("SafeArea prefab not found! Verify if the path 'UI/SAFE_AREA' is correct.");
 
-
+            */
         }
 
 

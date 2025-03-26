@@ -15,13 +15,13 @@ MonoBehaviour:
   languageName: "Portugu\xEAs BR"
   stringEntries:
   - key: START
-    value: INICIAR
-  - key: ANCHOR
+    value: COMENZAR
+  - key: ANCLA
     value: ANCORA
   - key: 'ANCHOR '
-    value: POSICIONAR
+    value: "POSICI\xD3N"
   - key: ANCHORING
-    value: ANCORANDO
+    value: ANCORAR
   - key: VISIT
     value: VISITAR
   - key: VOIP
@@ -35,18 +35,42 @@ MonoBehaviour:
   - key: Error
     value: Erro
   - key: '%DISCONECTED_MESSAGE'
-    value: "REINICIANDO EXPERI\xCANCIA."
+    value: "[DESCONECTADO] A aplica\xE7\xE3o ser\xE1 reiniciada."
   - key: DISCONNECTED
     value: DESCONECTADO
   - key: '%BACK_TO_SAFE_AREA'
-    value: Volte para dentro da SAFE AREA para navegar!
+    value: "VOLTE PARA \xC1REA DE SEGURAN\xC7A PARA NAVEGAR!"
   - key: '%CONNECTING_MESSAGE'
-    value: "INICIANDO EXPERI\xCANCIA."
+    value: CONECTANDO...
   - key: '%LOADING_SCENE'
-    value: CARREGANDO CENA...
+    value: CARREGANDO...
   - key: '%NO_ANCHOR_MESSAGE'
-    value: "VOC\xCA N\xC3O EST\xC1 ANCORADO!"
+    value: "N\xC3O EST\xC1 ANCORADO!"
   - key: '%NO_NETWORK_MESSAGE'
-    value: "N\xC3O FOI POSS\xCDVEL CONECTAR! INICIANDO EXPERI\xCANCIA OFFLINE."
+    value: "N\xC3O FOI POSS\xCDVEL CONECTAR! INICIANDO A EXPERI\xCANCIA EM MODO OFFILINE."
   - key: '%ERROR_MESSAGE'
-    value: "ERRO DESCONHECIDO! REINICIANDO EXPERI\xCANCIA."
+    value: ERRO DESCONOCIDO! REINICIANDO EXPERIENCIA.
+  - key: '%INSTALL_PLATFORM'
+    value: Instalando {0}.
+  - key: '%INSTALL_PLATFORM_MESSAGE'
+    value: Deseja instalar a plataforma {0}?
+  - key: '%PLATFORM_INSTALLED'
+    value: Plataforma instalada com sucesso. Deseja configurar as cenas no Scene
+      Builder?
+  - key: YES
+    value: Sim
+  - key: NO
+    value: "N\xE3o"
+  - key: '%INSTALL_NETWORK'
+    value: Multiplayer
+  - key: '%INSTALL_NETWORK_MESSAGE'
+    value: "\xBFQuieres instalar la plataforma multijugador?"
+  - key: '%INSTALL_NETWORK_NO_FUSION_MESSAGE'
+    value: "El sistema ha verificado que no tiene Fusion 2 instalado, \xBFdesea instalar
+      la plataforma multijugador de todos modos?"
+  - key: Oculus
+    value: Meta Quest
+  - key: Win
+    value: Windows
+  - key: Network
+    value: Multiplayer

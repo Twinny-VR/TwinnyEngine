@@ -1,55 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Twinny.Helpers;
-using Twinny.System.Cameras;
-using Twinny.UI;
 using UnityEngine;
 
 namespace Twinny.System
 {
-    public class SceneFeature : TSingleton<SceneFeature>
+    /// <summary>
+    /// Scene layout type VR(Virtual), MR(Mixed), MOBILE(Mobile)
+    /// </summary>
+    [Serializable]
+    public enum SceneType
     {
+        VR,//Virtual Reallity
+        MR,//Mixed Reallity
+        MOBILE //Mobile
+    }
 
-#if !OCULUS
-
-        public InterestItem[] interestPoints;
-
-#endif
-
-
-        #region MonoBehaviour Methods
-
-#if UNITY_EDITOR
-        private void OnValidate()
+    public abstract class SceneFeature : TSingleton<SceneFeature>
+    {
+        // Start is called before the first frame update
+        protected virtual void Start()
         {
-        }
-#endif
-        private void Start()
-        {
-            Init();
+            Init();        
         }
 
-        #endregion
 
-        #region Public Methods
+        public virtual void TeleportToLandMark(int landMarkIndex) { }
 
-        /// <summary>
-        /// This method change World Transform position to a especific landMark position.
-        /// </summary>
-        /// <param name="landMarkIndex">Index on landMarks array.</param>
-        public void TeleportToLandMark(int landMarkIndex)
+        protected virtual void SetHDRI(Material hdri)
         {
-            if (interestPoints.Length > 0)
-            {
-                if(interestPoints[landMarkIndex] is BuildingFeature)
-                {
-                        BuildingFeature building = interestPoints[landMarkIndex] as BuildingFeature;
-                        CameraManager.OnCameraLocked(building);
-                }
-                
-            }
+
+            if (hdri == null)//If no LandMark to set, reset skybox to original
+                    hdri = LevelManager.Config.defaultSkybox;
+
+                    if (RenderSettings.skybox != hdri)
+                    {
+                        RenderSettings.skybox = hdri;
+                        DynamicGI.UpdateEnvironment();
+                    }
+
+
         }
 
-        #endregion
     }
 }

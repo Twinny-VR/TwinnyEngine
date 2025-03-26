@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Cameras;
-using Twinny.System.Network;
 using Twinny.UI;
-using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,13 +14,16 @@ namespace Twinny.System
 
     public class LevelManager : TSingleton<LevelManager>
     {
+        #region Fields
 
-        [SerializeField] public MultiPlatformRuntime _config;
-        public static MultiPlatformRuntime Config { get { return Instance._config; } }
+        [SerializeField] public TwinnyRuntime config;
+        public static MultiPlatformRuntime Config { get { return Instance.config as MultiPlatformRuntime; } }
 
 
         public delegate void onExperienceFinished();
         public static onExperienceFinished OnExperienceFinished;
+
+        #endregion
 
         #region MonoBehaviour Methods
 
@@ -47,7 +48,7 @@ namespace Twinny.System
                 Debug.Log("Novo preset 'MultiPlatformRuntimePreset' criado e salvo em: " + assetPath);
             }
 
-            _config = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
+            config = AssetDatabase.LoadAssetAtPath<MultiPlatformRuntime>(assetPath);
 
 
 
@@ -57,9 +58,9 @@ namespace Twinny.System
         void Awake()
         {
 
-            _config = Resources.Load<MultiPlatformRuntime>("MultiPlatformRuntimePreset");
+            config = Resources.Load<MultiPlatformRuntime>("MultiPlatformRuntimePreset");
 
-            if (_config == null)
+            if (config == null)
             {
                 Debug.LogError("[LevelManager] Impossible to load 'MultiPlatformRuntimePreset'.");
             }
@@ -115,9 +116,6 @@ namespace Twinny.System
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
 
-#if !OCULUS
-            // CameraHandler.OnCameraLocked?.Invoke(null);
-#endif
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
@@ -129,9 +127,8 @@ namespace Twinny.System
                 await LoadAdditiveSceneAsync(scene);
 
             }
-#if !OCULUS
 
-            SceneFeature feature = SceneFeature.Instance;
+            SceneFeatureMulti feature = SceneFeature.Instance as SceneFeatureMulti;
 
             if (feature)
             {
@@ -158,9 +155,6 @@ namespace Twinny.System
                     Debug.LogError("[LevelManager] Locked Scenes must at least on centralBuilding set in SceneFeature!");
 
             }
-
-
-#endif
 
             await Task.Delay(1500);
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
@@ -212,7 +206,7 @@ namespace Twinny.System
         public async void NavigateTo(int landMarkIndex)
         {
             await CanvasTransition.FadeScreen(true);
-            SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
+            SceneFeatureMulti.Instance.TeleportToLandMark(landMarkIndex);
             await CanvasTransition.FadeScreen(false);
         }
 
@@ -224,7 +218,7 @@ namespace Twinny.System
 
         private void OnPlatformInitialized(Platform platform)
         {
-            if (_config.autoStart)
+            if (Config.autoStart)
             {
                 _ = ChangeScene(2, 0);
             }

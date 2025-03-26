@@ -61,18 +61,13 @@ public class HUDManager : MonoBehaviour, IUICallBacks
 
     public void SetPanoramic()
     {
-#if !OCULUS
         CameraManager.OnCameraLocked?.Invoke(null);
-#endif
     }
 
     public void SetFPS()
     {
-#if !OCULUS
         CameraManager.Instance.fpsAgent.TeleportTo(null);
         CameraManager.SwitchCamera(null);
-
-#endif
     }
 
 

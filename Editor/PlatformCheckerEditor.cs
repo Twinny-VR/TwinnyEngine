@@ -1,8 +1,8 @@
 #if UNITY_EDITOR
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ public class PlatformCheckerEditor : UnityEditor.Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        _ = CheckOculusProviderStatus();
+       // _ = CheckOculusProviderStatus();
 
     }
 
@@ -49,9 +49,9 @@ public class PlatformCheckerEditor : UnityEditor.Editor
         return isPluginManagementInstalled;
     }
 
+/*
     async Task CheckOculusProviderStatus()
     {
-
             BuildTarget currentPlatform = EditorUserBuildSettings.activeBuildTarget;
 
             bool hasOculus = await CheckPluginManagement("com.meta.xr.sdk.all");
@@ -66,9 +66,11 @@ public class PlatformCheckerEditor : UnityEditor.Editor
 
             string fileName = "RuntimeXRPreset.asset";
             string assetPath = "Assets/Resources/" + fileName;
-            RuntimeXR preset = AssetDatabase.LoadAssetAtPath<RuntimeXR>(assetPath);
 
-            if (preset == null)
+              RuntimeXR preset = AssetDatabase.LoadAssetAtPath<RuntimeXR>(assetPath);
+
+
+                if (preset == null)
             {
                 preset = ScriptableObject.CreateInstance<RuntimeXR>();
                 AssetDatabase.CreateAsset(preset, assetPath);
@@ -80,10 +82,12 @@ public class PlatformCheckerEditor : UnityEditor.Editor
         else
             RemoveDefineSymbol("OCULUS");
     }
+*/
 
 
     public static void AddDefineSymbol(string symbol)
     {
+
         // Verifica qual plataforma (target) está sendo usada
         BuildTargetGroup targetGroup = BuildTargetGroup.Standalone;  // Você pode mudar isso para iOS, Android, etc.
 
@@ -91,7 +95,7 @@ public class PlatformCheckerEditor : UnityEditor.Editor
         string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
 
         // Adiciona o novo símbolo de definição, se ainda não estiver presente
-        if (!existingSymbols.Contains(symbol))
+        if (!existingSymbols.Split(';').Any(s => s.Trim().Equals(symbol.Trim(), StringComparison.Ordinal)))
         {
             string newSymbols = existingSymbols + ";" + symbol;
             PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, newSymbols);

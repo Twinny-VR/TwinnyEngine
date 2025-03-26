@@ -15,11 +15,11 @@ MonoBehaviour:
   languageName: "Portugu\xEAs BR"
   stringEntries:
   - key: START
-    value: START
-  - key: ANCHOR
-    value: ANCHOR
+    value: COMENZAR
+  - key: ANCLA
+    value: ANCORA
   - key: 'ANCHOR '
-    value: TO ANCHOR
+    value: "POSICI\xD3N"
   - key: ANCHORING
     value: ANCHORING
   - key: VISIT
@@ -31,22 +31,46 @@ MonoBehaviour:
   - key: EXIT
     value: EXIT
   - key: Info
-    value: Dica
+    value: Info
   - key: Error
     value: Error
   - key: '%DISCONECTED_MESSAGE'
-    value: DISCONNECTED! RESTARTING APPLICATION.
+    value: '[DISCONNECTED] The application will restart.'
   - key: DISCONNECTED
     value: DISCONNECTED
   - key: '%BACK_TO_SAFE_AREA'
-    value: Go back inside the SAFE AREA
+    value: Bac to SAFE ARREA to navigate.
   - key: '%CONNECTING_MESSAGE'
-    value: CONNECTING TO SERVER...
+    value: CONNECTING...
   - key: '%LOADING_SCENE'
-    value: LOADING SCENE...
+    value: LOADING...
   - key: '%NO_ANCHOR_MESSAGE'
-    value: YOU ARE NOT ANCHORED!
+    value: NO ANCHORED!
   - key: '%NO_NETWORK_MESSAGE'
-    value: UNABLE TO CONNECT! STARTING OFFLINE EXPERIENCE.
+    value: IMPOSSIBLE TO CONNECT! STARTING IN OFFLINE MODE.
   - key: '%ERROR_MESSAGE'
-    value: UNKNOW ERROR! RESTARTING APPLICATION.
+    value: UNKNOW ERROR! RESTARTING EXPERIENCE
+  - key: '%INSTALL_PLATFORM'
+    value: '{0} Install.'
+  - key: '%INSTALL_PLATFORM_MESSAGE'
+    value: Do you want to install the {0} platform?
+  - key: '%PLATFORM_INSTALLED'
+    value: The platform is already installed. Want to set these platforming scenes
+      in Scene Builder?
+  - key: YES
+    value: Yesy
+  - key: NO
+    value: No
+  - key: '%INSTALL_NETWORK'
+    value: Multiplayer
+  - key: '%INSTALL_NETWORK_MESSAGE'
+    value: Do you want install the Multiplayer Platform?
+  - key: '%INSTALL_NETWORK_NO_FUSION_MESSAGE'
+    value: Fusion 2 is not detected, Do you want install the Multiplayer Platform
+      anyway?
+  - key: Oculus
+    value: Meta Quest
+  - key: Win
+    value: Windows
+  - key: Network
+    value: Multiplayer

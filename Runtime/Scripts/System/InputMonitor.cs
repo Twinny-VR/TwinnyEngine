@@ -80,14 +80,20 @@ namespace Twinny.System
                             break;
 
                         case TouchPhase.Moved:
-                            _isDragging = true;
 
                             float deltaX = touch.position.x - _touchStartX;
                             float deltaY = touch.position.y - _touchStartY;
-                            if (Mathf.Abs(deltaX) > .5f) //Avoid short movments
+                            if (Mathf.Abs(deltaX) > 1.5f) //Avoid short movments
+                            {
+                                _isDragging = true;
                                 CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingHorizontal(deltaX));
-                            if (Mathf.Abs(deltaY) > .5f) //Avoid short movments
+                            }
+                            if (Mathf.Abs(deltaY) > 1.5f) //Avoid short movments
+                            {
+                                _isDragging = true;
                                 CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingVertical(deltaY));
+                            }
+
 
                             break;
 
