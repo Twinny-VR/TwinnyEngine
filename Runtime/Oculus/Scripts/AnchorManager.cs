@@ -283,8 +283,10 @@ namespace Twinny.System
             if (_alignCameraToAnchor != null)
             {
                 // ((Behaviour)_alignCameraToAnchor).enabled = status;
+                Debug.LogWarning("DESTRÓI AlignCameraToAnchor");
                 Destroy(_alignCameraToAnchor);
-            }
+            }else
+                Debug.LogWarning("NÃO ENCONTROU AlignCameraToAnchor");
         }
 
 
