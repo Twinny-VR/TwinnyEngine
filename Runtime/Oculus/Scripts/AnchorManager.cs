@@ -149,6 +149,7 @@ namespace Twinny.System
             _mainCamera = Camera.main.transform;
 
             StartCoroutine(CheckPlayerInSafeArea());
+            Instance.StartCoroutine(Instance.GetAlignCameraToAnchorCoroutine());
         }
 
         // Update is called once per frame
