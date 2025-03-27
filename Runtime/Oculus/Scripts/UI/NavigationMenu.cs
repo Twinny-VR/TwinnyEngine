@@ -1,5 +1,6 @@
 
 using System;
+using System.Data.Common;
 using System.Linq;
 using Twinny.Helpers;
 using Twinny.Localization;
@@ -48,7 +49,13 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             var feature = SceneFeature.Instance as SceneFeatureXR;
 
             if (!feature) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
+
+#if FUSION2 && NETWORK
             _navigationMenu?.SetActive(node && NetworkedLevelManager.IsManager);
+#else
+            _navigationMenu.SetActive(true);    
+#endif
+         
             if (!node) return;
             
             _activeNode = node;
@@ -123,7 +130,11 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
             LandMark landMark = feature.landMarks.FirstOrDefault(lm => lm.node == targetNode);
             int landMarkIndex = Array.IndexOf(feature.landMarks, landMark);
-            NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex);
+#if FUSION2 && NETWORK
+            NetworkedLevelManager.Instance.RPC_NavigateTo(landMarkIndex);
+#else
+            LevelManagerXR.instance.NavigateTo(landMarkIndex);
+#endif
         }
 
         #endregion

@@ -115,14 +115,16 @@ namespace Twinny.XR
 
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose -= OnRecenterDetected;
-            if(NetworkedLevelManager.instance.currentLandMark < 0 
+#if FUSION2 && NETWORK
+
+            if(NetworkedLevelManager.Instance.currentLandMark < 0 
                 && NetworkRunnerHandler.runner.IsConnectedToServer 
                 && NetworkRunnerHandler.runner.SessionInfo != null)
+#endif
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
-
         }
 
-        #endregion
+#endregion
 
         #region Overrided Methods
 
@@ -198,7 +200,7 @@ namespace Twinny.XR
 
                 if (landMarkIndex < 0)//If no LandMark to set, reset skybox to Passthroug
                 {
-                LevelManagerXR.Instance.SetPassthrough(true);
+                LevelManagerXR.instance.SetPassthrough(true);
                     return;
                 }
 
@@ -220,7 +222,7 @@ namespace Twinny.XR
                 currentLandMark = landMark;
             }
 
-            LevelManagerXR.Instance.SetPassthrough(sceneType == SceneType.MR);
+            LevelManagerXR.instance.SetPassthrough(sceneType == SceneType.MR);
 
         }
 
@@ -253,12 +255,18 @@ namespace Twinny.XR
         private void CheckGameMode()
         {
 
+#if FUSION2 && NETWORK
             bool active = (NetworkRunnerHandler.runner.GameMode != Fusion.GameMode.Single);
                 NetworkTransform[] networks = _transform.GetComponentsInChildren<NetworkTransform>();
                 foreach (var item in networks)
                 {
                     item.enabled = active;
                 }
+#else
+        
+            Debug.LogError("[SceneFeatureXR] Error multiplayer system aren't installed.");
+#endif
+
         }
         private async Task RecenterSkyBox()
         {

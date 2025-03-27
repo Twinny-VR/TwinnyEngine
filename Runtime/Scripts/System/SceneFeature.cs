@@ -30,11 +30,13 @@ namespace Twinny.System
 
         protected virtual void SetHDRI(Material hdri)
         {
+#if NETWORK
 
-            if (hdri == null)//If no LandMark to set, reset skybox to original
-                    hdri = LevelManager.Config.defaultSkybox;
-
-                    if (RenderSettings.skybox != hdri)
+            if (hdri == null) hdri = NetworkedLevelManager.Config.defaultSkybox;
+#else
+            if (hdri == null) hdri = LevelManager.Config.defaultSkybox;
+#endif
+            if (RenderSettings.skybox != hdri)
                     {
                         RenderSettings.skybox = hdri;
                         DynamicGI.UpdateEnvironment();

@@ -548,6 +548,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8327702657641564906, guid: c88a3ff1797025c47b4f087d9f8e7160,
+        type: 3}
+      propertyPath: parameter
+      value: OculusMockupScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327702657641564906, guid: c88a3ff1797025c47b4f087d9f8e7160,
+        type: 3}
+      propertyPath: _pointable
+      value: 
+      objectReference: {fileID: 1023553819}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -569,6 +579,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1023553816}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1023553819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7321856189545173065, guid: c88a3ff1797025c47b4f087d9f8e7160,
+    type: 3}
+  m_PrefabInstance: {fileID: 1023553816}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1032441478
 PrefabInstance:
   m_ObjectHideFlags: 0

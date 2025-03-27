@@ -83,7 +83,7 @@ namespace Twinny.System.Network
             if (_runner.IsSceneAuthority)
             {
 
-                NetworkObject network = NetworkedLevelManager.instance.GetComponent<NetworkObject>();
+                NetworkObject network = NetworkedLevelManager.Instance.GetComponent<NetworkObject>();
 
                 if (network.HasStateAuthority == false)
                 {
@@ -97,7 +97,7 @@ namespace Twinny.System.Network
                     await Task.Delay(100);
                 }
 
-                NetworkedLevelManager.instance.RPC_SwitchManager(_runner.LocalPlayer);
+                NetworkedLevelManager.Instance.RPC_SwitchManager(_runner.LocalPlayer);
                 //StartCoroutine(LevelManager.DelayedAction(() =>{}));
             }
             else
@@ -155,7 +155,7 @@ namespace Twinny.System.Network
             Debug.LogWarning($"{runner.ActivePlayers.Count()} ONLINE.");
             if (player == _runner.LocalPlayer)
             {
-                NetworkedLevelManager.instance.GetReady();
+                NetworkedLevelManager.Instance.GetReady();
             }
         }
 
@@ -163,9 +163,9 @@ namespace Twinny.System.Network
         {
 
 
-            Debug.Log($"SAIU:{player} | MODERADOR:{NetworkedLevelManager.instance.manager}");
+            Debug.Log($"SAIU:{player} | MODERADOR:{NetworkedLevelManager.Instance.manager}");
 
-            if (player == NetworkedLevelManager.instance.manager)
+            if (player == NetworkedLevelManager.Instance.manager)
             {
 
                 SwitchModerator();
@@ -183,7 +183,7 @@ namespace Twinny.System.Network
         {
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
-#if OCULUS
+#if OCULUS && NETWORK
             if (LevelManagerXR.Config.tryReconnect)
             {
                 Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!",Twinny.UI.AlertViewHUD.MessageType.Error,10f);
@@ -203,7 +203,7 @@ namespace Twinny.System.Network
         {
             if (SceneManager.sceneCount > 2)//It means the Simulation is running
             {
-                int currentLandMark = NetworkedLevelManager.instance.currentLandMark;
+                int currentLandMark = NetworkedLevelManager.Instance.currentLandMark;
 
                 //TODO Remove before build
                 Debug.LogWarning($"SCENE LOADED {(currentLandMark == -1 ? "without LandMarks" : $"on LandMark{currentLandMark}")}.");

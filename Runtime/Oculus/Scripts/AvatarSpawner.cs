@@ -103,9 +103,12 @@ namespace Twinny
 
         public static async void SpawnAvatar()
         {
-            Debug.LogWarning("[AvatarSpawner] SPAWNING AVATAR");
 
             await Task.Yield();
+            Debug.LogWarning("[AvatarSpawner] SPAWNING AVATAR");
+
+#if FUSION2 && NETWORK
+  
             // TODO Criar um sistema de spawn caso houver para cada plataforma 
             /*
             if (Instance && !Instance._avatar && Instance._spawner != null && Instance._spawner.isActiveAndEnabled)
@@ -138,12 +141,17 @@ namespace Twinny
                                  rig.rightHand.VRTarget = Instance.ikTargetRightHand;
                              }
                          );
-            
+#else
+            Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
+#endif
+
 
         }
 
         public static async void DespawnAvatar()
         {
+#if FUSION2 && NETWORK
+
             Debug.LogWarning($"DESPAWN AVATAR: {avatar}");
             await Task.Yield();
             if (Instance && Instance._avatar)
@@ -151,6 +159,10 @@ namespace Twinny
                 NetworkRunnerHandler.runner.Despawn(Instance._avatar);
                 Instance._avatar = null;
             }
+#else
+            Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
+#endif
+
         }
 
         [ContextMenu("MOUNT")]
@@ -172,7 +184,7 @@ namespace Twinny
                 DespawnAvatar();
 
         }
-        #endregion
+#endregion
 
 
         [ContextMenu("SPAWN")]

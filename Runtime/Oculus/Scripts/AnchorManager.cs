@@ -129,8 +129,9 @@ namespace Twinny.System
         {
             _transform = transform;
             Init();
-
+#if FUSION2 && NETWORK
             NetworkRunnerHandler.OnLoadSceneFeature += AnchorScene; //Anchor always when a new SceneFeature has load
+#endif
         }
         // Start is called before the first frame update
         void Start()
@@ -164,15 +165,16 @@ namespace Twinny.System
             //Unset Delegates
             GestureMonitor.Instance.OnPinchLeft -= OnPinchLeft;
             GestureMonitor.Instance.OnPinchRight -= OnPinchRight;
+#if FUSION2 && NETWORK
             NetworkRunnerHandler.OnLoadSceneFeature -= AnchorScene; 
-
+#endif
             //Unset listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.RemoveListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.RemoveListener(OnAnchorCreateCompleted);
             _spatialAnchorCore.OnAnchorEraseCompleted.RemoveListener(OnAnchorEraseCompleted);
 
         }
-        #endregion
+#endregion
 
 
 
@@ -237,6 +239,8 @@ namespace Twinny.System
 
         public static void SpawnColocation()
         {
+#if FUSION2 && NETWORK
+
             return; //TODO REMOVER
             if (NetworkRunnerHandler.runner.GameMode != GameMode.Single)
             {
@@ -254,6 +258,11 @@ namespace Twinny.System
 
                 Instance.StartCoroutine(Instance.GetAlignCameraToAnchorCoroutine());
             }
+#else
+
+            Debug.LogError("[AnchorManager] Error impossible spawn colocation without a multiplayer system installed.");
+#endif
+
         }
 
         private void RemoveColocation()

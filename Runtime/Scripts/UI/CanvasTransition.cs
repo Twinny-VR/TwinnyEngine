@@ -47,15 +47,17 @@ namespace Twinny.UI
             float startAlpha = Instance. _fadeScreen.alpha;
             float targetAlpha = fadeIn ? 1f : 0f;
             float elapsedTime = 0f;
-
-
+#if NETWORK
+            float fadeTime = NetworkedLevelManager.Config.fadeTime;
+#else
+            float fadeTime = LevelManager.Config.fadeTime;
+#endif
             // Smooth fade progress
-            while (elapsedTime < LevelManager.Config.fadeTime)
+            while (elapsedTime < fadeTime)
             {
-                Instance._fadeScreen.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / LevelManager.Config.fadeTime);
+                Instance._fadeScreen.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
 
                 elapsedTime += Time.deltaTime;
-
                 await Task.Yield();  
             }
 

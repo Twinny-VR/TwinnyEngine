@@ -87,15 +87,18 @@ public class PlatformCheckerEditor : UnityEditor.Editor
 
     public static void AddDefineSymbol(string symbol)
     {
+            BuildTarget currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
 
         // Verifica qual plataforma (target) está sendo usada
-        BuildTargetGroup targetGroup = BuildTargetGroup.Standalone;  // Você pode mudar isso para iOS, Android, etc.
+        BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(currentBuildTarget); 
 
         // Obtém os símbolos de definição existentes para o grupo de construção (por exemplo, Standalone)
         string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
-
+            var symbols = existingSymbols.Split(';');
+            bool hasSymbol = symbols.Select(s => s.Trim()).Any(s => s.Equals(symbol.Trim(), StringComparison.Ordinal));
+            Debug.LogWarning(hasSymbol);
         // Adiciona o novo símbolo de definição, se ainda não estiver presente
-        if (!existingSymbols.Split(';').Any(s => s.Trim().Equals(symbol.Trim(), StringComparison.Ordinal)))
+        if (!hasSymbol)
         {
             string newSymbols = existingSymbols + ";" + symbol;
             PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, newSymbols);

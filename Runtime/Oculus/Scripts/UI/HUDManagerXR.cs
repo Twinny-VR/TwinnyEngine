@@ -10,6 +10,7 @@ using Twinny.System;
 using UnityEngine;
 using Twinny.XR;
 using UnityEngine.SceneManagement;
+using System.Data.Common;
 
 namespace Twinny.UI
 {
@@ -177,7 +178,7 @@ namespace Twinny.UI
             {
                 _extensionMenu = Instantiate(menu, isStatic ? _staticHud.transform : _canvasRoot);
 
-#if FUSION2                
+#if FUSION2 && NETWORK               
                 _extensionMenu.SetActive(NetworkedLevelManager.IsManager);
 #endif 
                 HudElement he = new HudElement();
@@ -289,10 +290,11 @@ namespace Twinny.UI
 
         }
 
-#if FUSION2
         public void OnSwitchManager(int source)
         {
             Debug.LogWarning("Switch Manager chamado no HUDManager!");
+
+#if FUSION2 && NETWORK
 
             if (source == NetworkRunnerHandler.runner.LocalPlayer.PlayerId)
                 AsyncOperationExtensions.CallDelayedAction(() =>
@@ -302,13 +304,16 @@ namespace Twinny.UI
 #if OCULUS
                     var feature = SceneFeature.Instance as SceneFeatureXR;
                     if (feature.enableNavigationMenu)
-                        NavigationMenu.Instance?.SetArrows(feature?.landMarks[NetworkedLevelManager.instance.currentLandMark].node);
+                        NavigationMenu.Instance?.SetArrows(feature?.landMarks[NetworkedLevelManager.Instance.currentLandMark].node);
 #endif
                 }, 500);
+#else
+            
+            Debug.LogError("[HUDManagerXR] Error impossible to connect without a multiplayer system installed.");
+#endif
 
         }
 
-#endif
         public void OnExperienceStarting()
         {
 
@@ -350,7 +355,7 @@ namespace Twinny.UI
                 //TODO Make inactive and fadeout H.U.D
 
                 bool active = true;
-#if FUSION2
+#if FUSION2 && NETWORK
                 active = NetworkedLevelManager.IsManager;
 #endif
 
@@ -393,7 +398,7 @@ namespace Twinny.UI
 #endif
         public void OnPlatformInitialize()
         {
-#if OCULUS
+#if OCULUS && NETWORK
             AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
 #endif
         }

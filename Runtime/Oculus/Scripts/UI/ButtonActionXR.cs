@@ -15,7 +15,6 @@ namespace Twinny.UI
     public class ButtonActionXR : MonoBehaviour
     {
         public ButtonType type;
-public string name;
         [SerializeField] private PointableUnityEventWrapper _pointable;
         [SerializeField] private Button _button;
 #if UNITY_EDITOR
@@ -66,10 +65,18 @@ public string name;
                     LevelManagerXR.QuitExperience();
                     break;
                 case ButtonType.CHANGE_SCENE:
-                        LevelManagerXR.instance.RPC_ChangeScene(parameter, landMarkIndex);
+#if FUSION2 && NETWORK
+LevelManagerXR.instance.RPC_ChangeScene(parameter, landMarkIndex);
+#else
+                    _ = LevelManagerXR.instance.ChangeScene(parameter, landMarkIndex);
+#endif
                     break;
                 case ButtonType.NAVIGATION:
+#if FUSION2 && NETWORK
                     LevelManagerXR.instance.RPC_NavigateTo(landMarkIndex);
+#else
+                    LevelManagerXR.instance.NavigateTo(landMarkIndex);
+#endif
                     break;
                 case ButtonType.ACTION:
                     ActionManager.CallAction(parameter);

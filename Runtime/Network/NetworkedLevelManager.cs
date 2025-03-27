@@ -5,6 +5,7 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Network;
 using Twinny.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,13 +19,14 @@ namespace Twinny.System
 
         #region Singleton Instance
         private static NetworkedLevelManager _instance;
-        public static NetworkedLevelManager instance { get { return _instance; } }
+        public static NetworkedLevelManager Instance { get { return _instance; } }
         #endregion
 
         #region Fields
 
-        [SerializeField] public TwinnyRuntime config;// { get; set; }
-        
+        [SerializeField] public TwinnyRuntime config;
+        public static NetworkRuntime Config { get => Instance.config as NetworkRuntime; }
+
         protected NetworkObject _networkObject;
 
         [Space]
@@ -32,7 +34,7 @@ namespace Twinny.System
 
 
         [SerializeField] protected bool _isManager = false;
-        public static bool IsManager { get => instance._isManager; }
+        public static bool IsManager { get => Instance._isManager; }
         [Networked] public PlayerRef manager { get; set; } = PlayerRef.None;
 
         [Networked] public int currentLandMark { get; set; } = -1;
@@ -47,6 +49,34 @@ namespace Twinny.System
         public static bool isRunning = false;
 
         #region MonoBehaviour Methods
+
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (AssetDatabase.IsValidFolder("Resources"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Resources");
+            }
+
+            string fileName = "RuntimeXRPreset.asset";
+            string assetPath = "Assets/Resources/" + fileName;
+            NetworkRuntime preset = AssetDatabase.LoadAssetAtPath<NetworkRuntime>(assetPath);
+
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<NetworkRuntime>();
+                AssetDatabase.CreateAsset(preset, assetPath);
+                AssetDatabase.SaveAssets();
+                Debug.Log("Novo preset 'RuntimeXRPreset' criado e salvo em: " + assetPath);
+            }
+
+            config = AssetDatabase.LoadAssetAtPath<NetworkRuntime>(assetPath);
+
+
+
+        }
+#endif
 
         //Awake is called before the script is started
         protected virtual void Awake()
@@ -85,8 +115,8 @@ namespace Twinny.System
 
         public static void SetOwner(NetworkRunner runner)
         {
-            if (instance._networkObject != null)
-                instance._networkObject.SetPlayerAlwaysInterested(runner.LocalPlayer, true);
+            if (Instance._networkObject != null)
+                Instance._networkObject.SetPlayerAlwaysInterested(runner.LocalPlayer, true);
 
         }
 
@@ -100,18 +130,18 @@ namespace Twinny.System
 
         public static void StartExperience(string scene, int landMarkIndex)
         {
-            instance._isManager = true;
+            Instance._isManager = true;
 
 
 
-            instance.RPC_StartForAll(NetworkRunnerHandler.runner.LocalPlayer, scene, landMarkIndex);
+            Instance.RPC_StartForAll(NetworkRunnerHandler.runner.LocalPlayer, scene, landMarkIndex);
         }
 
         [ContextMenu("Quit Experience")]
         public static void QuitExperience()
         {
-            instance._isManager = false;
-            instance.RPC_StartForAll(PlayerRef.None, "PlatformScene");
+            Instance._isManager = false;
+            Instance.RPC_StartForAll(PlayerRef.None, "PlatformScene");
         }
 
         public virtual async Task ResetExperience()

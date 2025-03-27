@@ -46,7 +46,7 @@ namespace Twinny.System.Network
                 else
                     await NetworkRunnerHandler.runner.LoadScene(scene as string, LoadSceneMode.Additive);
 
-                NetworkedLevelManager.instance.RPC_NavigateTo(landMarkIndex, false);
+                NetworkedLevelManager.Instance.RPC_NavigateTo(landMarkIndex, false);
             }else
             if (scene is string name)
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));

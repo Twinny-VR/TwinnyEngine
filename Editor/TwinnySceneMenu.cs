@@ -189,7 +189,12 @@ namespace Twinny.Editor
                     }
                 }
                 else
-                    Debug.LogError($"Directory not found: {path}");
+                if (Directory.Exists(newPath) && (Directory.GetFiles(newPath).Length > 0 || Directory.GetDirectories(newPath).Length > 0))
+                {
+                        PlatformCheckerEditor.AddDefineSymbol(platform.ToUpper());
+                }
+                else
+                Debug.LogError($"Directory not found: {path}");
 
 #if FUSION2 && !NETWORK
               if(platform != "Network") InstallPlatform("Network");
@@ -211,9 +216,6 @@ namespace Twinny.Editor
                 {
                     Directory.Move(path, path + '~');
                     AssetDatabase.Refresh();
-
-                    PlatformCheckerEditor.RemoveDefineSymbol(platform.ToUpper());
-
                 }
                 catch (Exception e)
                 {
@@ -222,6 +224,9 @@ namespace Twinny.Editor
             }
             else
                 Debug.LogError($"Directory not found: {path}");
+
+            PlatformCheckerEditor.RemoveDefineSymbol(platform.ToUpper());
+
 
         }
 

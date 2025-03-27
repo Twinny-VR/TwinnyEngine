@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 namespace Twinny.System
 {
 
-    public class LevelManager : TSingleton<LevelManager>
+    public abstract class LevelManager : TSingleton<LevelManager>
     {
         #region Fields
 
@@ -55,7 +55,7 @@ namespace Twinny.System
         }
 #endif
 
-        void Awake()
+        protected virtual void Awake()
         {
 
             config = Resources.Load<MultiPlatformRuntime>("MultiPlatformRuntimePreset");
@@ -69,7 +69,7 @@ namespace Twinny.System
 
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             Init();
             TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
@@ -88,12 +88,16 @@ namespace Twinny.System
 
         }
 
+
         #endregion
 
         #region Public Methods
 
+        public static void StartExperience(string scene, int landMarkIndex) { }
+        public static void QuitExperience() { }
+        public virtual void GetReady() { }
 
-        public async Task ResetExperience()
+        public virtual async Task ResetExperience()
         {
             OnExperienceFinished?.Invoke();
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
@@ -102,6 +106,9 @@ namespace Twinny.System
 
             SceneManager.LoadScene(0);
         }
+
+
+        public virtual void ResetApplication() { }
 
         /// <summary>
         /// This Async Method changes the actual scene.
@@ -218,7 +225,7 @@ namespace Twinny.System
 
         private void OnPlatformInitialized(Platform platform)
         {
-            if (Config.autoStart)
+            if ((config as MultiPlatformRuntime).autoStart)
             {
                 _ = ChangeScene(2, 0);
             }
