@@ -267,7 +267,6 @@ namespace Twinny.System
 
         private void RemoveColocation()
         {
-            return; //TODO REMOVER
 
             if (_colocation != null)
             {

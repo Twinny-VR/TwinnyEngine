@@ -37,7 +37,7 @@ namespace Twinny.UI
         [SerializeField] private Transform _canvasRoot;
         [SerializeField] private GameObject _configMenu;
         [SerializeField] private GameObject _mainMenu;
-        [SerializeField] private Transform _mainMenu2;
+       // [SerializeField] private Transform _mainMenu2;
         private GameObject _extensionMenu;
         [Space]
         [Tooltip("Ângulo limite de visão até iniciar rotação.")]

@@ -276,7 +276,6 @@ MonoBehaviour:
   _canvasRoot: {fileID: 1103088873}
   _configMenu: {fileID: 1267021301}
   _mainMenu: {fileID: 1023553818}
-  _mainMenu2: {fileID: 1023553817}
   _dynamicTreesholdAngle: 30
   _dynamicRotationSpeed: 0.5
   _navigationHud: {fileID: 595027943}
