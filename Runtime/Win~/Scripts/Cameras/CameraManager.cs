@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Threading.Tasks;
+#if WIN
 using Cinemachine;
+#endif
 using Twinny.Helpers;
 using Twinny.UI;
 using UnityEditor;
@@ -19,7 +21,7 @@ namespace Twinny.System.Cameras
         PAN = 3,
     }
 
-
+#if WIN
     public class CameraManager : TSingleton<CameraManager>
     {
 
@@ -444,4 +446,5 @@ namespace Twinny.System.Cameras
 
     }
 
+#endif
 }

@@ -233,12 +233,13 @@ namespace Twinny.Editor
 
 
 
-
+#if WIN
         [MenuItem("Twinny/Platforms/Create Multi-Platform Preset")]
         public static void CreatePreset()
         {
             CreateRuntimePreset<MultiPlatformRuntime>();
         }
+#endif
         private static void SetPlatformScenes(string platform)
         {
             var newScenes = new List<EditorBuildSettingsScene>();

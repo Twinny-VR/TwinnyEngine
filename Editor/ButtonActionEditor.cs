@@ -25,6 +25,7 @@ public class ButtonActionXREditor : Editor
 }
 #endif
 
+#if WIN
 [CustomEditor(typeof(ButtonAction))]
 public class ButtonActionEditor : Editor
 {
@@ -43,4 +44,5 @@ public class ButtonActionEditor : Editor
 
     }
 }
+#endif
 #endif

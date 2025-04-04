@@ -1,3 +1,4 @@
+#if WIN
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -185,3 +186,4 @@ namespace Twinny.System.Cameras
         }
     }
 }
+#endif

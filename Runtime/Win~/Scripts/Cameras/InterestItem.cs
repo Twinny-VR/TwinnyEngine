@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+#if WIN
 using Cinemachine;
+#endif
 using Twinny.UI;
 using UnityEngine;
 
@@ -37,8 +39,10 @@ namespace Twinny.System.Cameras
         public float zoomSpeedMultiply = 1f;
 
         public bool overrideCameraBlend;
+#if WIN
         [ShowIf("overrideCameraBlend")]
         public CinemachineBlendDefinition cameraBlend = new CinemachineBlendDefinition();
+#endif
 
 
         #region MonoBehaviour Methods
@@ -50,7 +54,7 @@ namespace Twinny.System.Cameras
         }
 
 #endif
-        #endregion
+#endregion
 
     }
 }

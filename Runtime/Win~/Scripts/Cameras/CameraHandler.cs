@@ -1,3 +1,4 @@
+#if WIN
 using System.Collections;
 using Cinemachine;
 using UnityEngine;
@@ -574,3 +575,4 @@ namespace Twinny.System.Cameras
 
     }
 }
+#endif
