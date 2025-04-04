@@ -56,10 +56,7 @@ namespace Twinny.System.Cameras
 
         #endregion
 
-        [SerializeField] private CameraRuntime _config;
-        public static CameraRuntime config { get => Instance?._config; }
 
-        private CinemachineBrain _brain;
         public static CinemachineBrain brain { get => Instance?._brain; }
 
 
@@ -72,9 +69,14 @@ namespace Twinny.System.Cameras
         [SerializeField] private CameraHandler _panoramicCamera;
         [SerializeField] private CameraHandler _thirdCamera;
 
+        [DrawScriptable]
+        [SerializeField] private CameraRuntime _config;
+        public static CameraRuntime config { get => Instance?._config; }
+
         private InterestItem _defaultCentralSensor;
 
         private Coroutine _standbyCor;
+        private CinemachineBrain _brain;
         /*
         private bool _isInStandby = false;
         public bool isInStandBy { get => _isInStandby; }

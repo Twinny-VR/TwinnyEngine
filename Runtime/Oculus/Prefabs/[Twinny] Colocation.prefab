@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f308c8f0-7a4b-4cd5-88be-c15b6399f823
-  instanceId: 1bca429b-5c19-4e14-98e4-c87e35a6d624
+  instanceId: 689d4228-120d-47f9-a25a-908a5e141624
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 7ea39360-e3ed-49ba-8b87-3a3427ae198c
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5341884faf77134c9c8e8100118da82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorPrefab: {fileID: 789684486510353890, guid: 7bb99bae43340ec42a7758574227b075,
+  anchorPrefab: {fileID: 1978002011806910258, guid: a6c7bad9126cbca4e92c7b76ea14ab33,
     type: 3}
   networkData: {fileID: 4474698270072562414}
   networkMessenger: {fileID: 3898924489655455839}

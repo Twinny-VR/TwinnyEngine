@@ -26,9 +26,9 @@ namespace Twinny
         [VectorLabels("Min","Max","Radius")] public Vector3 fpsYawRange = new Vector3(100f,600f,600f);
         [SerializeField] public float fpsYawSpeedMultiply = 1f;
         [SerializeField] public float navigationSpeed = 10f;
-        [SerializeField] public float navigationangularSpeed = 12f;
-        [SerializeField] public float navigationAcceleration = 3f;
-        [SerializeField] public float navigationDistanceMax = 20f;
+        [SerializeField] public float navigationangularSpeed = 20f;
+        [SerializeField] public float navigationAcceleration = 100f;
+        [SerializeField] public float navigationMaxDistance = 20f;
         [SerializeField] public GameObject hitPointPrefab;
 
         [Header("FPS Camera Blend")]

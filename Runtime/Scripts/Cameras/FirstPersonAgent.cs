@@ -77,8 +77,7 @@ namespace Twinny.System.Cameras
                 Debug.LogWarning("CHEGOU!");
             }
 
-            if(_navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance < .25f) 
-                Debug.LogWarning("CHEGANDO!");
+            //if(_navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance < .25f) Debug.LogWarning("CHEGANDO!");
 
         }
         /*
@@ -146,7 +145,7 @@ namespace Twinny.System.Cameras
 
                 float distance = Vector3.Distance(transform.position, navMeshPosition);
 
-                if (distance < config.navigationDistanceMax)
+                if (distance < config.navigationMaxDistance)
                     NavigateTo(navMeshPosition);
 
 

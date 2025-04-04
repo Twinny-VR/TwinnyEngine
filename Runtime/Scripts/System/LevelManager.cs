@@ -15,7 +15,7 @@ namespace Twinny.System
     public abstract class LevelManager : TSingleton<LevelManager>
     {
         #region Fields
-
+        [DrawScriptable]
         [SerializeField] public TwinnyRuntime config;
         public static MultiPlatformRuntime Config { get { return Instance.config as MultiPlatformRuntime; } }
 
@@ -176,20 +176,18 @@ namespace Twinny.System
         /// <param name="sceneIndex">Scene name</param>
         /// <param name="landMarkIndex">LandMark in scene</param>
         /// <returns></returns>
-        public static async Task LoadAdditiveSceneAsync(object scene)
+        public virtual async Task LoadAdditiveSceneAsync(object scene)
         {
             await Task.Delay(500); // Similar "yield return new WaitForSeconds(.5f)"
 
             await UnloadAdditivesScenes();
-
-
             if (scene is string name)
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive));
             else
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene, LoadSceneMode.Additive));
         }
 
-        public static async Task UnloadAdditivesScenes()
+        public virtual async Task UnloadAdditivesScenes()
         {
             await Task.Delay(500); // Similar "yield return new WaitForSeconds(.5f)"
 
@@ -218,7 +216,7 @@ namespace Twinny.System
         }
 
 
-        #endregion
+#endregion
 
 
         #region CallBack Methods

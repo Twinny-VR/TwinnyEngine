@@ -19,8 +19,6 @@ namespace Twinny.XR
     {
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
-        public string maquete;
-        public string decorado;
 
         public static RuntimeXR Config { get { return Instance.config as RuntimeXR; } }
 
@@ -183,7 +181,7 @@ namespace Twinny.XR
         [ContextMenu("INICIAR")]
         public void Iniciar()
         {
-            StartExperience(maquete, -1);
+            StartExperience("OculusMockupScene", -1);
         }
 
 
@@ -191,7 +189,7 @@ namespace Twinny.XR
         public void Visitar()
         {
 
-            RPC_ChangeScene(decorado, 0);
+            RPC_ChangeScene("HallScene", 0);
         }
 
 #endif

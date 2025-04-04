@@ -45,6 +45,7 @@ namespace Twinny.System
             {
 
 #if OCULUS
+                
                 if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
                 {
 

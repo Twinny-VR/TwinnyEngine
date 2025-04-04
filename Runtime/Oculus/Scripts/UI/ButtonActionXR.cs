@@ -5,7 +5,7 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 
 namespace Twinny.UI
@@ -16,7 +16,6 @@ namespace Twinny.UI
     {
         public ButtonType type;
         [SerializeField] private PointableUnityEventWrapper _pointable;
-        [SerializeField] private Button _button;
 #if UNITY_EDITOR
         [HideInInspector] public bool showParameter;
         [ShowIf("showParameter")]
@@ -47,7 +46,8 @@ namespace Twinny.UI
 
 
         #endregion
-        [ContextMenu("CLICK")]
+        //[ContextMenu("CLICK")]
+
         public void OnRelease()
         {
             //TODO Criar um sistema de configurações

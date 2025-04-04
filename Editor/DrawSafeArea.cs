@@ -20,7 +20,6 @@ namespace Twinny.Editor
             {
                 // Posição no chão (ajustando o Y para 0)
                 Vector3 position = landMarkNode.transform.position;
-                position.y = 0f;
 
                 // Tamanho do retângulo
                 Vector3 size = new Vector3(2.5f, 0f, 1.5f);

@@ -1,8 +1,12 @@
 #if UNITY_EDITOR
+using System;
+using System.Collections;
 using System.Reflection;
 using Twinny.UI;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Twinny.Editor
 {
@@ -64,7 +68,7 @@ namespace Twinny.Editor
             ShowIfAttribute hideIf = attribute as ShowIfAttribute;
             SerializedProperty conditionProperty =
                 property.FindPropertyRelative(hideIf.condition);
-                //property.serializedObject.FindProperty(hideIf.condition);
+            //property.serializedObject.FindProperty(hideIf.condition);
             // If it wasn't found relative to the property, check siblings.
             if (null == conditionProperty)
             {
@@ -101,89 +105,126 @@ namespace Twinny.Editor
 
 
     }
-        /*
-            public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    /*
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+
+
+            var showIfAttribute = (ShowIfAttribute)attribute;
+
+            var conditionProperty = property.serializedObject.FindProperty(showIfAttribute.condition);
+
+            if (conditionProperty != null)
             {
-
-
-                var showIfAttribute = (ShowIfAttribute)attribute;
-
-                var conditionProperty = property.serializedObject.FindProperty(showIfAttribute.condition);
-
-                if (conditionProperty != null)
+                // Se for do tipo bool
+                if (conditionProperty.propertyType == SerializedPropertyType.Boolean)
                 {
-                    // Se for do tipo bool
-                    if (conditionProperty.propertyType == SerializedPropertyType.Boolean)
+                    if (!conditionProperty.boolValue)
                     {
-                        if (!conditionProperty.boolValue)
-                        {
-                            return;  // Não desenha a propriedade se a condição booleana for falsa
-                        }
+                        return;  // Não desenha a propriedade se a condição booleana for falsa
                     }
                 }
+            }
 
-                // Se for um objeto ou struct, precisamos "expandir" o conteúdo
-                if (property.propertyType == SerializedPropertyType.ObjectReference || property.propertyType == SerializedPropertyType.Generic)
-                {
-                    Debug.LogWarning($"{property.name} StartY: {position.y}");
+            // Se for um objeto ou struct, precisamos "expandir" o conteúdo
+            if (property.propertyType == SerializedPropertyType.ObjectReference || property.propertyType == SerializedPropertyType.Generic)
+            {
+                Debug.LogWarning($"{property.name} StartY: {position.y}");
 
-                    Color originalColor = GUI.color;
+                Color originalColor = GUI.color;
 
-                    GUIStyle boldLabelStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
+                GUIStyle boldLabelStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
 
-                    GUI.Label(new Rect(position.x, position.y, position.width, 16f), property.displayName + ":", boldLabelStyle); // Aplica a label com o estilo
-                    position.y += 16f;
+                GUI.Label(new Rect(position.x, position.y, position.width, 16f), property.displayName + ":", boldLabelStyle); // Aplica a label com o estilo
+                position.y += 16f;
 
-                    var y = DrawStructFields(position, property);
-
-
-                    Debug.LogWarning($"{property.name} Height: {y}");
-                    position.y = y + 16f;
-
-                    Debug.LogWarning($"{property.name} FinalY: {position.y}");
-
-                }
-                else
-                {
-                    // Caso a propriedade não seja um objeto, desenha normalmente
-                    EditorGUI.PropertyField(position, property, label);
-                    position.y += EditorGUI.GetPropertyHeight(property, true);
-                }
+                var y = DrawStructFields(position, property);
 
 
-                // Se a condição for atendida, desenha a propriedade normalmente
-                //  EditorGUI.PropertyField(position, property, label);
+                Debug.LogWarning($"{property.name} Height: {y}");
+                position.y = y + 16f;
+
+                Debug.LogWarning($"{property.name} FinalY: {position.y}");
+
+            }
+            else
+            {
+                // Caso a propriedade não seja um objeto, desenha normalmente
+                EditorGUI.PropertyField(position, property, label);
+                position.y += EditorGUI.GetPropertyHeight(property, true);
             }
 
 
-            private float DrawStructFields(Rect position, SerializedProperty property)
-            {
-                // Desenha os campos internos de uma struct
-                if (property.hasChildren)
-                {
-                    SerializedProperty iterator = property.Copy();
-                    iterator.NextVisible(true);  // Avança para o primeiro campo
-
-                    bool first = true;
-
-                    // Itera por todos os campos visíveis e os desenha
-                    while (iterator.NextVisible(first))
-                    {
-                        first = false;
-
-                        Rect newPosition = new Rect(position.x, position.y, position.width, EditorGUI.GetPropertyHeight(iterator, true));
-                        EditorGUI.PropertyField(newPosition, iterator, true);
-                        position.y += 100f;
-                    }
-
-                }
-                return position.y;
-            }
-
+            // Se a condição for atendida, desenha a propriedade normalmente
+            //  EditorGUI.PropertyField(position, property, label);
         }
-        */
 
-        [CustomPropertyDrawer(typeof(SubPanelAttribute))]
+
+        private float DrawStructFields(Rect position, SerializedProperty property)
+        {
+            // Desenha os campos internos de uma struct
+            if (property.hasChildren)
+            {
+                SerializedProperty iterator = property.Copy();
+                iterator.NextVisible(true);  // Avança para o primeiro campo
+
+                bool first = true;
+
+                // Itera por todos os campos visíveis e os desenha
+                while (iterator.NextVisible(first))
+                {
+                    first = false;
+
+                    Rect newPosition = new Rect(position.x, position.y, position.width, EditorGUI.GetPropertyHeight(iterator, true));
+                    EditorGUI.PropertyField(newPosition, iterator, true);
+                    position.y += 100f;
+                }
+
+            }
+            return position.y;
+        }
+
+    }
+    */
+
+
+    [CustomPropertyDrawer(typeof(CustomButtonAttribute))]
+    public class CustomButtonPropertyDrawer : PropertyDrawer
+    {
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            base.OnGUI(position, property, label); // Desenha o campo padrão (se houver)
+
+            // Verifique se o campo é uma string que contém o nome do método
+            if (property.propertyType == SerializedPropertyType.String)
+            {
+                string methodName = property.stringValue;
+
+                // Desenha o botão no Inspector
+                if (GUI.Button(new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, 20), "Clique para Ação"))
+                {
+                    var targetObject = property.serializedObject.targetObject;
+                    var method = targetObject.GetType().GetMethod(methodName);
+
+                    if (method != null)
+                    {
+                        // Chama o método
+                        method.Invoke(targetObject, null);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Método não encontrado: " + methodName);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
+    [CustomPropertyDrawer(typeof(SubPanelAttribute))]
     public class SubPanelPropertyDrawer : PropertyDrawer
     {
 
@@ -277,31 +318,31 @@ namespace Twinny.Editor
         public static float spaceAfterSubPanelTitle = 5f;
 
 
-            /// <summary>
-            /// Gets the parent property of a SerializedProperty
-            /// </summary>
-            /// <param name="property"></param>
-            /// <returns></returns>
-            public static SerializedProperty GetParent(this SerializedProperty property)
+        /// <summary>
+        /// Gets the parent property of a SerializedProperty
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static SerializedProperty GetParent(this SerializedProperty property)
+        {
+            var segments = property.propertyPath.Split(new char[] { '.' });
+            SerializedProperty matchedProperty = property.serializedObject.FindProperty(segments[0]);
+            for (int i = 1; i < segments.Length - 1 && null != matchedProperty; i++)
             {
-                var segments = property.propertyPath.Split(new char[] { '.' });
-                SerializedProperty matchedProperty = property.serializedObject.FindProperty(segments[0]);
-                for (int i = 1; i < segments.Length - 1 && null != matchedProperty; i++)
-                {
-                    matchedProperty = matchedProperty.FindPropertyRelative(segments[i]);
-                }
-
-                return matchedProperty;
+                matchedProperty = matchedProperty.FindPropertyRelative(segments[i]);
             }
 
-            public static T GetAttribute<T>(this SerializedProperty property) where T : PropertyAttribute
+            return matchedProperty;
+        }
+
+        public static T GetAttribute<T>(this SerializedProperty property) where T : PropertyAttribute
         {
             var fieldInfo = property.serializedObject.targetObject.GetType().GetField(property.name);
             return fieldInfo?.GetCustomAttribute<T>();
         }
     }
 
-  
+
 }
 
 #endif

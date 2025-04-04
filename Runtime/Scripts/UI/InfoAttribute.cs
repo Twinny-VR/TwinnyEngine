@@ -7,6 +7,11 @@ namespace Twinny.UI
 {
 
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+    public class DrawScriptableAttribute : PropertyAttribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 
     public class InfoAttribute : PropertyAttribute
     {
@@ -75,6 +80,17 @@ namespace Twinny.UI
         public VectorLabelsAttribute(params string[] labels)
         {
             Labels = labels;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public class CustomButtonAttribute : PropertyAttribute
+    {
+        public string caption;
+
+        public CustomButtonAttribute(string caption)
+        {
+            this.caption = caption;
         }
     }
 }

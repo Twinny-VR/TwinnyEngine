@@ -105,19 +105,25 @@ namespace Twinny
         {
 
             await Task.Yield();
-            Debug.LogWarning("[AvatarSpawner] SPAWNING AVATAR");
 
 #if FUSION2 && NETWORK
-  
-            // TODO Criar um sistema de spawn caso houver para cada plataforma 
-            /*
-            if (Instance && !Instance._avatar && Instance._spawner != null && Instance._spawner.isActiveAndEnabled)
-            {
-                Instance._spawner.SpawnCharacter();
-                AnchorManager.Recolocation();
-            }
-            */
 
+            if (Instance)
+            {
+                Debug.LogWarning($"[AvatarSpawner] SPAWNING AVATAR {Instance._avatar}");
+                if (Instance._avatar != null)
+                {
+                    DespawnAvatar();
+                }
+                // TODO Criar um sistema de spawn caso houver para cada plataforma 
+                if (!Instance._avatar && Instance._spawner != null && Instance._spawner.isActiveAndEnabled)
+                {
+                    Instance._spawner.SpawnCharacter();
+                    AnchorManager.Recolocation();
+                }
+            }
+
+            /*
            // GameObject prefab = LoadPrefabByGUID("347323ae3c4a7154883956a3769e9e53");
 
             if(LevelManagerXR.Config == null || LevelManagerXR.Config.avatarPrefab == null)
@@ -141,8 +147,9 @@ namespace Twinny
                                  rig.rightHand.VRTarget = Instance.ikTargetRightHand;
                              }
                          );
-#else
-            Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
+*/
+#else 
+            Debug.LogError("[AvatarSpawner] Error impossible to spawn character without a multiplayer system installed.");
 #endif
 
 
@@ -150,15 +157,16 @@ namespace Twinny
 
         public static async void DespawnAvatar()
         {
+            Debug.LogWarning($"DESPAWN AVATAR: {avatar}");
 #if FUSION2 && NETWORK
 
-            Debug.LogWarning($"DESPAWN AVATAR: {avatar}");
             await Task.Yield();
             if (Instance && Instance._avatar)
             {
                 NetworkRunnerHandler.runner.Despawn(Instance._avatar);
-                Instance._avatar = null;
+                Destroy(Instance._avatar.gameObject);
             }
+
 #else
             Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
 #endif
@@ -169,7 +177,7 @@ namespace Twinny
         private void OnHMDMounted()
         {
             var feature = SceneFeature.Instance as SceneFeatureXR;
-            Debug.LogWarning("[AvatarSpawner] OnHMDMounted event. "+ feature?.sceneType);
+            Debug.LogWarning("[AvatarSpawner] OnHMDMounted event. " + feature?.sceneType);
 
             if (feature && feature.sceneType == SceneType.VR)
                 SpawnAvatar();
@@ -184,7 +192,7 @@ namespace Twinny
                 DespawnAvatar();
 
         }
-#endregion
+        #endregion
 
 
         [ContextMenu("SPAWN")]
@@ -215,7 +223,7 @@ namespace Twinny
             {
                 Debug.LogWarning($"[AvatarSpawner] Prefab not found by GUID: {guid}");
             }
-                return prefab;
+            return prefab;
         }
 #endif
 

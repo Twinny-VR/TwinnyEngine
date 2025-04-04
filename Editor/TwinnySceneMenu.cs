@@ -207,6 +207,7 @@ namespace Twinny.Editor
         public static void UninstallPlatform(string platform)
         {
 
+            PlatformCheckerEditor.RemoveDefineSymbol(platform.ToUpper());
 
             string path = $"Packages/com.twinny.twe25/Runtime/{platform}";
             if (Directory.Exists(path))
@@ -225,7 +226,6 @@ namespace Twinny.Editor
             else
                 Debug.LogError($"Directory not found: {path}");
 
-            PlatformCheckerEditor.RemoveDefineSymbol(platform.ToUpper());
 
 
         }
