@@ -58,7 +58,7 @@ namespace Twinny.System
         private GameObject _colocation;
 
         [Tooltip("Width/Height")]
-        [SerializeField] private Vector2 _safeAreaSize = LevelManagerXR.Config.safeAreaSize;
+        [SerializeField] private Vector2 _safeAreaSize;
 
         [SerializeField]
         private StateAnchorManager _stateAnchorManager = StateAnchorManager.DISABLED;
@@ -136,6 +136,8 @@ namespace Twinny.System
         // Start is called before the first frame update
         void Start()
         {
+            _safeAreaSize = LevelManagerXR.Config.safeAreaSize;
+
             //Set callbacks listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.AddListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.AddListener(OnAnchorCreateCompleted);

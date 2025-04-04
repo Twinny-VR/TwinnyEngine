@@ -20,7 +20,7 @@ namespace Twinny.XR
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
 
-        public static RuntimeXR Config { get { return Instance.config as RuntimeXR; } }
+        public static new RuntimeXR Config { get { return Instance.config as RuntimeXR; } }
 
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
