@@ -53,6 +53,8 @@ namespace Twinny
             Init();
             if (!_spawner) _spawner = GetComponent<NetworkPoseRetargeterSpawnerFusion>();
 
+            _spawner.PoseRetargeterPrefabs[0] = LevelManagerXR.Config.avatarPrefab;
+
             if (_spawnAtStart) SpawnAvatar();
 
         }

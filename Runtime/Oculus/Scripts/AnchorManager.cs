@@ -58,7 +58,7 @@ namespace Twinny.System
         private GameObject _colocation;
 
         [Tooltip("Width/Height")]
-        [SerializeField] private Vector2 _safeAreaSize = new Vector2(2.5f, 1.5f);
+        [SerializeField] private Vector2 _safeAreaSize = LevelManagerXR.Config.safeAreaSize;
 
         [SerializeField]
         private StateAnchorManager _stateAnchorManager = StateAnchorManager.DISABLED;

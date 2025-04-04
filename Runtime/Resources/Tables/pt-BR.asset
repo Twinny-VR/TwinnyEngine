@@ -15,11 +15,11 @@ MonoBehaviour:
   languageName: "Portugu\xEAs BR"
   stringEntries:
   - key: START
-    value: COMENZAR
+    value: INICIAR
   - key: ANCLA
     value: ANCORA
   - key: 'ANCHOR '
-    value: "POSICI\xD3N"
+    value: POSICIONAR
   - key: ANCHORING
     value: ANCORAR
   - key: VISIT

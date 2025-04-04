@@ -17,6 +17,8 @@ public class RuntimeXR : TwinnyRuntime
     {
         [SerializeField]
         public bool allowClickSafeAreaOutside = false;
+        [SerializeField]
+        public Vector2 safeAreaSize = new Vector2(2.5f, 1.5f);
 
     }
 }

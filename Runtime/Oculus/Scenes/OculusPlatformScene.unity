@@ -8962,7 +8962,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _poseRetargeterPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 2620253625609888165, guid: 650b3cfb9359f154c84959581c5836cf,
+      objectReference: {fileID: 8802812937295967422, guid: e5fb24c66c67df84ca7ecebaa1dff50d,
         type: 3}
     - target: {fileID: 7931885083490107276, guid: 90fe9b31884fb3a4d8d6112165f8035f,
         type: 3}
@@ -25135,7 +25135,7 @@ PrefabInstance:
     - target: {fileID: 3023293665838317920, guid: 61dce152cc3e2c2428dcebe48b7b901e,
         type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4443164049864806497, guid: 61dce152cc3e2c2428dcebe48b7b901e,
         type: 3}
