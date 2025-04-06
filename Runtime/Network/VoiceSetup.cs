@@ -1,4 +1,3 @@
-#if OCULUS && FUSION2 && PHOTON_VOICE_DEFINED 
 using UnityEngine;
 using Meta.XR.MultiplayerBlocks.Fusion;
 
@@ -100,4 +99,3 @@ namespace Twinny.System.Network
         }
     }
 }
-#endif 

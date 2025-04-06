@@ -1,7 +1,5 @@
-#if FUSION2
 using Fusion;
 using Twinny.System.Network;
-#endif
 using System;
 using System.Collections;
 using Twinny.Helpers;
@@ -77,10 +75,8 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
-#if OCULUS
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
             _banner.transform.SetParent(AnchorManager.Instance.transform);
-#endif
             CallBackUI.RegisterCallback(this);
 
             _mainCameraTransform = Camera.main.transform;
@@ -109,9 +105,7 @@ namespace Twinny.UI
 
         private void OnDisable()
         {
-#if OCULUS
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
-#endif
             CallBackUI.UnregisterCallback(this);
         }
         #endregion
@@ -178,9 +172,7 @@ namespace Twinny.UI
             {
                 _extensionMenu = Instantiate(menu, isStatic ? _staticHud.transform : _canvasRoot);
 
-#if FUSION2 && NETWORK               
                 _extensionMenu.SetActive(NetworkedLevelManager.IsManager);
-#endif 
                 HudElement he = new HudElement();
                 he.key = menu.name;
                 he.element = _extensionMenu;
@@ -268,17 +260,13 @@ namespace Twinny.UI
         #region UI Buttons Actions
         public void HandleAnchor()
         {
-#if OCULUS
 
             AnchorManager.HandleAnchorPlacement();
-#endif
         }
 
         public void CreateAnchor()
         {
-#if OCULUS
             AnchorManager.CreateAnchor();
-#endif
         }
 
         #endregion
@@ -294,23 +282,18 @@ namespace Twinny.UI
         {
             Debug.LogWarning("Switch Manager chamado no HUDManager!");
 
-#if FUSION2 && NETWORK
 
             if (source == NetworkRunnerHandler.runner.LocalPlayer.PlayerId)
                 AsyncOperationExtensions.CallDelayedAction(() =>
                 {
 
                     _extensionMenu.SetActive(true);
-#if OCULUS
                     var feature = SceneFeature.Instance as SceneFeatureXR;
                     if (feature.enableNavigationMenu)
                         NavigationMenu.Instance?.SetArrows(feature?.landMarks[NetworkedLevelManager.Instance.currentLandMark].node);
-#endif
                 }, 500);
-#else
             
             Debug.LogError("[HUDManagerXR] Error impossible to connect without a multiplayer system installed.");
-#endif
 
         }
 
@@ -355,9 +338,7 @@ namespace Twinny.UI
                 //TODO Make inactive and fadeout H.U.D
 
                 bool active = true;
-#if FUSION2 && NETWORK
                 active = NetworkedLevelManager.IsManager;
-#endif
 
                 if (_extensionMenu) _extensionMenu.SetActive(active);
                 else
@@ -378,7 +359,6 @@ namespace Twinny.UI
         {
         }
 
-#if OCULUS
         public void OnAnchorStateChanged(StateAnchorManager state)
         {
             Debug.LogWarning("OnAnchorStateChanged");
@@ -395,12 +375,9 @@ namespace Twinny.UI
             _navigationHud?.SetActive(isActive && feature && feature.enableNavigationMenu);
 
         }
-#endif
         public void OnPlatformInitialize()
         {
-#if OCULUS && NETWORK
             AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
-#endif
         }
 
         public void OnExperienceReady()

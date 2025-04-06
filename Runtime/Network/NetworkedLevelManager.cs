@@ -1,4 +1,3 @@
-#if FUSION2
 using Fusion;
 using System.Threading.Tasks;
 using Twinny.Helpers;
@@ -357,4 +356,3 @@ namespace Twinny.System
     }
 
 }
-#endif

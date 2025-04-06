@@ -1,4 +1,3 @@
-#if FUSION2
 using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Twinny.Localization;
 using Twinny.UI;
-#if OCULUS
 using Twinny.XR;
-#endif
 
 namespace Twinny.System.Network
 {
@@ -183,13 +180,11 @@ namespace Twinny.System.Network
         {
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
-#if OCULUS && NETWORK
             if (LevelManagerXR.Config.tryReconnect)
             {
                 Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!",Twinny.UI.AlertViewHUD.MessageType.Error,10f);
                 TryReconnect();
             }
-#endif
         }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
@@ -236,4 +231,3 @@ namespace Twinny.System.Network
 
     }
 }
-#endif

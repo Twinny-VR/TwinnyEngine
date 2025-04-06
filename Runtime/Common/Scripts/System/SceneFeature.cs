@@ -30,12 +30,9 @@ namespace Twinny.System
 
         protected virtual void SetHDRI(Material hdri)
         {
-#if NETWORK
 
             if (hdri == null) hdri = NetworkedLevelManager.Config.defaultSkybox;
-#else
-            if (hdri == null) hdri = LevelManager.Config.defaultSkybox;
-#endif
+            //if (hdri == null) hdri = LevelManager.Config.defaultSkybox;
             if (RenderSettings.skybox != hdri)
                     {
                         RenderSettings.skybox = hdri;

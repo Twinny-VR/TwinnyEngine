@@ -65,18 +65,10 @@ namespace Twinny.UI
                     LevelManagerXR.QuitExperience();
                     break;
                 case ButtonType.CHANGE_SCENE:
-#if FUSION2 && NETWORK
 LevelManagerXR.instance.RPC_ChangeScene(parameter, landMarkIndex);
-#else
-                    _ = LevelManagerXR.instance.ChangeScene(parameter, landMarkIndex);
-#endif
                     break;
                 case ButtonType.NAVIGATION:
-#if FUSION2 && NETWORK
                     LevelManagerXR.instance.RPC_NavigateTo(landMarkIndex);
-#else
-                    LevelManagerXR.instance.NavigateTo(landMarkIndex);
-#endif
                     break;
                 case ButtonType.ACTION:
                     ActionManager.CallAction(parameter);

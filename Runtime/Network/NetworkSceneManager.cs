@@ -10,9 +10,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Data.Common;
 
-#if FUSION2
 using Fusion;
-#endif
 
 namespace Twinny.System.Network
 {
@@ -37,7 +35,6 @@ namespace Twinny.System.Network
                 await UnloadAdditivesScenes();
             }
 
-#if FUSION2 //TODO Mudar isso depois
 
             if (NetworkRunnerHandler.Instance)
             {
@@ -54,12 +51,12 @@ namespace Twinny.System.Network
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
 
 
-#else 
+/* 
             if (scene is string name)
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));
             else
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
-#endif
+*/
 
         }
 
@@ -72,11 +69,8 @@ namespace Twinny.System.Network
                 Scene loadedScene =  SceneManager.GetSceneAt(i);
                 if (loadedScene.buildIndex > 1)
                 {
-#if FUSION2 && OCULUS //TODO Mudar isso depois
                     await NetworkRunnerHandler.runner.UnloadScene(loadedScene.name);
-#else
-                    await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.UnloadSceneAsync(loadedScene.name));
-#endif
+//                    await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.UnloadSceneAsync(loadedScene.name));
                 }
             }
 

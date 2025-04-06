@@ -37,7 +37,6 @@ namespace Twinny
             Debug.LogWarning("OVRManager:" + OVRManager.instance);
             Debug.LogWarning("OVRDisplay:" + OVRManager.display);
 
-#if FUSION2 && NETWORK
             
             if (NetworkRunnerHandler.runner.GameMode != GameMode.Single)
             {
@@ -69,7 +68,6 @@ namespace Twinny
 
             }
 
-#endif
 
 
         }
@@ -84,9 +82,7 @@ namespace Twinny
                 Debug.LogWarning("OVRManager: " + OVRManager.instance);
                 Debug.LogWarning("DISPLAY: " + OVRManager.display);
                 Debug.LogWarning("AnchorManager: " + AnchorManager.Instance);
-#if FUSION2 && NETWORK
                 Debug.LogWarning("LevelManager: " + NetworkedLevelManager.Instance);
-#endif
                 Debug.LogWarning("Anchors: " + anchors.Length);
                 Debug.Log("=======================");
                 yield return new WaitForSeconds(3f);

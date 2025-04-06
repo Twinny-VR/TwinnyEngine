@@ -115,12 +115,10 @@ namespace Twinny.XR
 
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose -= OnRecenterDetected;
-#if FUSION2 && NETWORK
 
             if(NetworkedLevelManager.Instance.currentLandMark < 0 
                 && NetworkRunnerHandler.runner.IsConnectedToServer 
                 && NetworkRunnerHandler.runner.SessionInfo != null)
-#endif
                 CallBackUI.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
         }
 
@@ -255,17 +253,12 @@ namespace Twinny.XR
         private void CheckGameMode()
         {
 
-#if FUSION2 && NETWORK
             bool active = (NetworkRunnerHandler.runner.GameMode != Fusion.GameMode.Single);
                 NetworkTransform[] networks = _transform.GetComponentsInChildren<NetworkTransform>();
                 foreach (var item in networks)
                 {
                     item.enabled = active;
                 }
-#else
-        
-            Debug.LogError("[SceneFeatureXR] Error multiplayer system aren't installed.");
-#endif
 
         }
         private async Task RecenterSkyBox()

@@ -108,7 +108,6 @@ namespace Twinny
 
             await Task.Yield();
 
-#if FUSION2 && NETWORK
 
             if (Instance)
             {
@@ -150,9 +149,6 @@ namespace Twinny
                              }
                          );
 */
-#else 
-            Debug.LogError("[AvatarSpawner] Error impossible to spawn character without a multiplayer system installed.");
-#endif
 
 
         }
@@ -160,7 +156,6 @@ namespace Twinny
         public static async void DespawnAvatar()
         {
             Debug.LogWarning($"DESPAWN AVATAR: {avatar}");
-#if FUSION2 && NETWORK
 
             await Task.Yield();
             if (Instance && Instance._avatar)
@@ -169,9 +164,6 @@ namespace Twinny
                 Destroy(Instance._avatar.gameObject);
             }
 
-#else
-            Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
-#endif
 
         }
 

@@ -11,11 +11,7 @@ using UnityEngine;
 
 namespace Twinny.XR
 {
-#if NETWORK 
     public class LevelManagerXR : NetworkedLevelManager
-#else
-    public class LevelManagerXR : LevelManager
-#endif
     {
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
@@ -25,23 +21,17 @@ namespace Twinny.XR
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
 
-#if UNITY_EDITOR
         private void OnValidate()
         {
 
-                #if NETWORK
 
             config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
-#else
-            config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
-#endif
             if (config == null)
             {
                 Debug.LogError("[LevelManagerXR] Impossible to load 'RuntimeXRPreset'.");
             }
 
         }
-#endif
 
         protected override void Awake()
         {
@@ -97,7 +87,6 @@ namespace Twinny.XR
 
         public async void ConnectToServer()
         {
-#if NETWORK
             //Get Internet Status
             bool isWifiConnected = true;// = NetworkHelper.IsWiFiConnected();
 
@@ -143,9 +132,6 @@ namespace Twinny.XR
                 await ResetExperience();
                 Debug.LogError(e.Message);
             }
-#else
-            Debug.LogError("[LevelManagerXR] Error impossible to connect without a multiplayer system installed.");
-#endif
 
         }
 
@@ -170,7 +156,6 @@ namespace Twinny.XR
             Debug.LogWarning("USER:" + userName);
         }
 
-#if FUSION2 && NETWORK
         //TODO Ver utilidade disso tirar rpc daqui de dentro
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_AnchorScene()
@@ -192,7 +177,6 @@ namespace Twinny.XR
             RPC_ChangeScene("HallScene", 0);
         }
 
-#endif
         public override async Task ResetExperience()
         {
             await base.ResetExperience();
