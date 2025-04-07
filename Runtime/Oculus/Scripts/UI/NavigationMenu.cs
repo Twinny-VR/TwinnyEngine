@@ -13,8 +13,8 @@ namespace Twinny.UI
 {
 
 
-public class NavigationMenu : TSingleton<NavigationMenu>    
-{
+    public class NavigationMenu : TSingleton<NavigationMenu>
+    {
 
         #region Fields
         [SerializeField] private GameObject _navigationMenu;
@@ -33,31 +33,29 @@ public class NavigationMenu : TSingleton<NavigationMenu>
         void Start()
         {
             Init();
-         }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
 
         #endregion
 
         #region Public Methods
 
-        public void SetArrows(LandMarkNode node) {
+        public void SetArrows(LandMarkNode node)
+        {
             var feature = SceneFeature.Instance as SceneFeatureXR;
 
             if (!feature) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
 
-#if FUSION2 && NETWORK
             _navigationMenu?.SetActive(node && NetworkedLevelManager.IsManager);
-#else
-            _navigationMenu.SetActive(true);    
-#endif
-         
+            //            _navigationMenu.SetActive(true);    
+
             if (!node) return;
-            
+
             _activeNode = node;
             _northArrow.SetActive(node.north);
             _southArrow.SetActive(node.south);
@@ -102,7 +100,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
             if (!SceneFeatureXR.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             if (!_activeNode) { Debug.LogWarning($"[NavigationMenu] Navigation nodes are not configured."); return; }
 
-            if (!LevelManagerXR.Config.allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea) )//TODO Globalizar isso sem anchor
+            if (!LevelManagerXR.Config.allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea))//TODO Globalizar isso sem anchor
             {
                 AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
                 return;
@@ -110,7 +108,7 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
 
 
-               LandMarkNode targetNode = _activeNode;
+            LandMarkNode targetNode = _activeNode;
             switch (direction)
             {
                 case "NORTH":
@@ -130,11 +128,8 @@ public class NavigationMenu : TSingleton<NavigationMenu>
 
             LandMark landMark = feature.landMarks.FirstOrDefault(lm => lm.node == targetNode);
             int landMarkIndex = Array.IndexOf(feature.landMarks, landMark);
-#if FUSION2 && NETWORK
             NetworkedLevelManager.Instance.RPC_NavigateTo(landMarkIndex);
-#else
-            LevelManagerXR.instance.NavigateTo(landMarkIndex);
-#endif
+            //            LevelManagerXR.instance.NavigateTo(landMarkIndex);
         }
 
         #endregion

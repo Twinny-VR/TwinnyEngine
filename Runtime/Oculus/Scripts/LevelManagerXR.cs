@@ -2,6 +2,7 @@ using Fusion;
 using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Twinny.Localization;
 using Twinny.System;
@@ -28,7 +29,7 @@ namespace Twinny.XR
             config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
             if (config == null)
             {
-                Debug.LogError("[LevelManagerXR] Impossible to load 'RuntimeXRPreset'.");
+                UnityEngine.Debug.LogError("[LevelManagerXR] Impossible to load 'RuntimeXRPreset'.");
             }
 
         }
@@ -40,7 +41,7 @@ namespace Twinny.XR
 
             if (config == null)
             {
-                Debug.LogError("[NetworkedLevelManager] Impossible to load 'RuntimeXRPreset'.");
+                UnityEngine.Debug.LogError("[NetworkedLevelManager] Impossible to load 'RuntimeXRPreset'.");
             }
 
         }
@@ -77,7 +78,7 @@ namespace Twinny.XR
             }
             else
             {
-                Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
+                UnityEngine.Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
 
             _ = CanvasTransition.FadeScreen(false);
@@ -104,7 +105,7 @@ namespace Twinny.XR
                     await Task.Delay(4000);
                     Config.restarting = true;
                     await ResetExperience();
-                    Debug.LogError(e.Message);
+                    UnityEngine.Debug.LogError(e.Message);
                 }
 
                 await Task.Delay(Config.connectionTimeout * 1000);
@@ -130,7 +131,7 @@ namespace Twinny.XR
                 await Task.Delay(4000);
                 Config.restarting = true;
                 await ResetExperience();
-                Debug.LogError(e.Message);
+                UnityEngine.Debug.LogError(e.Message);
             }
 
         }
@@ -147,13 +148,13 @@ namespace Twinny.XR
         {
             if (msg.IsError)
             {
-                Debug.LogError("Erro ao verificar informações do usuário: " + msg.GetError().Message);
+                UnityEngine.Debug.LogError("Erro ao verificar informações do usuário: " + msg.GetError().Message);
                 return;
             }
 
             User user = msg.GetUser();
             var userName = user.DisplayName != "" ? user.DisplayName : user.OculusID;
-            Debug.LogWarning("USER:" + userName);
+            UnityEngine.Debug.LogWarning("USER:" + userName);
         }
 
         //TODO Ver utilidade disso tirar rpc daqui de dentro
@@ -185,39 +186,38 @@ namespace Twinny.XR
         public override void ResetApplication()
         {
 
-            Debug.LogWarning("[LevelManagerXR] RESET APPLICATION");
+            UnityEngine.Debug.LogWarning("[LevelManagerXR] RESET APPLICATION");
             if (UnityEngine.Application.isEditor) return;
 
 
-            using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
-                AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                const int kIntent_FLAG_ACTIVITY_CLEAR_TASK = 0x00008000;
+                const int kIntent_FLAG_ACTIVITY_NEW_TASK = 0x10000000;
 
-                AndroidJavaObject pm = currentActivity.Call<AndroidJavaObject>("getPackageManager");
-                AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", UnityEngine.Application.identifier);
-                intent.Call<AndroidJavaObject>("setFlags", 0x20000000);//Intent.FLAG_ACTIVITY_SINGLE_TOP
+                var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                var pm = currentActivity.Call<AndroidJavaObject>("getPackageManager");
+                var intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", UnityEngine.Application.identifier);
 
-                AndroidJavaClass pendingIntent = new AndroidJavaClass("android.app.PendingIntent");
-                AndroidJavaObject contentIntent = pendingIntent.CallStatic<AndroidJavaObject>("getActivity", currentActivity, 0, intent, 0x8000000); //PendingIntent.FLAG_UPDATE_CURRENT = 134217728 [0x8000000]
-                AndroidJavaObject alarmManager = currentActivity.Call<AndroidJavaObject>("getSystemService", "alarm");
-                AndroidJavaClass system = new AndroidJavaClass("java.lang.System");
-                long currentTime = system.CallStatic<long>("currentTimeMillis");
-                alarmManager.Call("set", 1, currentTime + 1000, contentIntent); // android.app.AlarmManager.RTC = 1 [0x1]
-
-                Debug.LogError("alarm_manager set time " + currentTime + 1000);
+                intent.Call<AndroidJavaObject>("setFlags", kIntent_FLAG_ACTIVITY_NEW_TASK | kIntent_FLAG_ACTIVITY_CLEAR_TASK);
+                currentActivity.Call("startActivity", intent);
                 currentActivity.Call("finish");
-
-                AndroidJavaClass process = new AndroidJavaClass("android.os.Process");
+                var process = new AndroidJavaClass("android.os.Process");
                 int pid = process.CallStatic<int>("myPid");
                 process.CallStatic("killProcess", pid);
             }
-
+        }
+        private AndroidJavaObject GetCurrentActivity()
+        {
+            using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                return unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            }
         }
 
-  
-    public void SetPassthrough(bool status)
+        public void SetPassthrough(bool status)
         {
-            Debug.LogWarning("SetPassthrough: " + status);
+            UnityEngine.Debug.LogWarning("SetPassthrough: " + status);
             Camera.main.backgroundColor = Color.clear;
             if (status)
             {
@@ -235,7 +235,7 @@ namespace Twinny.XR
             _passThrough.gameObject.SetActive(status);
 
             }else {
-                Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
+                UnityEngine.Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
                     }
 
         }

@@ -50,11 +50,10 @@ namespace Twinny
 
                     AsyncOperationExtensions.CallDelayedAction(() => {
 
-                        Debug.LogWarning("DEVERIA REINICIAR AQUI! Cena: "+ SceneManager.GetActiveScene().name);
 
                        _ = LevelManagerXR.instance.ResetExperience();
 
-                    }, 5000);
+                    }, LevelManagerXR.Config.resetExperienceDelay*1000);
                       
                     return;
                 }

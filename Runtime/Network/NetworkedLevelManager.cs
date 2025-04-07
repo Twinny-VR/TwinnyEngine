@@ -148,13 +148,11 @@ namespace Twinny.System
             CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
-
-            SceneManager.LoadScene(0);
+            ResetApplication();
+            //SceneManager.LoadScene(0);
         }
-        public virtual void ResetApplication()
-        {
-            Debug.LogWarning("[NetworkedLevelManager] RESET APPLICATION");
-        }
+        
+        public virtual void ResetApplication() { }
 
         /// <summary>
         /// This Async Method changes the actual scene.

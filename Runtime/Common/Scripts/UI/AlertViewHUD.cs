@@ -57,10 +57,8 @@ namespace Twinny.UI
 
         private void Start()
         {
-#if OCULUS
             OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
             _centerEyeTransform = cameraRig ? cameraRig.centerEyeAnchor : Camera.main.transform;
-#endif
         }
 
         public static void PostMessage(string message, MessageType messageType = MessageType.Warning, float time = 10f)

@@ -16,5 +16,6 @@ public class RuntimeXR : NetworkRuntime
         [SerializeField]
         public Vector2 safeAreaSize = new Vector2(2.5f, 1.5f);
 
+
     }
 }

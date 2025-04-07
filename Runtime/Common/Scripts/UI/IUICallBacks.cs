@@ -1,6 +1,4 @@
-#if FUSION2
 using Fusion;
-#endif
 using UnityEngine;
 
 
@@ -25,9 +23,7 @@ namespace Twinny.UI
 
         #endregion
 
-#if FUSION2
         void OnSwitchManager(int source);
-#endif
 
         #region Camera Callbacks
 
