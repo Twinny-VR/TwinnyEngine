@@ -47,6 +47,41 @@ namespace Twinny.Editor
 
 #endif
 
+
+#if !MOBILE
+        [MenuItem("Twinny/Platforms/Mobile/Install Mobile Platform")]
+        private static void InstallMobile()
+        {
+            InstallPlatform("Mobile");
+        }
+
+#else
+
+    [MenuItem("Twinny/Platforms/Mobile/Set Mobile Platform")]
+        private static void SetWinPlatform()
+        {
+            SetPlatformScenes("Mobile");
+        }
+
+
+
+        [MenuItem("Twinny/Platforms/Mobile/Uninstall Mobile Platform")]
+        private static void UninstallMobile()
+        {
+            UninstallPlatform("Mobile");
+        }
+
+        [MenuItem("Twinny/Platforms/Mobile/New Mobile Scene")]
+        [MenuItem("Assets/Create/Twinny/Scenes/New Mobile Scene")]
+        private static void CreateMobileScene()
+        {
+            CreateScene(SceneType.MOBILE);
+        }
+
+
+
+#endif
+
 #if !OCULUS
         [MenuItem("Twinny/Platforms/Meta Quest/Install Meta Quest Platform")]
         private static void InstallMetaQuest()
@@ -350,12 +385,6 @@ namespace Twinny.Editor
 
 
 
-        [MenuItem("Twinny/Platforms/Mobile/New Mobile Scene")]
-        [MenuItem("Assets/Create/Twinny/Scenes/New Mobile Scene")]
-        private static void CreateMobileScene()
-        {
-            CreateScene(SceneType.MOBILE);
-        }
 
 
         private static void CreateScene(SceneType type)

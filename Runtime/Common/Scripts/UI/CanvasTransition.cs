@@ -47,10 +47,11 @@ namespace Twinny.UI
             float startAlpha = Instance. _fadeScreen.alpha;
             float targetAlpha = fadeIn ? 1f : 0f;
             float elapsedTime = 0f;
+            float fadeTime = 0;
 #if NETWORK
-            float fadeTime = NetworkedLevelManager.Config.fadeTime;
-#else
-            float fadeTime = LevelManager.Config.fadeTime;
+             fadeTime = NetworkedLevelManager.Config.fadeTime;
+#elif WIN || MOBILE
+             fadeTime = LevelManager.Config.fadeTime;
 #endif
             // Smooth fade progress
             while (elapsedTime < fadeTime)

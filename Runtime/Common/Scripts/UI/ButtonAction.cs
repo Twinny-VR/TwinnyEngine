@@ -19,7 +19,6 @@ namespace Twinny.UI
     }
     public class ButtonAction : MonoBehaviour
     {
-#if WIN
         public ButtonType type;
         [SerializeField] private Button _button;
 #if UNITY_EDITOR
@@ -80,6 +79,5 @@ namespace Twinny.UI
             }
         }
 
-#endif
     }
 }
