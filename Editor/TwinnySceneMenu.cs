@@ -20,6 +20,21 @@ namespace Twinny.Editor
         public const string ROOT_NAME = "root";
         public const string WORLD_NAME = "world";
 
+        [MenuItem("Twinny/Realtime Settings")]
+        public static void PingConfigAsset()
+        {
+            if (TwinnyManager.config != null)
+            {
+                EditorApplication.ExecuteMenuItem("Window/General/Project");
+                Selection.activeObject = TwinnyManager.config;
+                EditorGUIUtility.PingObject(TwinnyManager.config);
+            }
+            else
+            {
+                Debug.LogWarning("TwinnyRuntime config is null. Asset might not be loaded yet.");
+            }
+        }
+
 
 #if !WIN
         [MenuItem("Twinny/Platforms/Windows/Install Windows Platform")]

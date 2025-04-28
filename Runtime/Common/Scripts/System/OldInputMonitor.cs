@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Twinny.Helpers;
 using Twinny.UI;
 using UnityEngine;
-using static Oculus.Interaction.Context;
 using UnityEngine.EventSystems;
 
 namespace Twinny.System
@@ -44,13 +43,6 @@ namespace Twinny.System
         #region MonoBehaviour Methods
 
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            Init();
-        }
-
-
         void Update()
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -75,7 +67,7 @@ namespace Twinny.System
                             _touchStartX = touch.position.x;
                             _touchStartY = touch.position.y;
 
-                            CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnTouch(_touchStartX, _touchStartY));
+                            CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnTouch(_touchStartX, _touchStartY));
                             OnTouch?.Invoke(_touchStartX, _touchStartY);
                             break;
 
@@ -86,12 +78,12 @@ namespace Twinny.System
                             if (Mathf.Abs(deltaX) > 1.5f) //Avoid short movments
                             {
                                 _isDragging = true;
-                                CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingHorizontal(deltaX));
+                                CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDraggingHorizontal(deltaX));
                             }
                             if (Mathf.Abs(deltaY) > 1.5f) //Avoid short movments
                             {
                                 _isDragging = true;
-                                CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingVertical(deltaY));
+                                CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDraggingVertical(deltaY));
                             }
 
 
@@ -102,13 +94,13 @@ namespace Twinny.System
                             {
                                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                                 {
-                                    CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnSelect(hit.collider.gameObject));
+                                    CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnSelect(hit.collider.gameObject));
                                     OnSelect?.Invoke(hit);
                                     return;
                                 }
                                 else
                                 {
-                                    CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnRelease(touch.position.x, touch.position.y));
+                                    CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnRelease(touch.position.x, touch.position.y));
                                     OnRelease?.Invoke(touch.position.x, touch.position.y);
                                 }
                             }
@@ -116,7 +108,7 @@ namespace Twinny.System
                             {
 
                                 _isDragging = false;
-                                CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(touch.position.x, touch.position.y));
+                                CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(touch.position.x, touch.position.y));
                                 OnCancelDrag?.Invoke(touch.position.x, touch.position.y);
                             }
                             break;
@@ -124,7 +116,7 @@ namespace Twinny.System
                             if (_isDragging)
                             {
                                 _isDragging = false;
-                                CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(touch.position.x, touch.position.y));
+                                CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(touch.position.x, touch.position.y));
                                 OnCancelDrag?.Invoke(touch.position.x, touch.position.y);
                             }
                             break;
@@ -140,7 +132,7 @@ namespace Twinny.System
                     {
                         case TouchPhase.Began:
                             _initialPinchDistance = Vector2.Distance(touch1.position, touch2.position);
-                            CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnPinchingStart(_initialPinchDistance));
+                            CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnPinchingStart(_initialPinchDistance));
                             break;
 
                         case TouchPhase.Moved:
@@ -150,7 +142,7 @@ namespace Twinny.System
                             {
                                 float pinchDelta = (currentDistance - _initialPinchDistance);
                                 pinchDelta = Mathf.Clamp(pinchDelta, -0.1f, 0.1f);
-                                CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnPinching(pinchDelta));
+                                CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnPinching(pinchDelta));
                             }
 
                             _initialPinchDistance = currentDistance;  // Update for next movment
@@ -176,7 +168,7 @@ namespace Twinny.System
                     Vector2 mousePosition = Input.mousePosition;
                     _touchStartX = mousePosition.x;
                     _touchStartY = mousePosition.y;
-                    CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnTouch(_touchStartX, _touchStartY));
+                    CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnTouch(_touchStartX, _touchStartY));
                     OnTouch?.Invoke(_touchStartX, _touchStartY);
 
                 }
@@ -194,13 +186,13 @@ namespace Twinny.System
                     {
                         if (!_isDragging) _isDragging = true;
 
-                        CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingHorizontal(deltaX));
+                        CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDraggingHorizontal(deltaX));
                     }
                     if (Mathf.Abs(deltaY) > 1.5f)
                     {
                         if (!_isDragging) _isDragging = true;
 
-                        CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDraggingVertical(deltaY));
+                        CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDraggingVertical(deltaY));
                     }
                 }
                 else
@@ -219,13 +211,13 @@ namespace Twinny.System
                     {
                         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                         {
-                            CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnSelect(hit.collider.gameObject));
+                            CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnSelect(hit.collider.gameObject));
                             OnSelect?.Invoke(hit);
                             return;
                         }
                         else
                         {
-                            CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnRelease(mousePosition.x, mousePosition.y));
+                            CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnRelease(mousePosition.x, mousePosition.y));
                             OnRelease?.Invoke(mousePosition.x, mousePosition.y);
 
                         }
@@ -234,7 +226,7 @@ namespace Twinny.System
                     {
                         if (_isDragging)
                             _isDragging = false;
-                        CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(mousePosition.x, mousePosition.y));
+                        CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnDragEnded(mousePosition.x, mousePosition.y));
                         OnCancelDrag?.Invoke(mousePosition.x, mousePosition.y);
                     }
 
@@ -245,7 +237,7 @@ namespace Twinny.System
                 if (scrollInput != 0)
                 {
 
-                    CallBackUI.CallAction<IInputCallBacks>(callback => callback.OnPinching(scrollInput));
+                    CallBackManager.CallAction<IInputCallBacks>(callback => callback.OnPinching(scrollInput));
 
                 }
             }

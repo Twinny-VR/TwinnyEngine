@@ -6,8 +6,9 @@ using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if TWINNY_OPENXR
 using UnityEngine.XR.Management;
-
+#endif
 namespace Twinny.System
 {
     public enum Platform
@@ -23,6 +24,9 @@ namespace Twinny.System
     {
         public static Platform Platform = Platform.UNKNOW;
 
+        public static TwinnyRuntime config;
+
+
         public delegate void onPlatformInitilize(Platform platform);
         public static onPlatformInitilize OnPlatformInitialize;
         public static async Task InitializePlatform()
@@ -35,14 +39,13 @@ namespace Twinny.System
 
 
 
-
 #if UNITY_EDITOR
 
 
             if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
             {
 
-                
+#if TWINNY_OPENXR
                 if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
                 {
 
@@ -50,6 +53,7 @@ namespace Twinny.System
                     Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
                 }
                 else
+#endif
                 {
 
                     Platform = Platform.MOBILE;
@@ -86,9 +90,10 @@ namespace Twinny.System
 
 
 #else
-            if (Application.platform == RuntimePlatform.Android)
+                if (Application.platform == RuntimePlatform.Android)
             {
 
+#if TWINNY_OPENXR
                 if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
                 {
 
@@ -96,6 +101,7 @@ namespace Twinny.System
                     Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
                 }
                 else
+#endif
                 {
 
                     Platform = Platform.MOBILE;
@@ -135,10 +141,21 @@ namespace Twinny.System
             }
 #endif
 
-            OnPlatformInitialize?.Invoke(Platform);
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
+                OnPlatformInitialize?.Invoke(Platform);
+            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
 
         }
+    
+        public static void LoadRuntimeProfile<T>(string fileName) where T : TwinnyRuntime
+        {
+            config = Resources.Load<T>(fileName);
+
+            if (config == null)
+            {
+                Debug.LogError($"[TwinnyManager] Impossible to load '{fileName}'.");
+            }
+        }
+    
     }
 }

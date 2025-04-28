@@ -1,0 +1,16 @@
+{
+    "name": "Twinny.Multiplatform",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "REMOVER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

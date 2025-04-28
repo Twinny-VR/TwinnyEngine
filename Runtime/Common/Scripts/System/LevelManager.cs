@@ -14,10 +14,6 @@ namespace Twinny.System
     public abstract class LevelManager : TSingleton<LevelManager>
     {
         #region Fields
-        [DrawScriptable]
-        [SerializeField] public TwinnyRuntime config;
-        public static TwinnyRuntime Config { get { return Instance.config; } }
-
 
         public delegate void onExperienceFinished();
         public static onExperienceFinished OnExperienceFinished;
@@ -31,21 +27,12 @@ namespace Twinny.System
 
         protected virtual void Awake()
         {
-
-            config = Resources.Load<TwinnyRuntime>("RuntimePreset");
-
-            if (config == null)
-            {
-                Debug.LogError("[LevelManager] Impossible to load 'RuntimePreset'.");
-            }
-
+            TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
         }
 
-
-        // Start is called before the first frame update
-        protected virtual void Start()
+        protected override void Start()
         {
-            Init();
+            base.Start();
             TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
             _ = TwinnyManager.InitializePlatform();
         }
@@ -74,7 +61,7 @@ namespace Twinny.System
         public virtual async Task ResetExperience()
         {
             OnExperienceFinished?.Invoke();
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
+            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
 
@@ -94,14 +81,14 @@ namespace Twinny.System
 
             await CanvasTransition.FadeScreen(true);
 
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
 
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
                 await UnloadAdditivesScenes();
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
+                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
             }
             else
             {
@@ -138,7 +125,7 @@ namespace Twinny.System
             }
             */
             await Task.Delay(1500);
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false);
 
         }

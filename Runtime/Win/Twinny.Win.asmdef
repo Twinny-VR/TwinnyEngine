@@ -1,0 +1,16 @@
+{
+    "name": "Twinny.Win",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "WINNY_CAMERAS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

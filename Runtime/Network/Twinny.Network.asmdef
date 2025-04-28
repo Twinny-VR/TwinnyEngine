@@ -1,0 +1,16 @@
+{
+    "name": "Twinny.Network",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "FUSION2"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

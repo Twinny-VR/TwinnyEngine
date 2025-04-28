@@ -3,8 +3,8 @@
   "displayName": "Twinny Engine",
   "version": "1.0.8",
   "type": "tool",
-  "unity": "2022.3",
-  "unityRelease": "34f1",
+  "unity": "6000.0",
+  "unityRelease": "43f1",
   "description": "A framework for Twinny Experiences Apps development.",
   "documentationUrl": "",
   "changelogUrl": "",
@@ -21,9 +21,9 @@
   },
   "samples": [
     {
-      "displayName": "Twinny Essentials",
-      "description": "Contains scenes and default configuration for Twinny Experience.",
-      "path": "Samples~/DemoScenes"
+      "displayName": "OpenXR Platform",
+      "description": "Contains all resources for Twinny XR Experiences.",
+      "path": "Samples~/OpenXR"
     },
     {
       "displayName": "Twinny Avatars",

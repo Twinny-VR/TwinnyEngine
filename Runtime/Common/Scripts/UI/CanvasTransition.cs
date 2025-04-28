@@ -15,14 +15,9 @@ namespace Twinny.UI
         [SerializeField] private CanvasGroup _fadeScreen;
 
 
-        private void Awake()
+        protected override void Start()
         {
-            Init();
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
+            base.Start();
             if( _overlayScreen == null ) _overlayScreen = GetComponent<Canvas>();
                 _overlayScreen.worldCamera = Camera.main;
 
@@ -48,11 +43,7 @@ namespace Twinny.UI
             float targetAlpha = fadeIn ? 1f : 0f;
             float elapsedTime = 0f;
             float fadeTime = 0;
-#if NETWORK
-             fadeTime = NetworkedLevelManager.Config.fadeTime;
-#elif WIN || MOBILE
-             fadeTime = LevelManager.Config.fadeTime;
-#endif
+            fadeTime = TwinnyManager.config.fadeTime;
             // Smooth fade progress
             while (elapsedTime < fadeTime)
             {

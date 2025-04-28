@@ -19,12 +19,8 @@ namespace Twinny.System
 
     public abstract class SceneFeature : TSingleton<SceneFeature>
     {
-        // Start is called before the first frame update
-        protected virtual void Start()
-        {
-            Init();        
-        }
-
+        [NonSerialized]
+        public Transform[] interestPoints;
 
         public virtual void TeleportToLandMark(int landMarkIndex) { }
 

@@ -1,13 +1,15 @@
-using Fusion;
+using System;
+using Twinny.System;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace Twinny.UI
 {
     public interface IUICallBacks
     {
-        void OnHudStatusChanged(bool status);
-
+       void OnHudStatusChanged(bool status);
+        void OnOrientationChanged(ScreenOrientation orientation);
         #region Experience Callbacks
 
         void OnPlatformInitialize();
@@ -35,5 +37,92 @@ namespace Twinny.UI
 
 
 
+    }
+
+    [Serializable] public class OnCameraChangedEvent : UnityEvent { }
+    [Serializable] public class OnLoadScene : UnityEvent { }
+
+    [Serializable]
+    public class UICallBackEvents : IUICallBacks
+    {
+        public OnCameraChangedEvent onCameraChanged;
+        public OnLoadScene onLoadScene;
+
+
+        public UICallBackEvents()
+        {
+            CallBackManager.RegisterCallback<IUICallBacks>(this);
+        }
+
+        public void Unregister()
+        {
+            CallBackManager.UnregisterCallback<IUICallBacks>(this);
+        }
+
+        public void OnCameraChanged(Transform camera, string type)
+        {
+            onCameraChanged?.Invoke();
+        }
+
+        public void OnCameraLocked(Transform target)
+        {
+        }
+
+        public void OnExperienceFinished(bool isRunning)
+        {
+        }
+
+        public void OnExperienceReady()
+        {
+        }
+
+        public void OnExperienceStarted()
+        {
+        }
+
+        public void OnExperienceStarting()
+        {
+        }
+
+        public void OnHudStatusChanged(bool status)
+        {
+        }
+
+        public void OnLoadExtensionMenu(GameObject menu)
+        {
+        }
+
+        public void OnLoadScene()
+        {
+            onLoadScene?.Invoke();
+        }
+
+        public void OnLoadSceneFeature()
+        {
+        }
+
+        public void OnPlatformInitialize()
+        {
+        }
+
+        public void OnStandby(bool status)
+        {
+        }
+
+        public void OnStartLoadScene()
+        {
+        }
+
+        public void OnSwitchManager(int source)
+        {
+        }
+
+        public void OnUnloadSceneFeature()
+        {
+        }
+
+        public void OnOrientationChanged(ScreenOrientation orientation)
+        {
+        }
     }
 }

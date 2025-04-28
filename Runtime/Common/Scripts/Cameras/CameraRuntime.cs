@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
+using Unity.Cinemachine;
 using Twinny.UI;
 using UnityEngine;
 
@@ -32,7 +32,7 @@ namespace Twinny
         [SerializeField] public GameObject hitPointPrefab;
 
         [Header("FPS Camera Blend")]
-        public CinemachineBlendDefinition fpsCameraBlend = new CinemachineBlendDefinition() { m_Style = CinemachineBlendDefinition.Style.EaseInOut, m_Time = 2f };
+        public CinemachineBlendDefinition fpsCameraBlend = new CinemachineBlendDefinition() {Style = CinemachineBlendDefinition.Styles.EaseInOut, Time = 2f };
 
 
         [Header("Third Camera Config")]
@@ -44,7 +44,7 @@ namespace Twinny
         [SerializeField] public float thirdZoomSpeedMultiply = 1f;
 
         [Header("Third Camera Blend")]
-        public CinemachineBlendDefinition thirdCameraBlend = new CinemachineBlendDefinition() { m_Style = CinemachineBlendDefinition.Style.EaseInOut, m_Time = 2f };
+        public CinemachineBlendDefinition thirdCameraBlend = new CinemachineBlendDefinition() { Style = CinemachineBlendDefinition.Styles.EaseInOut, Time = 2f };
 
 
         [Header("Locked Camera Config")]
@@ -56,7 +56,7 @@ namespace Twinny
         [SerializeField] public float lockedZoomSpeedMultiply = 1f;
 
         [Header("Locked Camera Blend")]
-        public CinemachineBlendDefinition lockedCameraBlend = new CinemachineBlendDefinition() { m_Style = CinemachineBlendDefinition.Style.EaseInOut, m_Time = 2f};
+        public CinemachineBlendDefinition lockedCameraBlend = new CinemachineBlendDefinition() { Style = CinemachineBlendDefinition.Styles.EaseInOut, Time = 2f};
 
 
         [Header("Panoramic Camera Config")]
@@ -67,7 +67,7 @@ namespace Twinny
         [SerializeField] public float panZoomSpeedMultiply = 1f;
 
         [Header("Panoramic Camera Blend")]
-        public CinemachineBlendDefinition panCameraBlend = new CinemachineBlendDefinition() { m_Style = CinemachineBlendDefinition.Style.EaseInOut, m_Time = 2f };
+        public CinemachineBlendDefinition panCameraBlend = new CinemachineBlendDefinition() {Style = CinemachineBlendDefinition.Styles.EaseInOut, Time = 2f };
 
     }
 }

@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Twinny.Helpers;
+using Twinny.UI;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 using static Twinny.System.Cameras.CameraManager;
 
 namespace Twinny.System.Cameras
 {
-    public class FirstPersonAgent : MonoBehaviour
+    public class FirstPersonAgent : TSingleton<FirstPersonAgent>
     {
         #region Fields
         [SerializeField] private NavMeshAgent _navMeshAgent;
-        [SerializeField] private Camera _mainCamera;
+       [SerializeField] private CameraHandler _fpsCamera;
+        [SerializeField] private bool _isMoving;
         #endregion
 
         #region Properties
-        [SerializeField] private bool _isMoving;
         private GameObject _hitPoint;
         #endregion
 
@@ -29,17 +32,18 @@ namespace Twinny.System.Cameras
         private void Awake()
         {
             if (!_navMeshAgent) _navMeshAgent = GetComponent<NavMeshAgent>();
-            if (!_mainCamera) _mainCamera = Camera.main;
+     //       if (!_mainCamera) _mainCamera = Camera.main;
 
-            OnStateChanged += OnCameraStateChanged;
-            OnCameraLocked += OnLockedInBuilding;
+            //OnStateChanged += OnCameraStateChanged;
+            //OnCameraLocked += OnLockedInBuilding;
             InputMonitor.OnSelect += OnObjectSelected;
 
         }
 
-        // Start is called before the first frame update
-        void Start()
+
+        protected override void Start()
         {
+            base.Start();
 
             OnArrived += OnArrivedAtDestination;
 
@@ -55,8 +59,8 @@ namespace Twinny.System.Cameras
         private void OnDestroy()
         {
             InputMonitor.OnSelect -= OnObjectSelected;
-            OnStateChanged -= OnCameraStateChanged;
-            OnCameraLocked -= OnLockedInBuilding;
+           // OnStateChanged -= OnCameraStateChanged;
+           // OnCameraLocked -= OnLockedInBuilding;
 
         }
 
@@ -128,6 +132,7 @@ namespace Twinny.System.Cameras
 
         public void OnObjectSelected(RaycastHit hit)
         {
+            var brain = Camera.main.GetComponent<CinemachineBrain>();
 
             if (brain.IsBlending) return;
 
@@ -153,6 +158,18 @@ namespace Twinny.System.Cameras
 
         }
 
+        public static void TakeControl(Transform node)
+        {
+            Instance.TeleportTo(node);
+            TakeControl(true);
+        }
+        public static void TakeControl(bool status)
+        {
+            if (status) 
+            CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(Instance._fpsCamera));
+            Instance._navMeshAgent.enabled = status;
+        }
+
 
         public void TeleportTo(Transform node)
         {
@@ -170,7 +187,9 @@ namespace Twinny.System.Cameras
 
         private void NavigateTo(Vector3 position)
         {
+
             if (_hitPoint) Destroy(_hitPoint);
+            if (config.hitPointPrefab) 
             _hitPoint = Instantiate(config.hitPointPrefab, position, config.hitPointPrefab.transform.rotation);
             _navMeshAgent.destination = position;
             _isMoving = true;

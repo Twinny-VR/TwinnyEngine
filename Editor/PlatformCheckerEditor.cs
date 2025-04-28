@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace Twinny.Editor
@@ -89,11 +90,12 @@ public class PlatformCheckerEditor : UnityEditor.Editor
     {
             BuildTarget currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
 
-        // Verifica qual plataforma (target) está sendo usada
-        BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(currentBuildTarget); 
+ //       BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(currentBuildTarget); 
+//        string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
 
-        // Obtém os símbolos de definição existentes para o grupo de construção (por exemplo, Standalone)
-        string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
+            NamedBuildTarget namedTarget = NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            string existingSymbols = PlayerSettings.GetScriptingDefineSymbols(namedTarget);
+
             var symbols = existingSymbols.Split(';');
             bool hasSymbol = symbols.Select(s => s.Trim()).Any(s => s.Equals(symbol.Trim(), StringComparison.Ordinal));
             Debug.LogWarning(hasSymbol);
@@ -101,7 +103,7 @@ public class PlatformCheckerEditor : UnityEditor.Editor
         if (!hasSymbol)
         {
             string newSymbols = existingSymbols + ";" + symbol;
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, newSymbols);
+            PlayerSettings.SetScriptingDefineSymbols(namedTarget, newSymbols);
             Debug.Log($"Script define symbol '{symbol}' adicionado.");
         }
     }
@@ -109,17 +111,18 @@ public class PlatformCheckerEditor : UnityEditor.Editor
     // Método para remover um símbolo de definição
     public static void RemoveDefineSymbol(string symbol)
     {
-        // Verifica qual plataforma (target) está sendo usada
-        BuildTargetGroup targetGroup = BuildTargetGroup.Standalone;  // Você pode mudar isso para iOS, Android, etc.
+            //        BuildTargetGroup targetGroup = BuildTargetGroup.Standalone;  // Você pode mudar isso para iOS, Android, etc.
+            //        string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
 
-        // Obtém os símbolos de definição existentes
-        string existingSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
+            NamedBuildTarget namedTarget = NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            string existingSymbols = PlayerSettings.GetScriptingDefineSymbols(namedTarget);
 
-        // Verifica se o símbolo de definição existe e o remove
-        if (existingSymbols.Contains(symbol))
+
+            // Verifica se o símbolo de definição existe e o remove
+            if (existingSymbols.Contains(symbol))
         {
             string newSymbols = existingSymbols.Replace(";" + symbol, "").Replace(symbol + ";", "").Replace(symbol, "");
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, newSymbols);
+            PlayerSettings.SetScriptingDefineSymbols(namedTarget, newSymbols);
             Debug.Log($"Script define symbol '{symbol}' removido.");
         }
     }

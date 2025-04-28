@@ -1,0 +1,27 @@
+{
+    "name": "Twinny.OpenXR",
+    "rootNamespace": "Twinny.XR",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "TWINNY_OPENXR"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.xr",
+            "expression": "2",
+            "define": "TWINNY_OPENXR"
+        },
+        {
+            "name": "com.meta.xr.sdk.all",
+            "expression": "74.0.2",
+            "define": "TWINNY_OPENXR"
+        }
+    ],
+    "noEngineReferences": false
+}

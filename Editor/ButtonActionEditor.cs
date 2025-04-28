@@ -3,8 +3,7 @@ using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
 
-
-#if OCULUS
+#if TWINNY_OPENXR
 [CustomEditor(typeof(ButtonActionXR))]
 public class ButtonActionXREditor : Editor
 {
@@ -25,7 +24,7 @@ public class ButtonActionXREditor : Editor
 }
 #endif
 
-#if WIN
+#if TWINNY_WIN
 [CustomEditor(typeof(ButtonAction))]
 public class ButtonActionEditor : Editor
 {

@@ -1,152 +1,192 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Twinny.Helpers;
 using Twinny.System;
-using Twinny.System.Cameras;
 using Twinny.UI;
 using UnityEngine;
 
-public class HUDManager : MonoBehaviour, IUICallBacks
-{
 
-    #region Fields
-
-    [SerializeField] private GameObject _loadingScreen;
-    [Header("SYSTEM CONTROLS FIELDS:")]
-    [SerializeField] private GameObject _systemControlsPanel;
-    [Header("DEFAULT CONTROLS FIELDS:")]
-    [SerializeField] private GameObject _defaultControlsPanel;
-    [SerializeField] private GameObject _buttonFPS;
-    [SerializeField] private GameObject _buttonHome;
-    [SerializeField] private GameObject _buttonPanoramic;
-    [Header("SCENE CONTROLS FIELDS:")]
-    [SerializeField] private GameObject _sceneControlsPanel;
-
-    #endregion
-
-    #region Properties
-    private Animator _animator;
-    #endregion
-
-    #region MonoBehaviour Methods
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        CallBackUI.RegisterCallback(this);
-        _animator = GetComponent<Animator>();
-
-        ActionManager.RegisterAction("SetPanoramic", SetPanoramic);
-        ActionManager.RegisterAction("SetFPS", SetFPS);
-    }
-
-    private void OnDestroy()
-    {
-        CallBackUI.UnregisterCallback(this);
-        ActionManager.RemoveAction("SetPanoramic");
-        ActionManager.RemoveAction("SetFPS");
-
-    }
-
-    // Update is called once per frame
-    void Update()
+namespace Twinny.UI {
+    public abstract class HUDManager : MonoBehaviour, IUICallBacks
     {
 
-    }
+        #region Fields
 
-    #endregion
-
-    #region UI Callback Methods
-
-    public void SetPanoramic()
-    {
-        CameraManager.OnCameraLocked?.Invoke(null);
-    }
-
-    public void SetFPS()
-    {
-        CameraManager.Instance.fpsAgent.TeleportTo(null);
-        CameraManager.SwitchCamera(null);
-    }
+        [Header("SYSTEM CONTROLS FIELDS:")]
+        [SerializeField] private GameObject _loadingScreen;
 
 
-    #endregion
-    #region System Callback Methods
+        [SerializeField] private UIElement[] _uIElements;
 
-    void IUICallBacks.OnExperienceFinished(bool isRunning)
-    {
-    }
+        [SerializeField] private UICallBackEvents _uICallBacks;
+        public IUICallBacks CallBacks => _uICallBacks;
 
-    void IUICallBacks.OnExperienceReady()
-    {
-    }
+        #endregion
 
-    void IUICallBacks.OnExperienceStarted()
-    {
-    }
+        #region Properties
+        private Animator _animator;
+        #endregion
 
-    void IUICallBacks.OnExperienceStarting()
-    {
-    }
+        #region MonoBehaviour Methods
 
-    void IUICallBacks.OnHudStatusChanged(bool status)
-    {
-    }
-
-    void IUICallBacks.OnLoadExtensionMenu(GameObject menu)
-    {
-    }
-
-    void IUICallBacks.OnLoadScene()
-    {
-        if(_animator) _animator.SetBool("retracted", false);
-        _loadingScreen.SetActive(false);
-    }
-
-    void IUICallBacks.OnLoadSceneFeature()
-    {
-    }
-
-    void IUICallBacks.OnPlatformInitialize()
-    {
-    }
-
-    void IUICallBacks.OnStartLoadScene()
-    {
-        if(_animator) _animator.SetBool("retracted", true);
-        _loadingScreen.SetActive(true);
-    }
-
-
-    void IUICallBacks.OnUnloadSceneFeature()
-    {
-    }
-#if FUSION2
-
-    void IUICallBacks.OnSwitchManager(int source)
-    {
-    }
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            foreach (var item in _uIElements)
+            {
+                if (item.element && string.IsNullOrEmpty(item.key)) item.key = item.element.name;
+            }
+        }
 #endif
 
-    public void OnCameraChanged(Transform camera, string type)
+        // Start is called before the first frame update
+        protected virtual void Start()
+        {
+            CallBackManager.RegisterCallback(this);
+            _animator = GetComponent<Animator>();
+            _uIElements.RegisterElements();
+
+        }
+
+        protected virtual void OnDestroy()
+        {
+            CallBackManager.UnregisterCallback(this);
+            _uIElements.UnregisterElements();
+        }
+
+        // Update is called once per frame
+        protected virtual void Update()
+        {
+
+        }
+
+        #endregion
+
+        #region System Callback Methods
+
+        public virtual void OnExperienceFinished(bool isRunning) { }
+
+        public virtual void OnExperienceReady() { }
+
+        public virtual void OnExperienceStarted() { }
+
+        public virtual void OnExperienceStarting() { }
+
+        public virtual void OnHudStatusChanged(bool status) { }
+
+        public virtual void OnLoadExtensionMenu(GameObject menu) { }
+
+        public virtual void OnLoadScene()
+        {
+            if (_animator) _animator.SetBool("retracted", false);
+            _loadingScreen.SetActive(false);
+        }
+
+        public virtual void OnLoadSceneFeature() { }
+
+        public virtual void OnPlatformInitialize() { }
+
+        public virtual void OnStartLoadScene()
+        {
+            if (_animator) _animator.SetBool("retracted", true);
+            _loadingScreen.SetActive(true);
+        }
+
+
+        public virtual void OnUnloadSceneFeature()
+        {
+        }
+
+        public virtual void OnSwitchManager(int source)
+        {
+        }
+
+        public virtual void OnCameraChanged(Transform camera, string type)
+        {
+            Debug.LogWarning("Type: " + type);
+
+        }
+
+        public virtual void OnCameraLocked(Transform target)
+        {
+
+
+        }
+
+        public virtual void OnStandby(bool status)
+        {
+            if (_animator) _animator.SetBool("retracted", status);
+        }
+
+        public virtual void OnOrientationChanged(ScreenOrientation orientation)
+        {
+        }
+
+        #endregion
+    }
+    [Serializable]
+    public class UIElement
     {
-        _buttonFPS.SetActive(type != "FPS" && type != "THIRD");
-        _buttonPanoramic.SetActive(type == "LOCKED");
-        _buttonHome.SetActive(type != "PAN");
-        Debug.LogWarning("Type: " + type);
-
+        public string key;
+        public GameObject element;
     }
 
-    public void OnCameraLocked(Transform target) {
-
-    
-    }
-
-    public void OnStandby(bool status)
+    [Serializable]
+    public static class UIElementsProvider
     {
-        if(_animator) _animator.SetBool("retracted", status);
+        private static List<UIElement> _elements = new List<UIElement>();
+        public static List<UIElement> elements { get => _elements; }
+
+        public static void RegisterElements(this UIElement[] uIElements) {
+            foreach (var item in uIElements)
+            {
+                RegisterElement(item);
+            }
+        }
+        public static void RegisterElement(UIElement uIElement) {
+
+            if (_elements.Contains(uIElement))
+            {
+                Debug.LogWarning($"[UIElementsProvider] Trying to insert a duplicate '{uIElement.key}' element.");
+                return;
+            }
+
+            _elements.Add(uIElement);
+        }
+        public static void UnregisterElements(this UIElement[] uIElements) {
+            foreach (var item in uIElements)
+            {
+                UnregisterElement(item);
+            }
+
+        }
+        public static void UnregisterElement(UIElement uIElement) {
+            if (_elements.Contains(uIElement))
+            {
+            _elements.Remove(uIElement);
+                return;
+            }
+                Debug.LogWarning($"[UIElementsProvider] Failed to remove: '{uIElement.key}' element not found.");
+        }
+
+        public static GameObject GetElement(string key)
+        {
+            return _elements.FirstOrDefault(element => element.key == key)?.element;
+        }
+
+        public static void ShowElement(string key)
+        {
+            GetElement(key)?.SetActive(true);
+        }
+
+        public static void HideElement(string key)
+        {
+            GetElement(key)?.SetActive(true);
+        }
+
+
     }
 
-    #endregion
 }
