@@ -1,7 +1,10 @@
 {
     "name": "Twinny.Network",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:46171815a21478f4ba0a53543dc1f316",
+        "GUID:b7d9e9465bdc1c345b4b1003049a2335"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -9,8 +12,20 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "FUSION2"
+        "FUSION2",
+        "TWINNY_OPENXR"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.xr",
+            "expression": "2",
+            "define": "TWINNY_OPENXR"
+        },
+        {
+            "name": "com.meta.xr.sdk.all",
+            "expression": "68.0.2",
+            "define": "TWINNY_OPENXR"
+        }
+    ],
     "noEngineReferences": false
 }

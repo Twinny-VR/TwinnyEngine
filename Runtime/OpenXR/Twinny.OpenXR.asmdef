@@ -19,7 +19,7 @@
         },
         {
             "name": "com.meta.xr.sdk.all",
-            "expression": "74.0.2",
+            "expression": "68.0.2",
             "define": "TWINNY_OPENXR"
         }
     ],
