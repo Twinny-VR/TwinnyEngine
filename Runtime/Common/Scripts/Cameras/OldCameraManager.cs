@@ -120,8 +120,9 @@ namespace Twinny.System.Cameras
 #endif
 
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _brain = Camera.main.GetComponent<CinemachineBrain>();
 
             _config = Resources.Load<CameraRuntime>("CameraRuntimePreset");

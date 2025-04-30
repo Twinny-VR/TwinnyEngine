@@ -49,8 +49,9 @@ namespace Twinny.System.Cameras
 #endif
 
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _config = Resources.Load<CameraRuntime>("CameraRuntimePreset");
 
             if (_config == null)

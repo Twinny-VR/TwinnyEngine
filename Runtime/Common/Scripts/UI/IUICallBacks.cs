@@ -9,7 +9,6 @@ namespace Twinny.UI
     public interface IUICallBacks
     {
        void OnHudStatusChanged(bool status);
-        void OnOrientationChanged(ScreenOrientation orientation);
         #region Experience Callbacks
 
         void OnPlatformInitialize();

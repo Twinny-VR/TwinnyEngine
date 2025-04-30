@@ -25,10 +25,7 @@ namespace Twinny
         #endregion
 
         #region MonoBehaviour Methods
-        private void Awake()
-        {
-            Init();
-        }
+
 
         #endregion
 

@@ -29,8 +29,11 @@ namespace Twinny.System.Cameras
         #endregion
 
         #region MonoBehaviour Methods
-        private void Awake()
+
+
+        protected override void Awake()
         {
+            base.Awake();
             if (!_navMeshAgent) _navMeshAgent = GetComponent<NavMeshAgent>();
      //       if (!_mainCamera) _mainCamera = Camera.main;
 

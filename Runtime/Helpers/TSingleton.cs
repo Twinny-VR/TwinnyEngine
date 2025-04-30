@@ -11,7 +11,7 @@ namespace Twinny.Helpers
     public abstract class TSingleton<T> : MonoBehaviour where T : TSingleton<T>
     {
         #region Singleton Instance
-        private static T _instance;
+        protected static T _instance;
         public static T Instance { get { return _instance; } }
         #endregion
 
@@ -48,10 +48,14 @@ namespace Twinny.Helpers
             }
         }
 
+        protected virtual void Awake()
+        {
+            Init();
+        }
 
         protected virtual void Start()
         {
-            Init();
+            //Init();
         }
     }
 

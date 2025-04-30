@@ -9,7 +9,7 @@ using UnityEngine;
 
 
 namespace Twinny.UI {
-    public abstract class HUDManager : MonoBehaviour, IUICallBacks
+    public abstract class HUDManager : TSingleton<HUDManager>, IUICallBacks
     {
 
         #region Fields
@@ -42,8 +42,10 @@ namespace Twinny.UI {
 #endif
 
         // Start is called before the first frame update
-        protected virtual void Start()
+
+         protected override void Start()
         {
+            base.Start();
             CallBackManager.RegisterCallback(this);
             _animator = GetComponent<Animator>();
             _uIElements.RegisterElements();
@@ -119,11 +121,6 @@ namespace Twinny.UI {
         {
             if (_animator) _animator.SetBool("retracted", status);
         }
-
-        public virtual void OnOrientationChanged(ScreenOrientation orientation)
-        {
-        }
-
         #endregion
     }
     [Serializable]
