@@ -17,18 +17,7 @@ namespace Twinny.System
 
         #region MonoBehaviour Methods
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-        }
-#endif
-
-        protected override void Start()
-        {
-            Init();
-           // SetHDRI(sceneSkyBox);
-        }
-
+         
         #endregion
 
         #region Overrided Methods

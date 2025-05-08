@@ -3,20 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 
-namespace Twinny.Helpers
+namespace Concept.Helpers
 {
     /// <summary>
-    ///  This class is to get network informations.
+    ///  This class is to manage network features.
     /// </summary>
-    public static class NetworkHelper 
+    public static class NetworkUtils
     {
 
         public delegate void onInternetConnectionChanged(bool status);
         public static onInternetConnectionChanged OnInternetConnectionChanged;
 
 
-        static NetworkHelper() { CheckInternetConnection(); } //Start to check by initialization
+        static NetworkUtils() { CheckInternetConnection(); } //Start to check by initialization
 
         /// <summary>
         /// Checks internet connection
@@ -71,16 +72,16 @@ namespace Twinny.Helpers
         /// </summary>
         public static async void CheckInternetConnection()
         {
-            bool conected = NetworkHelper.IsWiFiConnected();
+            bool conected = NetworkUtils.IsWiFiConnected();
             while (true)
             {
                 //Debug.Log("Teste: "+ conected);
-                if (!conected && NetworkHelper.IsWiFiConnected())
+                if (!conected && NetworkUtils.IsWiFiConnected())
                 {
                     conected = true;
                     OnInternetConnectionChanged?.Invoke(true);
                 }
-                else if (conected && !NetworkHelper.IsWiFiConnected())
+                else if (conected && !NetworkUtils.IsWiFiConnected())
                 {
                     conected = false;
                     OnInternetConnectionChanged?.Invoke(false);
@@ -89,6 +90,29 @@ namespace Twinny.Helpers
             }
         }
 
+        private static async Task<Sprite> LoadImageAsync(string url)
+        {
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
+            {
+                var operation = request.SendWebRequest();
+
+                while (!operation.isDone)
+                    await Task.Yield(); // Liberar o thread principal
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError("Load Image error: " + request.error);
+                    return null;
+                }
+
+                Texture2D texture = DownloadHandlerTexture.GetContent(request);
+                return Sprite.Create(
+                    texture,
+                    new Rect(0, 0, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f)
+                );
+            }
+        }
 
     }
 }

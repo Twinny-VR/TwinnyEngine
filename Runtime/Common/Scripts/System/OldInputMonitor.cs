@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -43,8 +41,10 @@ namespace Twinny.System
         #region MonoBehaviour Methods
 
 
-        void Update()
+
+        protected override void Update()
         {
+            base.Update();
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 

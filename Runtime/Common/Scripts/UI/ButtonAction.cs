@@ -1,8 +1,8 @@
-using Twinny.Helpers;
-using Twinny.Localization;
+using Concept.Helpers;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 
 namespace Twinny.UI
@@ -55,6 +55,8 @@ namespace Twinny.UI
         public void OnRelease()
         {
 
+            if (CanvasTransition.isTransitioning) 
+                return;
             switch (type)
             {
                 case ButtonType.START:

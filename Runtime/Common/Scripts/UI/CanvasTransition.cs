@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Twinny.UI
 {
@@ -13,7 +11,8 @@ namespace Twinny.UI
 
         [SerializeField] private Canvas _overlayScreen;
         [SerializeField] private CanvasGroup _fadeScreen;
-
+        private static bool _isTransitioning;
+        public static bool isTransitioning { get => _isTransitioning; }
 
         protected override void Start()
         {
@@ -38,7 +37,7 @@ namespace Twinny.UI
                 Debug.LogWarning("[CanvasTransition] Instance not found.");
                 return false;
             }
-         
+            _isTransitioning = true;
             float startAlpha = Instance. _fadeScreen.alpha;
             float targetAlpha = fadeIn ? 1f : 0f;
             float elapsedTime = 0f;
@@ -53,6 +52,7 @@ namespace Twinny.UI
                 await Task.Yield();  
             }
 
+            _isTransitioning = false;
             //Force final alpha result
             Instance._fadeScreen.alpha = targetAlpha;
 

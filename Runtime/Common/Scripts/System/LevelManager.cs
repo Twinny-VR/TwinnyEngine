@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Helpers;
 using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.UI;
@@ -36,12 +37,6 @@ namespace Twinny.System
             base.Start();
             TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
             _ = TwinnyManager.InitializePlatform();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         private void OnDestroy()

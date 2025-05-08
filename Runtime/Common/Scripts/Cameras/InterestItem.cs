@@ -5,7 +5,10 @@ namespace Twinny.System.Cameras
     public class InterestItem : MonoBehaviour
     {
         [Tooltip("If not 'virtualCamera' the First Person Agent will assume.")]
-        public CameraHandler virtualCamera;
+        [SerializeField] private CameraHandler _virtualCamera;
+        public CameraHandler virtualCamera { get => _virtualCamera; }
+
+        public bool allowFirstPerson { get => _virtualCamera.allowFirstPerson; }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()

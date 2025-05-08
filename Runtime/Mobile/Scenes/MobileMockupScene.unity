@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -169,6 +169,8 @@ MonoBehaviour:
   yawRange: {x: 0, y: 240, z: 600}
   yawSpeedMultiply: 1
   showZoomSettings: 0
+  isFPS: 0
+  lockedCamera: {fileID: 0}
   zoomRange: {x: 0, y: 100}
   zoomSpeedMultiply: 1
   overrideCameraBlend: 0
@@ -976,6 +978,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 35.33351, y: 44.78357, z: 16.019087}
   m_Center: {x: 0, y: 22, z: 0}
+--- !u!114 &1040958670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040958667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aefacc049329ba04da666984d5604eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _virtualCamera: {fileID: 2074059358}
 --- !u!4 &1255269561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7874738934944048477, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
@@ -1374,15 +1389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.031036377
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0011138916
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.017715454
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1390,15 +1405,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1492,13 +1507,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 21388250608084578, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1975444096}
+      addedObject: {fileID: 1975444100}
     - targetCorrespondingSourceObject: {fileID: 4672972594943866684, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 379539474}
     - targetCorrespondingSourceObject: {fileID: 1542548409324292597, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1040958669}
+    - targetCorrespondingSourceObject: {fileID: 1542548409324292597, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1040958670}
     - targetCorrespondingSourceObject: {fileID: 7575347950986432319, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1700230153}
@@ -1511,18 +1529,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 21388250608084578, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
   m_PrefabInstance: {fileID: 1975444094}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1975444096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1975444095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 834994dbbe3f7a940af55d61692eb386, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1975444097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5340837700453291635, guid: 45c2457b84b8ec14fa3f51a8154dd8ef, type: 3}
@@ -1555,6 +1561,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5622914826410899545, guid: 944975a453603364cb220293be96d2be, type: 3}
+--- !u!114 &1975444100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975444095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1c4b5abc0f1ef4b8d7fa6522f65261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
+  _keepAllInstances: 0
+  _firstInstancePersistent: 0
+  _lastInstancePersistent: 0
+  _sceneSkyBox: {fileID: 2100000, guid: 81bfdddc6f336ed4792a27ad8d546be8, type: 2}
+  interestPoints:
+  - {fileID: 1040958670}
 --- !u!1001 &1990265361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1888,7 +1913,7 @@ Transform:
   m_GameObject: {fileID: 2074059351}
   serializedVersion: 2
   m_LocalRotation: {x: 0.025011964, y: 0.9399916, z: -0.07063161, w: 0.33286852}
-  m_LocalPosition: {x: -216.7369, y: 34.202015, z: 244.62788}
+  m_LocalPosition: {x: -216.70578, y: 34.2009, z: 244.6101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1917,12 +1942,12 @@ MonoBehaviour:
   AvoidObstacles:
     Enabled: 1
     DistanceLimit: 0
-    MinimumOcclusionTime: 1
+    MinimumOcclusionTime: 0.1
     CameraRadius: 0.4
     UseFollowTarget:
       Enabled: 0
       YOffset: 0
-    Strategy: 0
+    Strategy: 2
     MaximumEffort: 4
     SmoothingTime: 1
     Damping: 0.4
@@ -1948,7 +1973,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _zoomSpeedMultiply: 1
   _zoomRange: {x: 0, y: 60}
-  _allowFirstPerson: 1
+  _allowFirstPerson: 0
 --- !u!114 &2074059359
 MonoBehaviour:
   m_ObjectHideFlags: 0

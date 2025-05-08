@@ -1,6 +1,5 @@
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.UI;
-using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ namespace Twinny.System.Cameras
         #region MonoBehaviour Methods
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected override void OnValidate()
         {
             string resPath = "Assets/Resources";
             if (!AssetDatabase.IsValidFolder(resPath))

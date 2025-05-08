@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -35,9 +34,9 @@ namespace Twinny.System
 
         #endregion
 
-        void Update()
+        protected override void Update()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (!EventSystem.current || EventSystem.current.IsPointerOverGameObject())
                 return;
 
             /*

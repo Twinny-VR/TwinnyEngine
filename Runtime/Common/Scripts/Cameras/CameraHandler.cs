@@ -33,7 +33,7 @@ namespace Twinny.System.Cameras
         [VectorLabels("Min", "Max")]
         [SerializeField] private Vector2 _zoomRange = new Vector2(0f, 100f);
         [SerializeField] private bool _allowFirstPerson;
-
+        public bool allowFirstPerson { get => _allowFirstPerson; }
         private void OnEnable()
         {
             CallBackManager.RegisterCallback<ICameraCallBacks>(this);
@@ -119,7 +119,7 @@ namespace Twinny.System.Cameras
         {
             if (!_instance || _instance != this) return;
 
-            _xAxis = _initialX + factor * CameraManager.config.sesitivity.x;
+            _xAxis = _initialX + factor * -CameraManager.config.sesitivity.x;
 
 
 

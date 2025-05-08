@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.System;
-using Twinny.UI;
 using UnityEngine;
 
 
@@ -26,14 +24,15 @@ namespace Twinny.UI {
         #endregion
 
         #region Properties
-        private Animator _animator;
+        protected Animator _animator;
         #endregion
 
         #region MonoBehaviour Methods
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             foreach (var item in _uIElements)
             {
                 if (item.element && string.IsNullOrEmpty(item.key)) item.key = item.element.name;
@@ -58,12 +57,6 @@ namespace Twinny.UI {
             _uIElements.UnregisterElements();
         }
 
-        // Update is called once per frame
-        protected virtual void Update()
-        {
-
-        }
-
         #endregion
 
         #region System Callback Methods
@@ -82,7 +75,6 @@ namespace Twinny.UI {
 
         public virtual void OnLoadScene()
         {
-            if (_animator) _animator.SetBool("retracted", false);
             _loadingScreen.SetActive(false);
         }
 

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Twinny.Helpers;
-using Twinny.UI;
+using Concept.Helpers;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,6 +12,9 @@ namespace Twinny.System.Cameras
         [SerializeField] private NavMeshAgent _navMeshAgent;
        [SerializeField] private CameraHandler _fpsCamera;
         [SerializeField] private bool _isMoving;
+        private static bool _isActive;
+        public static bool isActive { get => _isActive; }
+
         #endregion
 
         #region Properties
@@ -76,8 +76,9 @@ namespace Twinny.System.Cameras
         }
 
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
+            base.Update();
             if (_isMoving && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance <= .25f && !_navMeshAgent.pathPending)
             {
                 OnArrived?.Invoke(transform.position);
@@ -161,29 +162,29 @@ namespace Twinny.System.Cameras
 
         }
 
-        public static void TakeControl(Transform node)
+        public static void TakeControl(Transform node = null)
         {
-            Instance.TeleportTo(node);
+            if(node) TeleportTo(node);
             TakeControl(true);
         }
         public static void TakeControl(bool status)
         {
+            _isActive = status;
             if (status) 
             CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(Instance._fpsCamera));
             Instance._navMeshAgent.enabled = status;
         }
 
 
-        public void TeleportTo(Transform node)
+        public static void TeleportTo(Transform node)
         {
 
             // OnCameraLocked?.Invoke(null);
-            if (node)
+            if (Instance && node)
             {
-                _navMeshAgent.enabled = false;
-                transform.position = node.position;
-                transform.rotation = node.rotation;
-                _navMeshAgent.enabled = true;
+                Instance._navMeshAgent.enabled = false;
+                Instance.transform.position = node.position;
+                Instance.transform.rotation = node.rotation;
             }
         }
 

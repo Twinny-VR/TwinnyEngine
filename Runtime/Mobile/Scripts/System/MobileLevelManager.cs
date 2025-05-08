@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Helpers;
 using Twinny.System.Cameras;
 using Twinny.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Twinny.System
 {
     public class MobileLevelManager : LevelManager
     {
 
+        public static InterestItem currentInterest;
+
 #if UNITY_EDITOR
-        private void OnValidate()
+
+        protected override void OnValidate()
         {
+            base.OnValidate();
             if (AssetDatabase.IsValidFolder("Resources"))
             {
                 AssetDatabase.CreateFolder("Assets", "Resources");
@@ -40,10 +46,17 @@ namespace Twinny.System
 
         protected override void Awake()
         {
+            Init();
             string fileName = "MobileRuntimePreset";
             TwinnyManager.LoadRuntimeProfile<MobileRuntime>(fileName);
         }
 
+
+        protected override void Start()
+        {
+            base.Start();
+            ActionManager.RegisterAction("SetFPS", SetFPS);
+        }
 
         /// <summary>
         /// This Async Method changes the actual scene.
@@ -53,7 +66,8 @@ namespace Twinny.System
 
         public override async Task ChangeScene(object scene, int landMarkIndex)
         {
-
+            var envenSystem = EventSystem.current;
+            envenSystem.enabled = false;
             await CanvasTransition.FadeScreen(true);
 
             CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
@@ -90,12 +104,23 @@ namespace Twinny.System
             await Task.Delay(1500);
             CallBackManager.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false);
+            envenSystem.enabled = true;
+
 
         }
 
 
         public static void ChangeInterest(InterestItem interest) {
 
+            currentInterest = interest;
+
+
+            Transform targetTransform = (interest is InterestBuilding building)
+                ? building.fpsSpawnPoint
+                : interest.transform;
+
+            FirstPersonAgent.TeleportTo(targetTransform);
+ 
             if ((!interest.virtualCamera))
             {
                 FirstPersonAgent.TakeControl(interest.transform);
@@ -116,6 +141,17 @@ namespace Twinny.System
             */
 
         }
+   
+        public void SetFPS()
+        {
+            if(FirstPersonAgent.isActive)
+                CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));
+
+            FirstPersonAgent.TakeControl(!FirstPersonAgent.isActive);
+
+        }
+
+
     }
 
 

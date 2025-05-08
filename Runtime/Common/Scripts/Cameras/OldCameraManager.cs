@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using System.IO;
+using Concept.Helpers;
 
 
 namespace Twinny.System.Cameras
@@ -33,7 +34,6 @@ namespace Twinny.System.Cameras
             }
         }
 
-        public FirstPersonAgent fpsAgent;
 
         [SerializeField]
         private OldInterestItem _interestItem;
@@ -89,8 +89,10 @@ namespace Twinny.System.Cameras
         #region MonoBehaviour Methods
 
 #if UNITY_EDITOR
-        private void OnValidate()
+
+        protected override void OnValidate()
         {
+            base.OnValidate();
             string resPath = "Assets/Resources";
             if (!AssetDatabase.IsValidFolder(resPath))
             {
@@ -316,7 +318,7 @@ namespace Twinny.System.Cameras
                 if (interest.type != State.PAN)
                 {
                     Transform nodePosition = (interest is BuildingFeature) ? (interest as BuildingFeature).facadeTeleportNode : interest.transform;
-                    Instance.fpsAgent.TeleportTo(nodePosition);
+                    FirstPersonAgent.TeleportTo(nodePosition);
 
                 }
 //                if (interest.type == State.FPS || interest.type == State.LOCKEDTHIRD) SetAgentPosition(interest.transform);
