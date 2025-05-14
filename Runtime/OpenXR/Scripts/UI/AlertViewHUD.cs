@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Twinny.Helpers;
 using Twinny.Localization;
+using Concept.Helpers;
+
 
 
 
@@ -45,9 +46,10 @@ namespace Twinny.UI
 
         private float _speed = 7f;
 
-        private void Awake()
+
+        protected override void Awake()
         {
-            Init();
+            base.Awake();
             _initialTime = Time.time;
             _initialPosition = transform.position;
             _initialRotation = transform.rotation;
@@ -55,9 +57,10 @@ namespace Twinny.UI
             Hide();
         }
 
-        private void Start()
+        protected override void Start()
         {
-            OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+            base.Start();
+        OVRCameraRig cameraRig = FindFirstObjectByType<OVRCameraRig>();
             _centerEyeTransform = cameraRig ? cameraRig.centerEyeAnchor : Camera.main.transform;
         }
 
@@ -99,9 +102,10 @@ namespace Twinny.UI
 
         private void ClearMessage() => _messageTextField.text = "";
 
-        private void Update()
+        protected override void Update()
         {
-            CalculateHideAfterMessage();
+            base.Update();
+        CalculateHideAfterMessage();
             FollowCamera();
         }
 

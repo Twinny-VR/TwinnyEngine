@@ -5,6 +5,7 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
+using Concept.Helpers;
 
 
 
@@ -51,7 +52,7 @@ namespace Twinny.UI
         public void OnRelease()
         {
             //TODO Criar um sistema de configurações
-            if (!LevelManagerXR.Config.allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
+            if (!(TwinnyManager.config as RuntimeXR).allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
             {
                 AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
                 return;

@@ -1,3 +1,4 @@
+using Concept.Core;
 using Twinny.UI;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -36,14 +37,14 @@ namespace Twinny.System.Cameras
         public bool allowFirstPerson { get => _allowFirstPerson; }
         private void OnEnable()
         {
-            CallBackManager.RegisterCallback<ICameraCallBacks>(this);
-            CallBackManager.RegisterCallback<IInputCallBacks>(this);
+            CallbackHub.RegisterCallback<ICameraCallBacks>(this);
+            CallbackHub.RegisterCallback<IInputCallBacks>(this);
         }
 
         private void OnDisable()
         {
-            CallBackManager.UnregisterCallback<ICameraCallBacks>(this);
-            CallBackManager.UnregisterCallback<IInputCallBacks>(this);
+            CallbackHub.UnregisterCallback<ICameraCallBacks>(this);
+            CallbackHub.UnregisterCallback<IInputCallBacks>(this);
 
         }
         private void Awake()

@@ -9,21 +9,20 @@ using UnityEngine.UI;
 
 namespace Twinny.UI
 {
-       public class MobileHUDManager : HUDManager
+    public class MobileHUDManager : HUDManager
     {
+        [SerializeField] private GameObject BT_Home;
         [SerializeField] private GameObject BT_Immersive;
 
         public static new MobileHUDManager Instance { get => _instance as MobileHUDManager; }
 
-        private ScreenOrientation _lastScreenOrientation;
 
-        //        public delegate void onOrientationChanged(ScreenOrientation orientation);
-        //        public static onOrientationChanged OnOrientationChanged;
 
+
+        #region MonoBheaviour Methods
         protected override void Start()
         {
             base.Start();
-            _lastScreenOrientation = Screen.orientation;
 
         }
 
@@ -31,22 +30,27 @@ namespace Twinny.UI
         {
             base.Update();
 
-            if (_lastScreenOrientation != Screen.orientation)
-            {
-                _lastScreenOrientation = Screen.orientation;
-            }
+
 
         }
 
-        public static int GetSize()
+        #endregion
+
+        #region Public Methods
+        public void ShowMainMenu(bool status)
         {
-            var gvWndType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView");
-            var selectedSizeIndexProp = gvWndType.GetProperty("selectedSizeIndex", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var gvWnd = EditorWindow.GetWindow(gvWndType);
-            var size = selectedSizeIndexProp.GetValue(gvWnd, null);
-            return (int)size;
-        }
 
+            if (status)
+            {
+                UIElementsProvider.ShowElement("MainMenu");
+            }
+            else
+            {
+                UIElementsProvider.HideElement("MainMenu");
+            }
+                ShowControlsMenu(!status);
+        }
+        #endregion
 
         #region UI Callbacks
 
@@ -56,8 +60,7 @@ namespace Twinny.UI
             if (MobileSceneFeature.Instance)
             {
                 BT_Immersive.SetActive(MobileLevelManager.currentInterest.allowFirstPerson);
-                if (_animator) _animator.SetBool("retracted", false);
-                
+                ShowMainMenu(false);
             }
         }
 

@@ -1,5 +1,6 @@
+using Concept.Helpers;
 using Fusion;
-using Meta.XR.Movement.Networking.Fusion;
+//using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 using System.Diagnostics;
@@ -16,8 +17,7 @@ namespace Twinny.XR
     {
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
-
-        public static new RuntimeXR Config { get { return Instance.config as RuntimeXR; } }
+        public static RuntimeXR Config { get => TwinnyManager.config as RuntimeXR; }
 
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
@@ -26,23 +26,14 @@ namespace Twinny.XR
         {
 
 
-            config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
-            if (config == null)
-            {
-                UnityEngine.Debug.LogError("[LevelManagerXR] Impossible to load 'RuntimeXRPreset'.");
-            }
+            TwinnyManager.LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
 
         }
 
         protected override void Awake()
         {
             base.Awake();
-            config = Resources.Load<RuntimeXR>("RuntimeXRPreset");
-
-            if (config == null)
-            {
-                UnityEngine.Debug.LogError("[NetworkedLevelManager] Impossible to load 'RuntimeXRPreset'.");
-            }
+            TwinnyManager.LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
 
         }
 
@@ -71,7 +62,7 @@ namespace Twinny.XR
 
 
             //Initialize as XR Platform
-            if (platform == Platform.XR)
+           if (platform == Platform.XR)
             {
 
                 ConnectToServer();
@@ -89,7 +80,7 @@ namespace Twinny.XR
         public async void ConnectToServer()
         {
             //Get Internet Status
-            bool isWifiConnected = true;// = NetworkHelper.IsWiFiConnected();
+            bool isWifiConnected = NetworkUtils.IsWiFiConnected();
 
 
             if (!Config.restarting && isWifiConnected && !Config.startSinglePlayer)
@@ -221,7 +212,7 @@ namespace Twinny.XR
             Camera.main.backgroundColor = Color.clear;
             if (status)
             {
-                RenderSettings.skybox = instance.config.defaultSkybox;
+                RenderSettings.skybox = (TwinnyManager.config as RuntimeXR).defaultSkybox;
                 Camera.main.clearFlags = CameraClearFlags.SolidColor;
             }
             else

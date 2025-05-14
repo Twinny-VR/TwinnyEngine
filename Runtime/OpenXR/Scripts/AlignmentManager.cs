@@ -6,7 +6,7 @@ namespace Twinny.System.Network
 {
     public class AlignmentManager : MonoBehaviour
     {
-        [SerializeField] private ColocationManager _colocationManager;
+    //    [SerializeField] private ColocationManager _colocationManager;
 
 
         private Transform _cameraRigTransform;

@@ -1,4 +1,5 @@
 using System;
+using Concept.Core;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,12 +51,12 @@ namespace Twinny.UI
 
         public UICallBackEvents()
         {
-            CallBackManager.RegisterCallback<IUICallBacks>(this);
+            CallbackHub.RegisterCallback<IUICallBacks>(this);
         }
 
         public void Unregister()
         {
-            CallBackManager.UnregisterCallback<IUICallBacks>(this);
+            CallbackHub.UnregisterCallback<IUICallBacks>(this);
         }
 
         public void OnCameraChanged(Transform camera, string type)

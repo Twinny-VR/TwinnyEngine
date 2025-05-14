@@ -1,3 +1,4 @@
+using Concept.Helpers;
 using Twinny.Helpers;
 using Twinny.System;
 using UnityEngine;
@@ -40,7 +41,7 @@ namespace Twinny.UI
         void Start()
         {
             //Set CallBacks
-            NetworkHelper.OnInternetConnectionChanged += OnInternetConnectionChanged;
+            NetworkUtils.OnInternetConnectionChanged += OnInternetConnectionChanged;
             AudioManager.OnVolumeChanged += OnVolumeChange;
             AudioManager.OnVoipChanged += OnVoipChange;
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
@@ -52,7 +53,7 @@ namespace Twinny.UI
            // OnVoipChange(LevelManager.GetVoipStatus());
 
             //Sets WiFi Feed UI Icon
-            OnInternetConnectionChanged(NetworkHelper.IsWiFiConnected());
+            OnInternetConnectionChanged(NetworkUtils.IsWiFiConnected());
             
             ResizeRadialMenu();
         }
@@ -74,7 +75,7 @@ namespace Twinny.UI
         private void OnDestroy()
         {
             //Unset all callbacks
-            NetworkHelper.OnInternetConnectionChanged -= OnInternetConnectionChanged;
+            NetworkUtils.OnInternetConnectionChanged -= OnInternetConnectionChanged;
             AudioManager.OnVolumeChanged -= OnVolumeChange;
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
             AudioManager.OnVoipChanged -= OnVoipChange;

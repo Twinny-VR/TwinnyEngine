@@ -9,6 +9,8 @@ using UnityEngine;
 using Twinny.XR;
 using UnityEngine.SceneManagement;
 using System.Data.Common;
+using Concept.Core;
+using Concept.Helpers;
 
 namespace Twinny.UI
 {
@@ -77,7 +79,7 @@ namespace Twinny.UI
         {
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
             _banner.transform.SetParent(AnchorManager.Instance.transform);
-            CallBackUI.RegisterCallback(this);
+            CallbackHub.RegisterCallback(this);
 
             _mainCameraTransform = Camera.main.transform;
             _previousCameraPos = _mainCameraTransform.position;
@@ -106,7 +108,7 @@ namespace Twinny.UI
         private void OnDisable()
         {
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
-            CallBackUI.UnregisterCallback(this);
+            CallbackHub .UnregisterCallback(this);
         }
         #endregion
 

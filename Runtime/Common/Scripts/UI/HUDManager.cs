@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Concept.Core;
 using Concept.Helpers;
 using Twinny.System;
 using UnityEngine;
@@ -13,12 +14,12 @@ namespace Twinny.UI {
         #region Fields
 
         [Header("SYSTEM CONTROLS FIELDS:")]
-        [SerializeField] private GameObject _loadingScreen;
+        [SerializeField] protected GameObject _loadingScreen;
 
 
-        [SerializeField] private UIElement[] _uIElements;
+        [SerializeField] protected UIElement[] _uIElements;
 
-        [SerializeField] private UICallBackEvents _uICallBacks;
+        [SerializeField] protected UICallBackEvents _uICallBacks;
         public IUICallBacks CallBacks => _uICallBacks;
 
         #endregion
@@ -45,7 +46,7 @@ namespace Twinny.UI {
          protected override void Start()
         {
             base.Start();
-            CallBackManager.RegisterCallback(this);
+            CallbackHub.RegisterCallback(this);
             _animator = GetComponent<Animator>();
             _uIElements.RegisterElements();
 
@@ -53,11 +54,18 @@ namespace Twinny.UI {
 
         protected virtual void OnDestroy()
         {
-            CallBackManager.UnregisterCallback(this);
+            CallbackHub.UnregisterCallback(this);
             _uIElements.UnregisterElements();
         }
 
         #endregion
+
+
+        public virtual void ShowControlsMenu(bool status)
+        {
+            if (_animator) _animator.SetBool("retracted", !status);
+
+        }
 
         #region System Callback Methods
 
@@ -84,7 +92,8 @@ namespace Twinny.UI {
 
         public virtual void OnStartLoadScene()
         {
-            if (_animator) _animator.SetBool("retracted", true);
+            ShowControlsMenu(false);
+
             _loadingScreen.SetActive(true);
         }
 
@@ -111,7 +120,8 @@ namespace Twinny.UI {
 
         public virtual void OnStandby(bool status)
         {
-            if (_animator) _animator.SetBool("retracted", status);
+                        ShowControlsMenu(status);
+
         }
         #endregion
     }
@@ -172,7 +182,7 @@ namespace Twinny.UI {
 
         public static void HideElement(string key)
         {
-            GetElement(key)?.SetActive(true);
+            GetElement(key)?.SetActive(false);
         }
 
 

@@ -1,3 +1,4 @@
+using Concept.Core;
 using Concept.Helpers;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -22,6 +23,9 @@ namespace Twinny.System.Cameras
         #endregion
 
         #region Delegates
+
+        public delegate void onFpsMode(bool status);
+        public static onFpsMode OnFpsMode;
 
         public delegate void onArrived(Vector3 position);
         public onArrived OnArrived;
@@ -170,9 +174,10 @@ namespace Twinny.System.Cameras
         public static void TakeControl(bool status)
         {
             _isActive = status;
-            if (status) 
-            CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(Instance._fpsCamera));
+            if (status)
+                CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(Instance._fpsCamera));
             Instance._navMeshAgent.enabled = status;
+            OnFpsMode?.Invoke(status);
         }
 
 

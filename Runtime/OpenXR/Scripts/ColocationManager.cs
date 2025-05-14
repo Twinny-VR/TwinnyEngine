@@ -1,5 +1,5 @@
+#if false //Meta Core SDK min version 71
 using Fusion;
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -288,3 +288,4 @@ namespace Twinny.System.Network
     }
 
 }
+#endif

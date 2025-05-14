@@ -1,17 +1,17 @@
 using Meta.XR.BuildingBlocks;
 using System.Collections;
 using System.Collections.Generic;
-using Twinny.Helpers;
 using UnityEngine;
 using Fusion;
 using Twinny.System.Network;
 using System.Threading.Tasks;
 using Meta.XR.MultiplayerBlocks.Shared;
 using Twinny.XR;
+using Concept.Helpers;
 
 namespace Twinny.System
 {
- 
+
     public enum StateAnchorManager
     {
         DISABLED,
@@ -125,24 +125,26 @@ namespace Twinny.System
 
 
         //Awake is called before the script is started
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _transform = transform;
-            Init();
             NetworkRunnerHandler.OnLoadSceneFeature += AnchorScene; //Anchor always when a new SceneFeature has load
         }
         // Start is called before the first frame update
-        void Start()
+
+        protected override void Start()
         {
-            _safeAreaSize = LevelManagerXR.Config.safeAreaSize;
+            base.Start();
+             _safeAreaSize = (TwinnyManager.config as RuntimeXR).safeAreaSize;
 
             //Set callbacks listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.AddListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.AddListener(OnAnchorCreateCompleted);
             _spatialAnchorCore.OnAnchorEraseCompleted.AddListener(OnAnchorEraseCompleted);
             //Set callbacks delegates
-           // GestureMonitor.Instance.OnPinchLeft += OnPinchLeft;
-           // GestureMonitor.Instance.OnPinchRight += OnPinchRight;
+            // GestureMonitor.Instance.OnPinchLeft += OnPinchLeft;
+            // GestureMonitor.Instance.OnPinchRight += OnPinchRight;
 
             _spatialAnchorLoader.LoadAnchorsFromDefaultLocalStorage();
 
@@ -152,9 +154,10 @@ namespace Twinny.System
             Instance.StartCoroutine(Instance.GetAlignCameraToAnchorCoroutine());
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
+            base.Update();
+
             //Anchor placement system
             if (_state != StateAnchorManager.ANCHORING) return;
             Handling();
@@ -166,14 +169,14 @@ namespace Twinny.System
             //Unset Delegates
             GestureMonitor.Instance.OnPinchLeft -= OnPinchLeft;
             GestureMonitor.Instance.OnPinchRight -= OnPinchRight;
-            NetworkRunnerHandler.OnLoadSceneFeature -= AnchorScene; 
+            NetworkRunnerHandler.OnLoadSceneFeature -= AnchorScene;
             //Unset listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.RemoveListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.RemoveListener(OnAnchorCreateCompleted);
             _spatialAnchorCore.OnAnchorEraseCompleted.RemoveListener(OnAnchorEraseCompleted);
 
         }
-#endregion
+        #endregion
 
 
 
@@ -186,12 +189,12 @@ namespace Twinny.System
         public static void HandleAnchorPlacement()
         {
 
-            if(Instance._state == StateAnchorManager.DISABLED || Instance._state == StateAnchorManager.ANCHORED) 
+            if (Instance._state == StateAnchorManager.DISABLED || Instance._state == StateAnchorManager.ANCHORED)
             {
                 Instance._state = StateAnchorManager.ANCHORING;
             }
 
-//            Instance._state = (Instance._state == StateAnchorManager.DISABLED) ? StateAnchorManager.ANCHORING : StateAnchorManager.DISABLED;
+            //            Instance._state = (Instance._state == StateAnchorManager.DISABLED) ? StateAnchorManager.ANCHORING : StateAnchorManager.DISABLED;
         }
 
         /// <summary>
@@ -209,7 +212,7 @@ namespace Twinny.System
         public static void AnchorScene()//TODO Swith to platform
         {
             SceneFeatureXR sceneFeature = SceneFeature.Instance as SceneFeatureXR;
-            if(sceneFeature == null) return;
+            if (sceneFeature == null) return;
 
             sceneFeature.transform.position = AnchorManager.Instance.transform.position;
             sceneFeature.transform.rotation = AnchorManager.Instance.transform.rotation;
@@ -246,11 +249,13 @@ namespace Twinny.System
                 {
                     Instance._colocation = Instantiate(Instance._colocationPrefab);
                     ColocationController controller = Instance._colocation.GetComponent<ColocationController>();
-                    if (controller != null) {
+                    if (controller != null)
+                    {
 
                         controller.ColocationReadyCallbacks.AddListener(OnColocationReady);
-                    
-                    } else Debug.LogWarning("[AnchorManager] ColocationController not found!");
+
+                    }
+                    else Debug.LogWarning("[AnchorManager] ColocationController not found!");
 
                 }
 
@@ -272,14 +277,15 @@ namespace Twinny.System
                     controller.ColocationReadyCallbacks.RemoveListener(OnColocationReady);
                 }
 
-                    Destroy(_colocation.gameObject);
+                Destroy(_colocation.gameObject);
             }
             if (_alignCameraToAnchor != null)
             {
                 // ((Behaviour)_alignCameraToAnchor).enabled = status;
                 Debug.LogWarning("DESTRÓI AlignCameraToAnchor");
                 Destroy(_alignCameraToAnchor);
-            }else
+            }
+            else
                 Debug.LogWarning("NÃO ENCONTROU AlignCameraToAnchor");
         }
 
@@ -313,7 +319,7 @@ namespace Twinny.System
             _transform.SetPositionAndRotation(position, rotation);
             _transform.SetParent(anchor.transform);
             _currentAnchor = anchor;
-               // _stateAnchorManager = StateAnchorManager.ANCHORED;
+            // _stateAnchorManager = StateAnchorManager.ANCHORED;
 
             // _transform.gameObject.AddComponent<OVRSpatialAnchor>();
         }

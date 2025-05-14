@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Twinny.Localization;
 using Twinny.UI;
 using Twinny.XR;
+using Concept.Helpers;
+using Concept.Core;
 
 namespace Twinny.System.Network
 {
@@ -38,9 +40,10 @@ namespace Twinny.System.Network
         [SerializeField] private GameObject _VoiceRecorder;
 
         #region MonoBehaviour Methods
-        private void Awake()
+
+        protected override void Awake()
         {
-            Init();
+            base.Awake();
             
             _runner = GetComponent<NetworkRunner>();
 
@@ -48,11 +51,10 @@ namespace Twinny.System.Network
 
 
 
-
-        // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
-            NetworkedLevelManager.SetOwner(_runner);
+            base.Start();
+        NetworkedLevelManager.SetOwner(_runner);
            
 
 
@@ -60,12 +62,6 @@ namespace Twinny.System.Network
 
         }
 
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
 
 
 
@@ -216,10 +212,10 @@ namespace Twinny.System.Network
                       */
                     }
 
-                    CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadSceneFeature());
+                    CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadSceneFeature());
 
                 }else
-                    CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+                    CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
 
             }
 

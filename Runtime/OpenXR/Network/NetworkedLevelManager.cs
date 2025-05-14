@@ -1,3 +1,4 @@
+using Concept.Core;
 using Fusion;
 using System.Threading.Tasks;
 using Twinny.Helpers;
@@ -22,9 +23,6 @@ namespace Twinny.System
         #endregion
 
         #region Fields
-
-        [SerializeField] public TwinnyRuntime config;
-        public static NetworkRuntime Config { get => Instance.config as NetworkRuntime; }
 
         protected NetworkObject _networkObject;
 
@@ -70,7 +68,6 @@ namespace Twinny.System
                 Debug.Log("Novo preset 'RuntimeXRPreset' criado e salvo em: " + assetPath);
             }
 
-            config = AssetDatabase.LoadAssetAtPath<NetworkRuntime>(assetPath);
 
 
 
@@ -89,6 +86,8 @@ namespace Twinny.System
             }
                 
             _networkObject = GetComponent<NetworkObject>();
+         //   TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
+
         }
         // Start is called before the first frame update
         protected virtual void Start()
@@ -124,7 +123,7 @@ namespace Twinny.System
         {
             isRunning = true;
 
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceReady());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceReady());
         }
 
         public static void StartExperience(string scene, int landMarkIndex)
@@ -145,7 +144,7 @@ namespace Twinny.System
 
         public virtual async Task ResetExperience()
         {
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
             ResetApplication();
@@ -161,7 +160,7 @@ namespace Twinny.System
         /// <param name="landMarkIndex">First LandMark to teleport.</param>
         public async Task ChangeScene(string scene, int landMarkIndex)
         {
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
             RPC_FadingStatus(1);
             RPC_Message(Runner.LocalPlayer, PlayerRef.None, LocalizationProvider.GetTranslated("%LOADING_SCENE"), time: 90f);
@@ -172,7 +171,7 @@ namespace Twinny.System
             if (scene == "PlatformScene")
             {
                 await NetworkSceneManager.UnloadAdditivesScenes();
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(isRunning));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(isRunning));
             }
             else
             {
@@ -251,7 +250,7 @@ namespace Twinny.System
             Debug.LogWarning(IsManager ? "YOU ARE THE MASTER!" : (source != PlayerRef.None ? $"{source} IS THE MASTER!" : "NO MASTERS"));
 
             if (source != PlayerRef.None)
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnExperienceStarting());
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceStarting());
 
 
             if (NetworkRunnerHandler.runner.IsSceneAuthority)
@@ -318,7 +317,7 @@ namespace Twinny.System
             else
                 Debug.LogWarning("Você não tem autoridade pra mudar variaveis");
 
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnSwitchManager(source.PlayerId));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnSwitchManager(source.PlayerId));
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]

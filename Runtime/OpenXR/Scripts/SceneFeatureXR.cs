@@ -8,6 +8,7 @@ using Twinny.System;
 using System.Threading.Tasks;
 using Fusion;
 using Twinny.System.Network;
+using Concept.Core;
 
 namespace Twinny.XR
 {
@@ -39,8 +40,10 @@ namespace Twinny.XR
 
 
 #if UNITY_EDITOR
-        private void OnValidate()
-        { 
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
             if (worldTransform == null) worldTransform = new GameObject("World").transform;
             worldTransform.SetParent(transform);
             if (landMarks == null) return;
@@ -59,8 +62,9 @@ namespace Twinny.XR
 #endif
 
         //Awake is called before the script is started
-        private void Awake()
+        protected override void Awake()
         {
+
             _transform = transform;
         }
 
@@ -68,12 +72,11 @@ namespace Twinny.XR
         protected override void Start()
         {
             Init();
-
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose += OnRecenterDetected;
 
             if (extensionMenu)
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu));
 
             int layer = LayerMask.NameToLayer("Character");
 
@@ -82,25 +85,18 @@ namespace Twinny.XR
 
             if(sceneType == SceneType.VR)
             {
-                    AvatarSpawner.SpawnAvatar();
+                   // AvatarSpawner.SpawnAvatar();
                 //                Camera.main.cullingMask |= (1 << layer);
             }
             else
             {
-              AvatarSpawner.DespawnAvatar();
+              //AvatarSpawner.DespawnAvatar();
   //              Camera.main.cullingMask &= ~(1 << layer);
 
             }
 
 
             CheckGameMode();
-        }
-
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         private void OnDisable()
@@ -111,7 +107,7 @@ namespace Twinny.XR
         private void OnDestroy()
         {
             SetHDRI(-1);
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(null));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(null));
 
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose -= OnRecenterDetected;
@@ -119,7 +115,7 @@ namespace Twinny.XR
             if(NetworkedLevelManager.Instance.currentLandMark < 0 
                 && NetworkRunnerHandler.runner.IsConnectedToServer 
                 && NetworkRunnerHandler.runner.SessionInfo != null)
-                CallBackUI.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
         }
 
 #endregion

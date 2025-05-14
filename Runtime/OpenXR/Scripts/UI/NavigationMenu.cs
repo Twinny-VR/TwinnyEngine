@@ -1,8 +1,6 @@
-
 using System;
-using System.Data.Common;
 using System.Linq;
-using Twinny.Helpers;
+using Concept.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using Twinny.XR;
@@ -29,17 +27,17 @@ namespace Twinny.UI
         #endregion
 
         #region MonoBehaviour Methods
-        // Start is called before the first frame update
-        void Start()
+
+        protected override void Awake()
         {
+        }
+
+        protected override void Start()
+        {
+            base.Start();
             Init();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
 
         #endregion
 

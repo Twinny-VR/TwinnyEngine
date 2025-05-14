@@ -1,5 +1,6 @@
+using Concept.Core;
+using Concept.Helpers;
 using Oculus.Interaction.HandGrab;
-using Twinny.Helpers;
 using Twinny.UI;
 using UnityEngine;
 
@@ -44,15 +45,10 @@ namespace Twinny.System
 
         #region MonoBehaviour Methods
 
-        //Awake is called before the script is started
-        private void Awake()
-        {
-            Init();
-        }
 
-        // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             OnGrabbing += OnGrabbingCallBack;
 
             _camera = Camera.main;
@@ -64,9 +60,10 @@ namespace Twinny.System
 
         }
 
-        // Update is called once per frame
-        void Update()
+
+        protected override void Update()
         {
+            base.Update();
 
             if (_traceInteractables) TraceInteractables();
 
@@ -86,7 +83,7 @@ namespace Twinny.System
         private void FindHands()
         {
             // Encontrar todas as mãos (OVRHands) na cena
-            OVRHand[] hands = FindObjectsOfType<OVRHand>();
+            OVRHand[] hands = FindObjectsByType<OVRHand>(FindObjectsSortMode.None);
 
             // Iterar sobre as mãos para associar a mão direita ou esquerda com base no controlador
             foreach (OVRHand hand in hands)
@@ -275,7 +272,7 @@ namespace Twinny.System
 
         public void OnGrabbingCallBack(bool status)
         {
-            CallBackUI.CallAction<IUICallBacks>(callback => callback.OnHudStatusChanged(status));
+            CallbackHub .CallAction<IUICallBacks>(callback => callback.OnHudStatusChanged(status));
 
         }
 

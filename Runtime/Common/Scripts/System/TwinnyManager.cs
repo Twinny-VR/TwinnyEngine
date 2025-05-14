@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Core;
 using Concept.Helpers;
 using Twinny.Helpers;
 using Twinny.UI;
@@ -42,42 +43,31 @@ namespace Twinny.System
 
 #if UNITY_EDITOR
 
-
             if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
             {
 
 #if TWINNY_OPENXR
-                if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
-                {
-
-                    Platform = Platform.XR;
-                    Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
-                }
-                else
-#endif
-                {
-
+                Platform = Platform.XR;
+                Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
+#else
                     Platform = Platform.MOBILE;
                     Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
-                }
-
-
-
+#endif
             }
             else
-            if (EditorUserBuildSettings.activeBuildTarget  == BuildTarget.iOS)
+                if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
             {
                 Platform = Platform.MOBILE;
                 Debug.LogWarning("[TwinnyManager] iOS Platform initialized.");
             }
             else
-            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows || EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64)
+                if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows || EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64)
             {
                 Platform = Platform.WINDOWS;
                 Debug.LogWarning("[TwinnyManager] Windows Platform initialized.");
             }
             else
-            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WebGL)
+                if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WebGL)
             {
                 Platform = Platform.WEBGL;
                 Debug.LogWarning("[TwinnyManager] WebGL Platform initialized.");
@@ -89,25 +79,17 @@ namespace Twinny.System
             }
 
 
-
 #else
                 if (Application.platform == RuntimePlatform.Android)
             {
 
 #if TWINNY_OPENXR
-                if (XRGeneralSettings.Instance && XRGeneralSettings.Instance.InitManagerOnStart)
-                {
-
-                    Platform = Platform.XR;
-                    Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
-                }
-                else
-#endif
-                {
-
+                Platform = Platform.XR;
+                Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
+#else
                     Platform = Platform.MOBILE;
                     Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
-                }
+#endif
 
 
 
@@ -142,12 +124,12 @@ namespace Twinny.System
             }
 #endif
 
-                OnPlatformInitialize?.Invoke(Platform);
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
+            OnPlatformInitialize?.Invoke(Platform);
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
 
         }
-    
+
         public static void LoadRuntimeProfile<T>(string fileName) where T : TwinnyRuntime
         {
             config = Resources.Load<T>(fileName);
@@ -157,6 +139,6 @@ namespace Twinny.System
                 Debug.LogError($"[TwinnyManager] Impossible to load '{fileName}'.");
             }
         }
-    
+
     }
 }

@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="Twinny.OpenXR">
+    <type fullname="Fusion.NetworkBehaviour" preserve="all"/>
+  </assembly>
+</linker>

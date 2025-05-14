@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 using Concept.Helpers;
+using Concept.Core;
 
 
 namespace Twinny.System.Cameras
@@ -211,7 +212,7 @@ namespace Twinny.System.Cameras
             }
             _currentCamera = camera;
             OnCameraChanged?.Invoke(camera);
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnCameraChanged(camera.transform, state.ToString()));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnCameraChanged(camera.transform, state.ToString()));
             /*
             if (camera == _panoramicCamera)
             {
@@ -249,7 +250,7 @@ namespace Twinny.System.Cameras
                 var feature = SceneFeature.Instance;
                  
                 SwitchCamera(feature ? feature.interestPoints[0].GetComponent<OldInterestItem>() : _defaultCentralSensor);
-                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(null));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(null));
 
                 return;
             }
@@ -279,7 +280,7 @@ namespace Twinny.System.Cameras
             {
 
                 SwitchCamera(building);
-                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.centralSensor));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnCameraLocked(building.centralSensor));
 
             }
             else
@@ -297,7 +298,7 @@ namespace Twinny.System.Cameras
             if (_standbyCor != null)
             {
                 StopCoroutine(_standbyCor);
-                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStandby(false));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStandby(false));
 
             }
             _standbyCor = StartCoroutine(StandByCor());
@@ -376,7 +377,7 @@ namespace Twinny.System.Cameras
             if (InputMonitor.isDragging) yield break;
 
             Debug.LogWarning("[CameraManager] STAND BY MODE.");
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStandby(true));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStandby(true));
 
             OnEnterInStandby?.Invoke();
             var feature = SceneFeature.Instance;

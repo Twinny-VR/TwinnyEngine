@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Core;
 using Concept.Helpers;
 using Twinny.System.Cameras;
 using Twinny.UI;
@@ -28,7 +29,7 @@ namespace Twinny.System
             }
 
             string fileName = "MobileRuntimePreset";
-            string assetPath = "Assets/Resources/" + fileName+ ".asset";
+            string assetPath = "Assets/Resources/" + fileName + ".asset";
             MobileRuntime preset = AssetDatabase.LoadAssetAtPath<MobileRuntime>(assetPath);
 
             if (preset == null)
@@ -66,18 +67,23 @@ namespace Twinny.System
 
         public override async Task ChangeScene(object scene, int landMarkIndex)
         {
+            if (IsSceneLoaded(scene)) {
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());               
+                return; 
+            }
+
             var envenSystem = EventSystem.current;
             envenSystem.enabled = false;
             await CanvasTransition.FadeScreen(true);
 
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
 
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
                 await UnloadAdditivesScenes();
-                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
             }
             else
             {
@@ -94,7 +100,7 @@ namespace Twinny.System
                 if (feature.interestPoints.Length > 0)
                 {
                     InterestItem interest = feature.interestPoints[landMarkIndex];
-                ChangeInterest(interest);
+                    ChangeInterest(interest);
                 }
                 else
                     Debug.LogError("[LevelManager] Scenes must at least on InterestItem set in SceneFeature!");
@@ -102,7 +108,7 @@ namespace Twinny.System
             }
 
             await Task.Delay(1500);
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false);
             envenSystem.enabled = true;
 
@@ -110,7 +116,10 @@ namespace Twinny.System
         }
 
 
-        public static void ChangeInterest(InterestItem interest) {
+        public static void ChangeInterest(InterestItem interest)
+        {
+
+            if (!interest) Debug.LogError("[MobileLevelManager] Interest Item not found.");
 
             currentInterest = interest;
 
@@ -119,13 +128,16 @@ namespace Twinny.System
                 ? building.fpsSpawnPoint
                 : interest.transform;
 
-            FirstPersonAgent.TeleportTo(targetTransform);
- 
+
+            if (targetTransform)
+                FirstPersonAgent.TeleportTo(targetTransform);
+
             if ((!interest.virtualCamera))
             {
                 FirstPersonAgent.TakeControl(interest.transform);
-            } else
-            CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(interest.virtualCamera));
+            }
+            else
+                CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(interest.virtualCamera));
 
             /*
             if (interest is BuildingFeature)
@@ -141,11 +153,11 @@ namespace Twinny.System
             */
 
         }
-   
+
         public void SetFPS()
         {
-            if(FirstPersonAgent.isActive)
-                CallBackManager.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));
+            if (FirstPersonAgent.isActive)
+                CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));
 
             FirstPersonAgent.TakeControl(!FirstPersonAgent.isActive);
 

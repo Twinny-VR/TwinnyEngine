@@ -4,6 +4,7 @@ using UnityEngine;
 using Twinny.UI;
 using static Twinny.System.Cameras.OldCameraManager;
 using Concept.Helpers;
+using Concept.Core;
 
 namespace Twinny.System.Cameras
 {
@@ -70,7 +71,7 @@ namespace Twinny.System.Cameras
         void Start()
         {
 
-            CallBackManager.RegisterCallback(this);
+            CallbackHub.RegisterCallback(this);
 
             LevelManager.OnExperienceFinished += OnExperienceFinished;
             OnEnterInStandby += SetStandby;
@@ -89,7 +90,7 @@ namespace Twinny.System.Cameras
 
         private void OnDestroy()
         {
-            CallBackManager.UnregisterCallback(this);
+            CallbackHub.UnregisterCallback(this);
             LevelManager.OnExperienceFinished -= OnExperienceFinished;
             OnEnterInStandby -= SetStandby;
 

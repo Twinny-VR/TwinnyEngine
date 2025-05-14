@@ -1,14 +1,12 @@
 
 using System.Collections;
-using System.Threading.Tasks;
+using Concept.Helpers;
 using Fusion;
-using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.XR;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Twinny
 {
@@ -63,7 +61,7 @@ namespace Twinny
 
                 AnchorManager.Recolocation();
 
-                OVRColocationSession.StartDiscoveryAsync();
+             //   OVRColocationSession.StartDiscoveryAsync();
 
             }
 

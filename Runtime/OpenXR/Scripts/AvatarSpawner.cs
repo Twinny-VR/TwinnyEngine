@@ -1,10 +1,11 @@
+#if USING_MOVEMENT
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Concept.Helpers;
 using Fusion;
 using Meta.XR.Movement.Networking.Fusion;
-using Twinny.Helpers;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.XR;
@@ -17,9 +18,7 @@ namespace Twinny
     {
 
         [SerializeField] private bool _spawnAtStart;
-
         [SerializeField] private NetworkPoseRetargeterSpawnerFusion _spawner;
-
         // [SerializeField] private GameObject _playerPrefab;
         private NetworkObject _avatar;
         public static NetworkObject avatar { get => Instance?._avatar; set { Instance._avatar = Instance ? value : null; } }
@@ -111,6 +110,7 @@ namespace Twinny
 
             if (Instance)
             {
+#if USING_MOVEMENT
                 Debug.LogWarning($"[AvatarSpawner] SPAWNING AVATAR {Instance._avatar}");
                 if (Instance._avatar != null)
                 {
@@ -122,6 +122,7 @@ namespace Twinny
                     Instance._spawner.SpawnCharacter();
                     AnchorManager.Recolocation();
                 }
+#endif
             }
 
             /*
@@ -186,7 +187,7 @@ namespace Twinny
                 DespawnAvatar();
 
         }
-        #endregion
+#endregion
 
 
         [ContextMenu("SPAWN")]
@@ -223,3 +224,4 @@ namespace Twinny
 
     }
 }
+#endif

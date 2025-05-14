@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Core;
 using Concept.Helpers;
 using Twinny.Helpers;
 using Twinny.Localization;
@@ -57,7 +58,7 @@ namespace Twinny.System
         public virtual async Task ResetExperience()
         {
             OnExperienceFinished?.Invoke();
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
             await CanvasTransition.FadeScreen(true);
 
@@ -77,14 +78,14 @@ namespace Twinny.System
 
             await CanvasTransition.FadeScreen(true);
 
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
 
             //TODO Mudar o sistema de carregamento de cenas
             if (scene is string name && name == "PlatformScene")
             {
                 await UnloadAdditivesScenes();
-                CallBackManager.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(true));
             }
             else
             {
@@ -121,7 +122,7 @@ namespace Twinny.System
             }
             */
             await Task.Delay(1500);
-            CallBackManager.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false);
 
         }
@@ -173,7 +174,44 @@ namespace Twinny.System
         }
 
 
-#endregion
+        public static bool IsSceneLoaded(string sceneName)
+        {
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene loadedScene = SceneManager.GetSceneAt(i);
+                if (loadedScene.name == sceneName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsSceneLoaded(int buildIndex)
+        {
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene loadedScene = SceneManager.GetSceneAt(i);
+                if (loadedScene.buildIndex == buildIndex)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsSceneLoaded(object scene)
+        {
+            if (scene is string name)
+                return IsSceneLoaded(name);
+            else
+            if (scene is int index)
+                return IsSceneLoaded(index);
+
+            return false;
+        }
+
+        #endregion
 
 
         #region CallBack Methods
