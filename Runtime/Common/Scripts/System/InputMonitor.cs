@@ -17,7 +17,6 @@ namespace Twinny.System
         private Vector2 _touchStartPos;
         private float _initialPinchDistance = 0f;
 
-        private ScreenOrientation _lastOrientation;
         #endregion
 
         #region Delegates
@@ -39,7 +38,6 @@ namespace Twinny.System
         protected override void Start()
         {
             base.Start();
-            _lastOrientation = Screen.orientation;
         }
 
         protected override void Update()
@@ -47,8 +45,6 @@ namespace Twinny.System
             if (!EventSystem.current || EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            if (_lastOrientation != Screen.orientation)
-                ScreenUtils.OnResolutionChanged?.Invoke(Screen.width,Screen.height);           
             /*
             if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
             {
