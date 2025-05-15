@@ -1,4 +1,3 @@
-#if false //Meta Core SDK min version 71
 using Fusion;
 using System;
 using System.Collections.Generic;
@@ -30,13 +29,13 @@ namespace Twinny.System.Network
 
         private void Start()
         {
-            OVRColocationSession.ColocationSessionDiscovered += OnColocationSessionDiscovered;
+          //  OVRColocationSession.ColocationSessionDiscovered += OnColocationSessionDiscovered;
             _cameraRigTransform = FindAnyObjectByType<OVRCameraRig>().transform;
         }
 
         private void OnDisable()
         {
-            OVRColocationSession.ColocationSessionDiscovered -= OnColocationSessionDiscovered;
+            //OVRColocationSession.ColocationSessionDiscovered -= OnColocationSessionDiscovered;
             
         }
 
@@ -65,6 +64,7 @@ namespace Twinny.System.Network
 
         private async void AdvertisementColocationSession()
         {
+            /*
             try
             {
                 byte[] advertisementData = Encoding.UTF8.GetBytes(s: "SharedSpatialAnchorSession");
@@ -85,11 +85,12 @@ namespace Twinny.System.Network
             {
                 Debug.LogError($"[ColocationManager] Error during advertisement: {e.Message}");
             }
+            */
         }
 
         private async void DiscoveryNearbySession()
         {
-
+            /*
             try
             {
 
@@ -111,9 +112,10 @@ namespace Twinny.System.Network
             {
                 Debug.LogError($"[ColocationManager] Discovery error: {e.Message}");
             }
+*/
         }
 
-
+/*
         private void OnColocationSessionDiscovered(OVRColocationSession.Data session)
         {
             Debug.Log("DESCOBRIU!");
@@ -123,7 +125,7 @@ namespace Twinny.System.Network
             LoadAndAlignToAnchor(_sharedAnchorGuid);
 
         }
-
+*/
         private async void CreateAndShareAligmentAnchor()
         {
             try
@@ -176,6 +178,7 @@ namespace Twinny.System.Network
 
                 Debug.LogWarning($"[ColocationManager] Alignment anchor saved successfully. UUID: {_anchor.Uuid}.");
 
+                /*
                 var shareResult = await OVRSpatialAnchor.ShareAsync(anchors: new List<OVRSpatialAnchor> { _anchor }, _sharedAnchorGuid);
 
                 if (!shareResult.Success)
@@ -183,7 +186,7 @@ namespace Twinny.System.Network
                     Debug.LogError($"[ColocationManager] Failed to share alignment anchor. Error: {shareResult}.");
                     return;
                 }
-
+                */
                 Debug.LogWarning($"[ColocationManager] Alignment anchor shared successfully. UUID: {_anchor.Uuid}.");
                 //  _alignmentManager.AlignUserToAnchor(_anchor);
             }
@@ -232,9 +235,10 @@ namespace Twinny.System.Network
                 // if(AnchorManager.currentAnchor != null){} TODO disable spatial anchor to receive shared anchors
 
 
-                Debug.LogWarning($"[ColocationManager] Loading anchors for Group UUID: {guid}");
+              //  Debug.LogWarning($"[ColocationManager] Loading anchors for Group UUID: {guid}");
 
                 var unboundAnchors = new List<OVRSpatialAnchor.UnboundAnchor>();
+                /*
                 var loadResult = await OVRSpatialAnchor.LoadUnboundSharedAnchorsAsync(guid, unboundAnchors);
 
                 if (!loadResult.Success)
@@ -244,7 +248,7 @@ namespace Twinny.System.Network
                     return;
 
                 }
-
+                */
                 foreach (var unboundAnchor in unboundAnchors)
                 {
                     if (await unboundAnchor.LocalizeAsync())
@@ -288,4 +292,3 @@ namespace Twinny.System.Network
     }
 
 }
-#endif
