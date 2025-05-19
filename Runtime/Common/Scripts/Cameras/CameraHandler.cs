@@ -170,7 +170,7 @@ namespace Twinny.System.Cameras
 
             _zoom += factor * CameraManager.config.sesitivity.z * 100f * _zoomSpeedMultiply;
             _zoom = Mathf.Clamp(_zoom, _zoomRange.x, _zoomRange.y);
-            if (_allowFirstPerson && _zoom >= _zoomRange.y) FirstPersonAgent.TakeControl(true); 
+          //  if (_allowFirstPerson && _zoom >= _zoomRange.y) FirstPersonAgent.TakeControl(true); 
             _offset.Offset.z = _zoom;
         }
 

@@ -9,15 +9,30 @@ namespace Twinny.System
 {
     public class MobileSceneFeature : SceneFeature
     {
-
-       // public Material sceneSkyBox;
+        [SerializeField] private Material _fpsSkyBox;
+        // public Material sceneSkyBox;
         public new InterestItem[] interestPoints;
 
 
 
         #region MonoBehaviour Methods
 
-         
+        private void OnEnable()
+        {
+            FirstPersonAgent.OnFpsMode += OnFpsMode;
+        }
+
+        private void OnDisable()
+        {
+            FirstPersonAgent.OnFpsMode -= OnFpsMode;
+
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+        }
         #endregion
 
         #region Overrided Methods
@@ -32,12 +47,24 @@ namespace Twinny.System
             {
                 MobileLevelManager.ChangeInterest(interestPoints[landMarkIndex]);
             }
-            else {
+            else
+            {
                 Debug.LogError($"[MobileSceneFeature] Not enough LandMarks in '{gameObject.scene.name}' scene.");
             }
 
         }
 
         #endregion
+
+        private void OnFpsMode(bool status)
+        {
+
+            if (status && _fpsSkyBox != null)
+                SetHDRI(_fpsSkyBox);
+            else
+                if (!status && sceneSkybox != null)
+                SetHDRI(sceneSkybox);
+
+        }
     }
 }

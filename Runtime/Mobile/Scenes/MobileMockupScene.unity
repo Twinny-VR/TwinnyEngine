@@ -1342,6 +1342,7 @@ MonoBehaviour:
   _firstInstancePersistent: 0
   _keepAllInstances: 0
   _sceneSkyBox: {fileID: 2100000, guid: 81bfdddc6f336ed4792a27ad8d546be8, type: 2}
+  _fpsSkyBox: {fileID: 0}
   interestPoints:
   - {fileID: 1040958670}
 --- !u!1001 &1990265361

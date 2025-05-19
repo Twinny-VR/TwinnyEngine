@@ -154,12 +154,18 @@ namespace Twinny.System
 
         }
 
-        public void SetFPS()
+        public async void SetFPS()
         {
+            await CanvasTransition.FadeScreen(true);
+
             if (FirstPersonAgent.isActive)
                 CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));
 
             FirstPersonAgent.TakeControl(!FirstPersonAgent.isActive);
+
+            
+            await CanvasTransition.FadeScreen(false);
+
 
         }
 

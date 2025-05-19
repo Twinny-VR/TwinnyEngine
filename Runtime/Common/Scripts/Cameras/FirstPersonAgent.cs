@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
+using Twinny.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -176,8 +178,8 @@ namespace Twinny.System.Cameras
             _isActive = status;
             if (status)
                 CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(Instance._fpsCamera));
-            Instance._navMeshAgent.enabled = status;
             OnFpsMode?.Invoke(status);
+            Instance._navMeshAgent.enabled = status;
         }
 
 
