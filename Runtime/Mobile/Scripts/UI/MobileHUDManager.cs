@@ -11,7 +11,6 @@ namespace Twinny.UI
 {
     public class MobileHUDManager : HUDManager
     {
-        [SerializeField] private GameObject BT_Home;
         [SerializeField] private GameObject BT_Immersive;
 
         public static new MobileHUDManager Instance { get => _instance as MobileHUDManager; }
