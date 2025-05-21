@@ -139,10 +139,10 @@ TextureImporter:
       name: PanelLogo
       rect:
         serializedVersion: 2
-        x: 0
+        x: 16
         y: 1942
-        width: 282
-        height: 106
+        width: 266
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -249,12 +249,12 @@ TextureImporter:
       name: UI_Sheet_0
       rect:
         serializedVersion: 2
-        x: 468
+        x: 469
         y: 1942
-        width: 282
-        height: 106
+        width: 266
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
