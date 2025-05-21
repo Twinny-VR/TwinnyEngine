@@ -74,9 +74,9 @@ namespace Twinny.System
 
             var envenSystem = EventSystem.current;
             envenSystem.enabled = false;
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
             await CanvasTransition.FadeScreen(true);
 
-            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
 
             //TODO Mudar o sistema de carregamento de cenas

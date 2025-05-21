@@ -1597,7 +1597,7 @@ MonoBehaviour:
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 141
+    Value: 138
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -1677,8 +1677,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074059351}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.025011964, y: 0.9399916, z: -0.07063161, w: 0.33286852}
-  m_LocalPosition: {x: -216.70578, y: 34.2009, z: 244.6101}
+  m_LocalRotation: {x: 0.026852323, y: 0.930956, z: -0.069952674, w: 0.35736063}
+  m_LocalPosition: {x: -220.4467, y: 34.200897, z: 241.41501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1739,6 +1739,8 @@ MonoBehaviour:
   _zoomSpeedMultiply: 1
   _zoomRange: {x: 0, y: 60}
   _allowFirstPerson: 0
+  allowResponsiveCamera: 0
+  _fovRange: {x: 50, y: 80}
 --- !u!114 &2074059359
 MonoBehaviour:
   m_ObjectHideFlags: 0

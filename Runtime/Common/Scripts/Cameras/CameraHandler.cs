@@ -35,17 +35,27 @@ namespace Twinny.System.Cameras
         [SerializeField] private Vector2 _zoomRange = new Vector2(0f, 100f);
         [SerializeField] private bool _allowFirstPerson;
         public bool allowFirstPerson { get => _allowFirstPerson; }
+
+        public bool allowResponsiveCamera = false;
+
+        [Header("Responsive FOV")]
+        [VectorLabels("Land", "Port")]
+        [ShowIf("allowResponsiveCamera")]
+        [SerializeField] private Vector2 _fovRange = new Vector2(50f, 80f);
+
         private void OnEnable()
         {
             CallbackHub.RegisterCallback<ICameraCallBacks>(this);
             CallbackHub.RegisterCallback<IInputCallBacks>(this);
+            ScreenMonitor.OnResolutionChanged += OnResolutionChanged;
+
         }
 
         private void OnDisable()
         {
             CallbackHub.UnregisterCallback<ICameraCallBacks>(this);
             CallbackHub.UnregisterCallback<IInputCallBacks>(this);
-
+            ScreenMonitor.OnResolutionChanged -= OnResolutionChanged;
         }
         private void Awake()
         {
@@ -60,8 +70,7 @@ namespace Twinny.System.Cameras
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-
-            //_camera.Priority = _state == CameraState.LIVE ? 10 : 0;
+            OnResolutionChanged(Screen.width, Screen.height);
         }
 
         // Update is called once per frame
@@ -77,6 +86,14 @@ namespace Twinny.System.Cameras
         {
 
         }
+
+
+        private void OnResolutionChanged(int width, int height)
+        {
+            if(allowResponsiveCamera)
+            _camera.Lens.FieldOfView = (width >= height) ? _fovRange.x : _fovRange.y;
+        }
+
 
         #region Camera Callback Methods
 
@@ -120,31 +137,39 @@ namespace Twinny.System.Cameras
         {
             if (!_instance || _instance != this) return;
 
-            _xAxis = _initialX + factor * -CameraManager.config.sesitivity.x;
+            _xAxis = _initialX + factor * CameraManager.config.sesitivity.x;
 
 
 
             if (_panTilt)
+            {
+                _xAxis = _initialX + factor * -CameraManager.config.sesitivity.x;
                 _panTilt.PanAxis.Value = _xAxis;
+            }
 
             if (_orbital)
+            {
+                _xAxis = _initialX + factor * CameraManager.config.sesitivity.x;
                 _orbital.HorizontalAxis.Value = _xAxis;
+
+            }
         }
 
         public void OnDraggingVertical(float factor)
         {
             if (!_instance || _instance != this) return;
 
-            float value = _initialY + factor * CameraManager.config.sesitivity.y;
 
             if (_panTilt)
             {
+                float value = _initialY + factor * CameraManager.config.sesitivity.y;
                 _yAxis = Mathf.Clamp(value, _panTilt.TiltAxis.Range.x, _panTilt.TiltAxis.Range.y);
                 _panTilt.TiltAxis.Value = _yAxis;
             }
 
             if (_orbital)
             {
+                float value = _initialY + factor * -CameraManager.config.sesitivity.y;
                 _yAxis = Mathf.Clamp(value, _orbital.VerticalAxis.Range.x, _orbital.VerticalAxis.Range.y);
                 _orbital.VerticalAxis.Value = _yAxis;
 
