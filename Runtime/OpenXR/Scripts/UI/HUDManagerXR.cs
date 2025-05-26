@@ -2,13 +2,11 @@ using Fusion;
 using Twinny.System.Network;
 using System;
 using System.Collections;
-using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
 using Twinny.XR;
 using UnityEngine.SceneManagement;
-using System.Data.Common;
 using Concept.Core;
 using Concept.Helpers;
 
@@ -79,6 +77,7 @@ namespace Twinny.UI
         {
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
             _banner.transform.SetParent(AnchorManager.Instance.transform);
+            _staticHud.transform.SetParent(AnchorManager.Instance.transform);
             CallbackHub.RegisterCallback(this);
 
             _mainCameraTransform = Camera.main.transform;
