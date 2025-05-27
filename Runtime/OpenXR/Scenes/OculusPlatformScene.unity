@@ -18312,7 +18312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5341884faf77134c9c8e8100118da82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorPrefab: {fileID: 1978002011806910258, guid: a6c7bad9126cbca4e92c7b76ea14ab33, type: 3}
+  anchorPrefab: {fileID: 1978002011806910258, guid: 2cbfabdd098ab734a9f4a6a6c0fa8848, type: 3}
   networkData: {fileID: 1600004542}
   networkMessenger: {fileID: 1600004541}
 --- !u!114 &1600004545
