@@ -62,7 +62,7 @@ namespace Twinny.XR
 
 
             //Initialize as XR Platform
-           if (platform == Platform.XR)
+            if (platform == Platform.XR)
             {
 
                 ConnectToServer();
@@ -94,7 +94,6 @@ namespace Twinny.XR
                 {
                     Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                     await Task.Delay(4000);
-                    Config.restarting = true;
                     await ResetExperience();
                     UnityEngine.Debug.LogError(e.Message);
                 }
@@ -102,14 +101,8 @@ namespace Twinny.XR
                 await Task.Delay(Config.connectionTimeout * 1000);
 
                 if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
-                else
-                {
-                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
-                    await Task.Delay(4000);
-                    Config.restarting = true;
-                    await ResetExperience();
-                    return;
-                }
+                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                await Task.Delay(4000);
             }
             Config.restarting = false;
             try
@@ -120,10 +113,17 @@ namespace Twinny.XR
             {
                 Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
-                Config.restarting = true;
                 await ResetExperience();
                 UnityEngine.Debug.LogError(e.Message);
             }
+
+            await Task.Delay(Config.connectionTimeout * 1000);
+
+            if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
+            
+            Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+            await Task.Delay(4000);
+            await ResetExperience();
 
         }
 
@@ -171,6 +171,7 @@ namespace Twinny.XR
 
         public override async Task ResetExperience()
         {
+            Config.restarting = true;
             await base.ResetExperience();
         }
 
@@ -222,12 +223,14 @@ namespace Twinny.XR
             }
             if (_passThrough)
             {
-            _passThrough.enabled = status;
-            _passThrough.gameObject.SetActive(status);
+                _passThrough.enabled = status;
+                _passThrough.gameObject.SetActive(status);
 
-            }else {
+            }
+            else
+            {
                 UnityEngine.Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
-                    }
+            }
 
         }
     }

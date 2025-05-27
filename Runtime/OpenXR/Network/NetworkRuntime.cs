@@ -6,8 +6,7 @@ namespace Twinny.System.Network
     public class NetworkRuntime : TwinnyRuntime
     {
 
-        [HideInInspector]
-        public bool restarting;
+        [HideInInspector] public bool restarting;
 
         [Header("Experience")]
         public bool startSinglePlayer = false;
