@@ -15,7 +15,7 @@ namespace Twinny.UI
         void OnPlatformInitialize();
         void OnExperienceReady();
         void OnExperienceFinished(bool isRunning);
-        void OnLoadExtensionMenu(GameObject menu);
+        void OnLoadExtensionMenu(GameObject menu, bool isStatic = false);
         void OnStartLoadScene();
         void OnLoadScene();
         void OnLoadSceneFeature();
@@ -88,7 +88,7 @@ namespace Twinny.UI
         {
         }
 
-        public void OnLoadExtensionMenu(GameObject menu)
+        public void OnLoadExtensionMenu(GameObject menu, bool isStatic)
         {
         }
 

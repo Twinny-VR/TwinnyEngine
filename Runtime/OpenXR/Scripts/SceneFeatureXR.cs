@@ -29,6 +29,7 @@ namespace Twinny.XR
         [HideInInspector]
         public LandMark currentLandMark;
         public GameObject extensionMenu;
+        public bool isMenuStatic;
 #endregion
 
         #region Delegates
@@ -76,7 +77,7 @@ namespace Twinny.XR
                 OVRManager.display.RecenteredPose += OnRecenterDetected;
 
             if (extensionMenu)
-                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu,isMenuStatic));
 
             int layer = LayerMask.NameToLayer("Character");
 

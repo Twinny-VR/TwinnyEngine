@@ -79,7 +79,7 @@ namespace Twinny.UI {
 
         public virtual void OnHudStatusChanged(bool status) { }
 
-        public virtual void OnLoadExtensionMenu(GameObject menu) { }
+        public virtual void OnLoadExtensionMenu(GameObject menu, bool isStatic) { }
 
         public virtual void OnLoadScene()
         {

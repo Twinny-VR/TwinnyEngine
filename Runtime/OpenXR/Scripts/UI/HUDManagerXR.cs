@@ -311,9 +311,9 @@ namespace Twinny.UI
             _mainMenu.SetActive(true);
         }
 
-        public void OnLoadExtensionMenu(GameObject menu)
+        public void OnLoadExtensionMenu(GameObject menu, bool isStatic)
         {
-            LoadExtensionMenu(menu);
+            LoadExtensionMenu(menu,isStatic);
 
         }
 

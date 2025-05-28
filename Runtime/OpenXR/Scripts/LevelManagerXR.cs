@@ -113,6 +113,7 @@ namespace Twinny.XR
             {
                 Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
+                Config.restarting = true;
                 await ResetExperience();
                 UnityEngine.Debug.LogError(e.Message);
             }
@@ -123,6 +124,7 @@ namespace Twinny.XR
             
             Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
             await Task.Delay(4000);
+            Config.restarting = true;
             await ResetExperience();
 
         }
@@ -171,7 +173,6 @@ namespace Twinny.XR
 
         public override async Task ResetExperience()
         {
-            Config.restarting = true;
             await base.ResetExperience();
         }
 
