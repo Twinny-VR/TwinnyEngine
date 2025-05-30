@@ -80,10 +80,10 @@ namespace Twinny.XR
         public async void ConnectToServer()
         {
             //Get Internet Status
-            bool isWifiConnected = NetworkUtils.IsWiFiConnected();
+            bool isWifiConnected =  NetworkUtils.IsWiFiConnected();
 
 
-            if (!Config.restarting && isWifiConnected && !Config.startSinglePlayer)
+            if (isWifiConnected && !Config.startSinglePlayer)
             {
 
                 try
@@ -97,34 +97,31 @@ namespace Twinny.XR
                     await ResetExperience();
                     UnityEngine.Debug.LogError(e.Message);
                 }
-
+            await Task.Delay(Config.connectionTimeout * 1000);
+            }
+            try
+            {
+                if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
+             
+                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                await Task.Delay(4000);
+                _bootstrap.StartSinglePlayer();
                 await Task.Delay(Config.connectionTimeout * 1000);
 
                 if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
-                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
-                await Task.Delay(4000);
-            }
-            Config.restarting = false;
-            try
-            {
-                _bootstrap.StartSinglePlayer();
             }
             catch (global::System.Exception e)
             {
                 Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
-                Config.restarting = true;
                 await ResetExperience();
                 UnityEngine.Debug.LogError(e.Message);
             }
 
-            await Task.Delay(Config.connectionTimeout * 1000);
-
-            if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
             
-            Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+            
+            Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
             await Task.Delay(4000);
-            Config.restarting = true;
             await ResetExperience();
 
         }

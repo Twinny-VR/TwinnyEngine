@@ -124,8 +124,8 @@ namespace Twinny.System
             }
 #endif
 
-            OnPlatformInitialize?.Invoke(Platform);
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
+            OnPlatformInitialize?.Invoke(Platform);
 
 
         }

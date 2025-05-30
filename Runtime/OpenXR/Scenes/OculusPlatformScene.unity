@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 6437447}
   - component: {fileID: 6437449}
   - component: {fileID: 6437448}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 42384351}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,7 +841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 44198799}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1376,7 +1376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 89467650}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1598,7 +1598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 104491718}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1695,7 +1695,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 118189027}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2131,7 +2131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 158555515}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2802,7 +2802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 215391953}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2864,7 +2864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 218015755}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3272,7 +3272,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 274612254}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3398,7 +3398,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 298424024}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3666,7 +3666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 320884646}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3793,7 +3793,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 329995382}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4417,7 +4417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 372959769}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4536,7 +4536,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 388020013}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4633,7 +4633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 410983169}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: OpenXRLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5085,7 +5085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 446896248}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6577,7 +6577,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 544715113}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7940,7 +7940,7 @@ GameObject:
   - component: {fileID: 644988047}
   - component: {fileID: 644988049}
   - component: {fileID: 644988048}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: r_handMeshNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10010,7 +10010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 806505379}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10273,7 +10273,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 817700112}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11296,7 +11296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 922708004}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11328,7 +11328,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 922890626}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11457,7 +11457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 928325096}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11613,7 +11613,7 @@ GameObject:
   - component: {fileID: 943657639}
   - component: {fileID: 943657641}
   - component: {fileID: 943657640}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11874,7 +11874,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 969088874}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11968,7 +11968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 998435104}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12215,7 +12215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1023071292}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12448,7 +12448,7 @@ GameObject:
   - component: {fileID: 1049103341}
   - component: {fileID: 1049103343}
   - component: {fileID: 1049103342}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: l_handMeshNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12864,7 +12864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1071982929}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13069,7 +13069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1092636871}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_Palm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13528,7 +13528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1138922989}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13774,7 +13774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1157526445}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14095,7 +14095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1186000142}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14127,7 +14127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1199079613}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14448,7 +14448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1227483596}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_Wrist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14735,7 +14735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269198188}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15038,7 +15038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1300770766}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16024,7 +16024,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1342085828}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16408,7 +16408,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378789203}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16854,7 +16854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1425248214}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17403,7 +17403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1497863955}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17558,7 +17558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1523159976}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17653,7 +17653,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1541799468}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17766,7 +17766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1551851664}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18642,7 +18642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1634662639}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19359,7 +19359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1671200820}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20520,7 +20520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1720941448}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_LittleTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21069,7 +21069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1760627594}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: OpenXRRightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21388,7 +21388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1809657606}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21544,7 +21544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1821057124}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_Palm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21991,7 +21991,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1860697091}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbDistal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22505,7 +22505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1896422904}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22724,7 +22724,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1916609593}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_IndexIntermediate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22897,7 +22897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1924812254}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_ThumbMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23192,7 +23192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1940828629}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_RingMetacarpal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23320,7 +23320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1963989171}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_Wrist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25360,7 +25360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2143191902}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: XRHand_MiddleProximal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
