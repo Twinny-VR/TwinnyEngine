@@ -30,6 +30,7 @@ namespace Twinny.XR
         public LandMark currentLandMark;
         public GameObject extensionMenu;
         public bool isMenuStatic;
+        private LandMark _currentLandMark;
 #endregion
 
         #region Delegates
@@ -134,20 +135,24 @@ namespace Twinny.XR
             if (landMarks.Length > 0)
             {
                 Vector3 localAnchor = transform.position;
-                LandMark landMark = landMarks[landMarkIndex];
+                if(_currentLandMark != null)
+                _currentLandMark.node?.OnLandMarkUnselected?.Invoke();
+                _currentLandMark = landMarks[landMarkIndex];
                 worldTransform.localPosition = Vector3.zero;
                 worldTransform.localRotation = Quaternion.identity;
 
-                float desiredAngle = transform.eulerAngles.y + landMark.node.transform.eulerAngles.y;
+                float desiredAngle = transform.eulerAngles.y + _currentLandMark.node.transform.eulerAngles.y;
 
-                Vector3 desiredPosition = -landMark.node.transform.localPosition;
+                Vector3 desiredPosition = -_currentLandMark.node.transform.localPosition;
                 worldTransform.localPosition = desiredPosition;
-                worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -landMark.node.transform.localRotation.eulerAngles.y);
-                NavigationMenu.Instance?.SetArrows(enableNavigationMenu ? landMark.node : null);
+                worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -_currentLandMark.node.transform.localRotation.eulerAngles.y);
+                NavigationMenu.Instance?.SetArrows(enableNavigationMenu ? _currentLandMark.node : null);
                 SetHDRIRotation(worldTransform.localRotation.eulerAngles.y + transform.rotation.eulerAngles.y);
+                _currentLandMark.node?.OnLandMarkSelected?.Invoke();
             }
             else
             {
+                _currentLandMark = null;
                 worldTransform.position = AnchorManager.Instance.transform.position;
                 worldTransform.rotation = AnchorManager.Instance.transform.rotation;
             }
