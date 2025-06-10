@@ -69,8 +69,12 @@ namespace Twinny.System
 
             if (!_leftHand || !_rightHand) return;
 
-            if (IsPinching(_leftHand, ref _wasPinchingLeft)) OnPinchLeft?.Invoke();
-            if (IsPinching(_rightHand, ref _wasPinchingRight)) OnPinchRight?.Invoke();
+            if (IsPinching(_leftHand, ref _wasPinchingLeft)) { 
+                OnPinchLeft?.Invoke();
+
+                if (DebugPanel.Instance != null) DebugPanel.Instance.SetFold();
+            }
+            if (IsPinching(_rightHand, ref _wasPinchingRight))  OnPinchRight?.Invoke(); 
             
             OnGrabbing(_handGrabInteractorLeft.IsGrabbing || _handGrabInteractorRight.IsGrabbing);
         }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7429461506843892805}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: SpatialAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 945593988775569651, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1906045138107486802, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
       propertyPath: m_RootOrder
@@ -94,15 +94,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3105173346702953323, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5078295323170269279, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5778383956877958572, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

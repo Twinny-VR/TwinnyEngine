@@ -76,7 +76,7 @@ namespace Twinny.UI
         void Start()
         {
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
-            _banner.transform.SetParent(AnchorManager.Instance.transform);
+            //_banner.transform.SetParent(AnchorManager.Instance.transform);
             _staticHud.transform.SetParent(AnchorManager.Instance.transform);
             CallbackHub.RegisterCallback(this);
 

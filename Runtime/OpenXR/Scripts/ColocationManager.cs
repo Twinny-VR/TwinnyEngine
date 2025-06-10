@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Twinny.Localization;
+using Twinny.System.Network;
 using UnityEngine;
 
 
-namespace Twinny.System.Network
+namespace Twinny.System.XR
 {
 
     public class ColocationManager : NetworkBehaviour

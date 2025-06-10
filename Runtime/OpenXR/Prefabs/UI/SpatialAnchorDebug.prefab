@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7155461342516982881}
   - component: {fileID: 2493635597350508494}
   - component: {fileID: 3872655643187644250}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: DebugInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7429461506843892805}
   - component: {fileID: 4069590495288592202}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: SpatialAnchorDebug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 4581401797404900970}
   - component: {fileID: 1428946892161497210}
   - component: {fileID: 8315628337872163512}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 8976636746883770495}
   - component: {fileID: 3532288842691184379}
   - component: {fileID: 4001378391498386605}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: TMP_DebugText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 832647857021666512}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: AnchorDebugVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 1830854419807428640}
   - component: {fileID: 3293336371921243317}
   - component: {fileID: 2987225766305839298}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 1468039226769932644}
   - component: {fileID: 5697441791989722395}
   - component: {fileID: 2969606944600437774}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}

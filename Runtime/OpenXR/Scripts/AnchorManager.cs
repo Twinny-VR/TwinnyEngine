@@ -314,14 +314,28 @@ namespace Twinny.System
             OVRSpatialAnchor anchor = loadedAnchors[0];
 
 
-            Vector3 position = anchor.transform.position;
-            Quaternion rotation = Quaternion.Euler(0, anchor.transform.rotation.eulerAngles.y, 0);
-            _transform.SetPositionAndRotation(position, rotation);
-            _transform.SetParent(anchor.transform);
-            _currentAnchor = anchor;
+            PlaceSafeArea(anchor);
             // _stateAnchorManager = StateAnchorManager.ANCHORED;
 
             // _transform.gameObject.AddComponent<OVRSpatialAnchor>();
+        }
+
+        public static void PlaceSafeArea(OVRSpatialAnchor anchor, Vector3? position = null, Quaternion? rotation = null) {
+
+            if(Instance == null)
+            {
+                Debug.LogError("[AnchorManager] Instace not found!");
+                return;
+            }
+            Instance.transform.SetParent(null);
+                        
+            Vector3 finalPosition = position ?? anchor.transform.position;
+            Quaternion finalRotation = rotation ?? Quaternion.Euler(0, anchor.transform.rotation.eulerAngles.y, 0);
+
+            Instance._transform.SetPositionAndRotation(finalPosition, finalRotation);
+            Instance._transform.SetParent(anchor.transform);
+            Instance._currentAnchor = anchor;
+
         }
 
         /// <summary>

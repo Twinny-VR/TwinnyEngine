@@ -1,0 +1,225 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Fusion;
+using UnityEngine;
+
+namespace Twinny.System.XR
+{
+    public class SharedSpatialAnchorManager : NetworkBehaviour
+    {
+
+        private ColocationManager _colocationManager;
+        private Guid _sharedGuid;
+        private Transform _cameraRigTransform;
+        private OVRSpatialAnchor _sharedAnchor;
+        private void Awake()
+        {
+            _cameraRigTransform = FindAnyObjectByType<OVRCameraRig>()?.transform;
+        }
+
+        public override void Spawned()
+        {
+
+            base.Spawned();
+            Debug.LogWarning($"INPUT: {HasInputAuthority} | STATE: {HasStateAuthority}");
+            _colocationManager = FindAnyObjectByType<ColocationManager>();
+            InitializeColocation();
+        }
+
+        private void InitializeColocation()
+        {
+            if (Object.HasStateAuthority)
+                AdvertiseColocationSession();
+            else
+                DiscoverNearbySession();
+        }
+
+        private async void AdvertiseColocationSession()
+        {
+            Debug.Log("[SharedSpatialAnchorManager] Starting advertisement...");
+            byte[] advertisementData = Encoding.UTF8.GetBytes(s: "SharedSpatialAnchorSession");
+            var result = await OVRColocationSession.StartAdvertisementAsync(advertisementData);
+
+            if (result.Success)
+            {
+                _sharedGuid = result.Value;
+                Debug.Log($"[SharedSpatialAnchorManager] Advertisement started sucessfully. UUID: {_sharedGuid}");
+                CreateAndShareAlignmentAnchor();
+            }
+            else
+            {
+                Debug.Log($"[SharedSpatialAnchorManager] Advertisement failed! Status: {result.Status}");
+                return;
+            }
+        }
+
+        private async void DiscoverNearbySession()
+        {
+            Debug.Log("[SharedSpatialAnchorManager] Starting discovery session...");
+
+            OVRColocationSession.ColocationSessionDiscovered += OnColocationSessionDiscovered;
+
+            var result = await OVRColocationSession.StartDiscoveryAsync();
+
+            if (result.Success)
+                Debug.Log("[SharedSpatialAnchorManager] Discovery session started successfully.");
+            else
+            {
+                Debug.LogError($"[SharedSpatialAnchorManager] Discovery session failed! Status: {result.Status}");
+                return;
+            }
+
+        }
+
+        private void OnColocationSessionDiscovered(OVRColocationSession.Data data)
+        {
+            OVRColocationSession.ColocationSessionDiscovered -= OnColocationSessionDiscovered;
+
+            _sharedGuid = data.AdvertisementUuid;
+            Debug.Log($"[SharedSpatialAnchorManager] Discovery session with UUID: {_sharedGuid}");
+            LoadAndAlignToAnchor(_sharedGuid);
+        }
+
+        private async void CreateAndShareAlignmentAnchor()
+        {
+            Debug.Log("[SharedSpatialAnchorManager] Creating alignment anchor...");
+
+            var anchor = await CreateAnchor();
+
+            if (anchor == null) Debug.LogError("[SharedSpatialAnchorManager] Failed to create Alignment Anchor.");
+            else
+            if (!anchor.Localized) Debug.LogError("[SharedSpatialAnchorManager] No Anchor localized to sharing.");
+            else
+            {
+                var saveResult = await anchor.SaveAnchorAsync();
+                if (saveResult.Success)
+                {
+                    Debug.Log($"[SharedSpatialAnchorManager] Alignment anchor saved successfully. UUID: {anchor.Uuid}");
+
+                    Debug.Log("[SharedSpatialAnchorManager] Attempting to share alignment anchor...");
+                    var shareResult = await OVRSpatialAnchor.ShareAsync(new List<OVRSpatialAnchor> { anchor }, _sharedGuid);
+
+                    if (shareResult.Success)
+                        Debug.Log($"[SharedSpatialAnchorManager] Alignment anchor shared successfully. Group UUID: {_sharedGuid}");
+                    else
+                    {
+                        Debug.LogError($"[SharedSpatialAnchorManager] Failed to share Alignment Anchor. {shareResult}");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"[SharedSpatialAnchorManager] Failed to save Alignment Anchor. {saveResult}");
+                }
+            }
+
+        }
+
+        private async Task<OVRSpatialAnchor> CreateAnchor(Vector3 position = default, Quaternion rotation = default)
+        {
+            Transform anchorTransform = AnchorManager.Instance.transform;
+            Debug.LogWarning($"SHARED MANAGER: POS: {anchorTransform.position} | ROT: {anchorTransform.eulerAngles}");
+
+
+
+            var anchorGameObject = new GameObject("[Twinny] Alignment Anchor")
+            {
+                transform = { position = position, rotation = rotation }
+            };
+
+            var spatialAnchor = anchorGameObject.AddComponent<OVRSpatialAnchor>();
+            while (!spatialAnchor.Created)
+            {
+                await Task.Yield();
+            }
+
+            Debug.Log($"[SharedSpatialAnchorManager] Anchor created successfully. UUID: {spatialAnchor.Uuid}");
+
+            return spatialAnchor;
+        }
+
+        private async void LoadAndAlignToAnchor(Guid guid)
+        {
+            Debug.Log($"[SharedSpatialAnchorManager] Loading anchors for Group UUID: {guid}...");
+
+            var unboundAnchors = new List<OVRSpatialAnchor.UnboundAnchor>();
+            var result = await OVRSpatialAnchor.LoadUnboundSharedAnchorsAsync(guid, unboundAnchors);
+
+            if (!result.Success) Debug.LogError("[SharedSpatialAnchorManager] Failed to load anchors!");
+            else
+            if (unboundAnchors.Count == 0) Debug.LogError("[SharedSpatialAnchorManager] Anchors not found.");
+            else
+            {
+                foreach (var anchor in unboundAnchors)
+                {
+                    if (await anchor.LocalizeAsync())
+                    {
+                        Debug.Log($"[SharedSpatialAnchorManager] Anchor localized successfully. UUID: {anchor.Uuid}");
+
+                        var anchorGO = new GameObject($"Anchor_{anchor.Uuid}");
+                        _sharedAnchor = anchorGO.AddComponent<OVRSpatialAnchor>();
+                        anchor.BindTo(_sharedAnchor);
+
+                        AlignUserToAnchor(_sharedAnchor);
+                        RPC_GetSafeArea();
+                        return;
+                    }
+
+                    Debug.LogError($"[SharedSpatialAnchorManager] Failed to localize anchor! UUID: {anchor.Uuid}");
+                }
+            }
+        }
+
+        public void AlignUserToAnchor(OVRSpatialAnchor anchor)
+        {
+            if (!anchor || !anchor.Localized)
+            {
+                Debug.LogError("[SharedSpatialAnchorManager] Invalid or un-localized anchor. Cannot align.");
+                return;
+            }
+
+            if (_cameraRigTransform == null)
+            {
+                Debug.LogError("[SharedSpatialAnchorManager] OVRCameraRig not found.");
+                return;
+            }
+
+            _cameraRigTransform.position = anchor.transform.InverseTransformPoint(default);
+            _cameraRigTransform.eulerAngles = new Vector3(0, -anchor.transform.eulerAngles.y, 0);
+            Debug.LogWarning("[SharedSpatialAnchorManager] Alignment Complete!");
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RPC_GetSafeArea(RpcInfo info = default)
+        {
+            Debug.Log("RPC_GetSafeArea: " + info.Source);
+
+            if (AnchorManager.Instance == null)
+            {
+                Debug.LogError("[SharedSpatialAnchorManager] Instace of AnchorManager not found!");
+                return;
+            }
+
+            Transform safeArea = AnchorManager.Instance.transform;
+            if (HasStateAuthority) RPC_PlaceSafeArea( safeArea.position, safeArea.rotation);
+
+            Debug.LogWarning($"Enviando SafeArea POS: {safeArea.position} | ROT: {safeArea.rotation}");
+        }
+
+
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_PlaceSafeArea(Vector3 position, Quaternion rotation, RpcInfo info = default)
+        {
+            Debug.Log("RPC_PlaceSafeArea: " + info.Source);
+
+            if (!HasStateAuthority)
+            {
+            Debug.LogWarning($"Recebendo SafeArea POS: {position} | ROT: {rotation}");
+            if (_sharedAnchor != null) AnchorManager.PlaceSafeArea(_sharedAnchor, position, rotation);
+            }
+        }
+
+
+    }
+}
