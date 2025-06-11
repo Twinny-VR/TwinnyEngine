@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Concept.Helpers;
 using Fusion;
 using Twinny.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Twinny.System.XR
 {
@@ -31,6 +33,10 @@ namespace Twinny.System.XR
 
         private void InitializeColocation()
         {
+            if (AnchorManager.currentAnchor == null) {
+                DebugPanel.Debug("<color=#00FF00>NO ANCHORS!!!"," ", UnityEngine.LogType.Warning);
+                return;
+            }
             if (Object.HasStateAuthority)
                 AdvertiseColocationSession();
             else
@@ -39,6 +45,7 @@ namespace Twinny.System.XR
 
         private async void AdvertiseColocationSession()
         {
+          //  if (AnchorManager.currentAnchor == null) return; //TODO Create a waiting for an anchor system
             Debug.Log("[SharedSpatialAnchorManager] Starting advertisement...");
             byte[] advertisementData = Encoding.UTF8.GetBytes(s: "SharedSpatialAnchorSession");
             var result = await OVRColocationSession.StartAdvertisementAsync(advertisementData);
@@ -165,7 +172,9 @@ namespace Twinny.System.XR
                         anchor.BindTo(_sharedAnchor);
 
                         AlignUserToAnchor(_sharedAnchor);
-                        RPC_GetSafeArea();
+                        AnchorManager.PlaceSafeArea(_sharedAnchor);
+
+                        // RPC_GetSafeArea();
                         return;
                     }
 
@@ -192,6 +201,8 @@ namespace Twinny.System.XR
             _cameraRigTransform.eulerAngles = new Vector3(0, -anchor.transform.eulerAngles.y, 0);
             Debug.LogWarning("[SharedSpatialAnchorManager] Alignment Complete!");
         }
+
+        /*
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RPC_GetSafeArea(RpcInfo info = default)
@@ -222,7 +233,7 @@ namespace Twinny.System.XR
             if (_sharedAnchor != null) AnchorManager.PlaceSafeArea(_sharedAnchor, position, rotation);
             }
         }
-
+        */
 
     }
 }

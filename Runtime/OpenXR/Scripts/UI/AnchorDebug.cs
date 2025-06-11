@@ -14,7 +14,7 @@ namespace Twinny.UI
         public string displayText { get => _displayText; set => _displayText = value;  }
 
         [SerializeField] private bool _showInfo = false;
-        public bool showInfo { get => _showInfo; set { _showInfo = value; _debugInfo.SetActive(value); }
+        public bool showInfo { get => _showInfo; set { if (!TwinnyManager.config.isTestBuild) return;  _showInfo = value; _debugInfo.SetActive(value); }
         }
         [SerializeField] private GameObject _debugInfo;
         [SerializeField] private TextMeshProUGUI TMP_Info;
@@ -38,7 +38,7 @@ namespace Twinny.UI
 
         IEnumerator SetCoordinatesText()
         {
-            while (true)
+            while (_showInfo)
             {
                 TMP_Info.text = $"[{_displayText}]\nP:({_transform.position})\nR:({_transform.eulerAngles})"; 
 

@@ -129,7 +129,7 @@ namespace Twinny.System
                 if (DebugPanel.Instance != null)
                 {
                     DebugPanel.Instance.visible = config.isTestBuild;
-                    DebugPanel.Instance.Debug("===============================\n" +
+                    DebugPanel.Debug("===============================\n" +
                                      "=          <color=#3cbcd6>TEST VERSION BUILD!</color>          =\n" +
                                      "= <color=#3cbcd6>Unset in Config file before Release.</color> =\n" +
                                      "==============================="," ",LogType.Warning);
