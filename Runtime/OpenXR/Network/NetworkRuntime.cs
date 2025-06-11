@@ -21,9 +21,5 @@ namespace Twinny.System.Network
         [Tooltip("When recenter and application was disconnected, wait X seconds until to restart experience.")]
         public int resetExperienceDelay = 0;
 
-        [Header("Avatars")]
-        public GameObject avatarPrefab;
-
-
     }
 }

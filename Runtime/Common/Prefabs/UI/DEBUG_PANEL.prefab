@@ -108,15 +108,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -368,9 +370,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97af016cee5aed343937a8451d7e13f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startVisible: 1
   _startFolded: 0
   _followUser: 1
   _followSpeed: 1
+  _debugPanel: {fileID: 2540629698819800145}
   TMP_DebugText: {fileID: 3216284858693435957}
   _showMessages: 1
   _showWarnings: 1
@@ -378,7 +382,7 @@ MonoBehaviour:
   animator: {fileID: 316260250901333758}
 --- !u!95 &316260250901333758
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -392,6 +396,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

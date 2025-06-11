@@ -17954,7 +17954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handGrabState: {fileID: 1197649041}
-  _syntheticHand: {fileID: 0}
+  _syntheticHand: {fileID: 1756046559}
 --- !u!1 &757874446
 GameObject:
   m_ObjectHideFlags: 0
@@ -23359,7 +23359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handGrabState: {fileID: 474978337}
-  _syntheticHand: {fileID: 0}
+  _syntheticHand: {fileID: 1756046559}
 --- !u!1 &1089529701
 GameObject:
   m_ObjectHideFlags: 0
@@ -24872,7 +24872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monoscopic: 0
   _sharpenType: 65536
-  _enableDynamicResolution: 1
+  _enableDynamicResolution: 0
   minDynamicResolutionScale: 0.7
   maxDynamicResolutionScale: 1.3
   quest2MinDynamicResolutionScale: 0.7
@@ -46190,7 +46190,7 @@ GameObject:
   - component: {fileID: 8320857212215331480}
   - component: {fileID: 8320857212215331479}
   m_Layer: 0
-  m_Name: '[Twinny] Alignment Manager'
+  m_Name: '[Twinny] Shared Anchor'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46227,6 +46227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06bc273f4ec34d54c9c35cab4344e473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _anchorDebug: {fileID: 4069590495288592202, guid: 39433684f93e09445bcf3b87d555fab4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

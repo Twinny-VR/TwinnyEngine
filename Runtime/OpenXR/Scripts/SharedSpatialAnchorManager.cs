@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Fusion;
+using Twinny.UI;
 using UnityEngine;
 
 namespace Twinny.System.XR
 {
     public class SharedSpatialAnchorManager : NetworkBehaviour
     {
+        [SerializeField] private AnchorDebug _anchorDebug;
 
         private ColocationManager _colocationManager;
         private Guid _sharedGuid;
@@ -23,7 +25,6 @@ namespace Twinny.System.XR
         {
 
             base.Spawned();
-            Debug.LogWarning($"INPUT: {HasInputAuthority} | STATE: {HasStateAuthority}");
             _colocationManager = FindAnyObjectByType<ColocationManager>();
             InitializeColocation();
         }
@@ -116,19 +117,19 @@ namespace Twinny.System.XR
 
         }
 
-        private async Task<OVRSpatialAnchor> CreateAnchor(Vector3 position = default, Quaternion rotation = default)
+        private async Task<OVRSpatialAnchor> CreateAnchor(Vector3? position = default, Quaternion? rotation = default)
         {
             Transform anchorTransform = AnchorManager.Instance.transform;
             Debug.LogWarning($"SHARED MANAGER: POS: {anchorTransform.position} | ROT: {anchorTransform.eulerAngles}");
 
+            var desiredPosition = position ?? anchorTransform.position;
+            var desiredRotation = rotation ?? anchorTransform.rotation;
 
 
-            var anchorGameObject = new GameObject("[Twinny] Alignment Anchor")
-            {
-                transform = { position = position, rotation = rotation }
-            };
-
-            var spatialAnchor = anchorGameObject.AddComponent<OVRSpatialAnchor>();
+            var anchorDebug = Instantiate(_anchorDebug,desiredPosition,desiredRotation);
+            anchorDebug.displayText = "[Twinny] Alignment Anchor";
+            anchorDebug.showInfo = true;
+            var spatialAnchor = anchorDebug.gameObject.AddComponent<OVRSpatialAnchor>();
             while (!spatialAnchor.Created)
             {
                 await Task.Yield();
@@ -157,8 +158,10 @@ namespace Twinny.System.XR
                     {
                         Debug.Log($"[SharedSpatialAnchorManager] Anchor localized successfully. UUID: {anchor.Uuid}");
 
-                        var anchorGO = new GameObject($"Anchor_{anchor.Uuid}");
-                        _sharedAnchor = anchorGO.AddComponent<OVRSpatialAnchor>();
+                        var anchorDebug = Instantiate(_anchorDebug);
+                        anchorDebug.displayText = $"Anchor_{anchor.Uuid}";
+                        anchorDebug.showInfo = true;
+                        _sharedAnchor = anchorDebug.gameObject.AddComponent<OVRSpatialAnchor>();
                         anchor.BindTo(_sharedAnchor);
 
                         AlignUserToAnchor(_sharedAnchor);
