@@ -34,8 +34,8 @@ namespace Twinny.System.XR
         private void InitializeColocation()
         {
             if (AnchorManager.currentAnchor == null) {
-                DebugPanel.Debug("<color=#00FF00>NO ANCHORS!!!"," ", UnityEngine.LogType.Warning);
-                return;
+                DebugPanel.Debug("<color=#00FF00>LOCAL ANCHOR NOT FOUND!"," ", UnityEngine.LogType.Warning);
+                if (Object.HasStateAuthority) return;//TODO Wait for anchor system
             }
             if (Object.HasStateAuthority)
                 AdvertiseColocationSession();
@@ -130,6 +130,7 @@ namespace Twinny.System.XR
             Debug.LogWarning($"SHARED MANAGER: POS: {anchorTransform.position} | ROT: {anchorTransform.eulerAngles}");
 
             var desiredPosition = position ?? anchorTransform.position;
+            desiredPosition.y = 0;
             var desiredRotation = rotation ?? anchorTransform.rotation;
 
 

@@ -205,7 +205,9 @@ namespace Twinny.System
             SharedSpatialAnchorCore core = new SharedSpatialAnchorCore();
             Instance.transform.SetParent(null);
             Instance._spatialAnchorCore.EraseAllAnchors();
-            Instance._spatialAnchorSpawner.SpawnSpatialAnchor(Instance._transform.position, Instance._transform.rotation);
+            Vector3 desiredPosition = Instance._transform.position;
+            desiredPosition.y = 0;
+            Instance._spatialAnchorSpawner.SpawnSpatialAnchor(desiredPosition, Instance._transform.rotation);
         }
 
 
@@ -304,7 +306,6 @@ namespace Twinny.System
         {
             if (loadedAnchors.Count == 0)
             {
-
                 Debug.LogWarning($"[{nameof(AnchorManager)}] None anchor loaded.");
                 _stateAnchorManager = StateAnchorManager.DISABLED;
                 return;
