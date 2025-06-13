@@ -1,8 +1,11 @@
 using Concept.Helpers;
 using Fusion;
+using Meta.XR.MultiplayerBlocks.Shared;
+
 //using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Twinny.Localization;
@@ -79,38 +82,39 @@ namespace Twinny.XR
 
         public async void ConnectToServer()
         {
-            //Get Internet Status
-            bool isWifiConnected =  NetworkUtils.IsWiFiConnected();
-
+            bool isWifiConnected = NetworkUtils.IsWiFiConnected();
 
             if (isWifiConnected && !Config.startSinglePlayer)
             {
-
                 try
                 {
                     _bootstrap.StartSharedClient();
+
+                    // Wait for connection or timeout
+                    bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
+                    if (connected) return;
                 }
-                catch (global::System.Exception e)
+                catch (Exception e)
                 {
                     Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                     await Task.Delay(4000);
                     await ResetExperience();
                     UnityEngine.Debug.LogError(e.Message);
                 }
-            await Task.Delay(Config.connectionTimeout * 1000);
             }
+
             try
             {
-                if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
-             
+                // Connection uncessfully try singleplayer
                 Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
-                _bootstrap.StartSinglePlayer();
-                await Task.Delay(Config.connectionTimeout * 1000);
 
-                if (NetworkRunnerHandler.runner.IsConnectedToServer) return;
+                _bootstrap.StartSinglePlayer();
+
+                bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
+                if (connected) return;
             }
-            catch (global::System.Exception e)
+            catch (Exception e)
             {
                 Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
@@ -118,13 +122,33 @@ namespace Twinny.XR
                 UnityEngine.Debug.LogError(e.Message);
             }
 
-            
-            
+            // Impossible to connect
             Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
             await Task.Delay(4000);
             await ResetExperience();
-
         }
+
+
+        private async Task<bool> WaitForConnectionOrTimeout(float timeoutSeconds)
+        {
+            float elapsed = 0f;
+            float checkInterval = 0.1f; // 100ms
+
+            while (elapsed < timeoutSeconds)
+            {
+                if (NetworkRunnerHandler.runner != null && NetworkRunnerHandler.runner.IsConnectedToServer)
+                {
+                    return true; // Já conectou, vamo nessa!
+                }
+
+                await Task.Delay((int)(checkInterval * 1000));
+                elapsed += checkInterval;
+            }
+
+            return false; // Passou o tempo e nada
+        }
+
+
 
         public override void GetReady()
         {
@@ -171,6 +195,20 @@ namespace Twinny.XR
         public override async Task ResetExperience()
         {
             await base.ResetExperience();
+            await Task.Delay((int)(LevelManagerXR.Config.resetExperienceDelay * 1000));
+            await NetworkRunnerHandler.runner.Shutdown(true);
+            ResetApplication();
+        }
+
+        public override void Shutdown()
+        {
+            if (UnityEngine.Application.isEditor) return;
+
+            using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                currentActivity.Call("finish");
+            }
         }
 
         public override void ResetApplication()

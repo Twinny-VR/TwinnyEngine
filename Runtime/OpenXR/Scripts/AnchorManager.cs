@@ -225,6 +225,7 @@ namespace Twinny.System
 
         public async static void Recolocation()
         {
+            return;
             await Task.Delay(500);
 
             if (Instance._colocation != null)
@@ -243,8 +244,8 @@ namespace Twinny.System
 
         public static void SpawnColocation()
         {
-
-            return; //TODO REMOVER
+            return;
+       
             if (NetworkRunnerHandler.runner.GameMode != GameMode.Single)
             {
                 if (Instance._colocation == null)
@@ -269,7 +270,7 @@ namespace Twinny.System
 
         private void RemoveColocation()
         {
-
+            return;
             if (_colocation != null)
             {
                 ColocationController controller = _colocation.GetComponent<ColocationController>();

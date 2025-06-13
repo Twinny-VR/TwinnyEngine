@@ -10279,6 +10279,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 679572663564537222, guid: e5acd28d6f0823a4ea9d86cacaadff86, type: 3}
+      propertyPath: _colocationBootstrapper
+      value: 
+      objectReference: {fileID: 1600004544}
     - target: {fileID: 3505022407528213963, guid: e5acd28d6f0823a4ea9d86cacaadff86, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -33768,7 +33772,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ColocationReadyCallbacks:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1740389081}
+        m_TargetAssemblyTypeName: Twinny.Recenter, Twinny.OpenXR
+        m_MethodName: GetReady
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   DebuggingOptions:
     visualizeAlignmentAnchor: 1
     enableVerboseLogging: 0
@@ -37070,6 +37086,17 @@ Transform:
   - {fileID: 231297234}
   m_Father: {fileID: 2111925964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1740389081 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 679572663564537222, guid: e5acd28d6f0823a4ea9d86cacaadff86, type: 3}
+  m_PrefabInstance: {fileID: 483371581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed480dba6b2377b48ab33d889e605d06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1744958597
 GameObject:
   m_ObjectHideFlags: 0

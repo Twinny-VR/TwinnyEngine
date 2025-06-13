@@ -34,7 +34,7 @@ namespace Twinny.UI
 
         private void OnValidate() 
         {
-            showParameter = type != ButtonType.EXIT && type != ButtonType.RESET && type != ButtonType.NAVIGATION;
+            showParameter = type != ButtonType.QUIT && type != ButtonType.RESET && type != ButtonType.NAVIGATION;
             showIndex = type == ButtonType.START || type == ButtonType.NAVIGATION || type == ButtonType.CHANGE_SCENE;
         }
 #endif
@@ -63,7 +63,7 @@ namespace Twinny.UI
                     LevelManagerXR.StartExperience(parameter, landMarkIndex);
                     break;
                 case ButtonType.RESET:
-                    LevelManagerXR.QuitExperience();
+                    LevelManagerXR.Reset();
                     break;
                 case ButtonType.CHANGE_SCENE:
 LevelManagerXR.instance.RPC_ChangeScene(parameter, landMarkIndex);

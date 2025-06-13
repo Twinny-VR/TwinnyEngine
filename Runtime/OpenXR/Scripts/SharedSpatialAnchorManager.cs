@@ -18,6 +18,7 @@ namespace Twinny.System.XR
         private Guid _sharedGuid;
         private Transform _cameraRigTransform;
         private OVRSpatialAnchor _sharedAnchor;
+        public OVRSpatialAnchor sharedAnchor { get => _sharedAnchor; }
         private void Awake()
         {
             _cameraRigTransform = FindAnyObjectByType<OVRCameraRig>()?.transform;
@@ -94,20 +95,20 @@ namespace Twinny.System.XR
         {
             Debug.Log("[SharedSpatialAnchorManager] Creating alignment anchor...");
 
-            var anchor = await CreateAnchor();
+            _sharedAnchor = await CreateAnchor();
 
-            if (anchor == null) Debug.LogError("[SharedSpatialAnchorManager] Failed to create Alignment Anchor.");
+            if (_sharedAnchor == null) Debug.LogError("[SharedSpatialAnchorManager] Failed to create Alignment Anchor.");
             else
-            if (!anchor.Localized) Debug.LogError("[SharedSpatialAnchorManager] No Anchor localized to sharing.");
+            if (!_sharedAnchor.Localized) Debug.LogError("[SharedSpatialAnchorManager] No Anchor localized to sharing.");
             else
             {
-                var saveResult = await anchor.SaveAnchorAsync();
+                var saveResult = await _sharedAnchor.SaveAnchorAsync();
                 if (saveResult.Success)
                 {
-                    Debug.Log($"[SharedSpatialAnchorManager] Alignment anchor saved successfully. UUID: {anchor.Uuid}");
+                    Debug.Log($"[SharedSpatialAnchorManager] Alignment anchor saved successfully. UUID: {_sharedAnchor.Uuid}");
 
                     Debug.Log("[SharedSpatialAnchorManager] Attempting to share alignment anchor...");
-                    var shareResult = await OVRSpatialAnchor.ShareAsync(new List<OVRSpatialAnchor> { anchor }, _sharedGuid);
+                    var shareResult = await OVRSpatialAnchor.ShareAsync(new List<OVRSpatialAnchor> { _sharedAnchor }, _sharedGuid);
 
                     if (shareResult.Success)
                         Debug.Log($"[SharedSpatialAnchorManager] Alignment anchor shared successfully. Group UUID: {_sharedGuid}");

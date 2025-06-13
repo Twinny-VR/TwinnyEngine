@@ -91,6 +91,8 @@ namespace Twinny.System
 
             }
 
+            _ = Resources.UnloadUnusedAssets();
+
             MobileSceneFeature feature = SceneFeature.Instance as MobileSceneFeature;
 
             if (feature)

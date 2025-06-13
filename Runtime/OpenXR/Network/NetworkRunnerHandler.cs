@@ -127,11 +127,14 @@ namespace Twinny.System.Network
         }
         #endregion
 
+        #region Public Methods
+
+        #endregion
 
         #region Callback Methods
 
 
-        
+
 
         private void OnApplicationQuit()
         {

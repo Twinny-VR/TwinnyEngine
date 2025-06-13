@@ -5,6 +5,7 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Network;
 using Twinny.UI;
+using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -136,21 +137,23 @@ namespace Twinny.System
         }
 
         [ContextMenu("Quit Experience")]
-        public static void QuitExperience()
+        public static void Reset()
         {
             Instance._isManager = false;
-            Instance.RPC_StartForAll(PlayerRef.None, "PlatformScene");
+
+            Instance.Shutdown();
+
+            //Instance.RPC_ResetForAll();
         }
 
         public virtual async Task ResetExperience()
         {
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
-
             await CanvasTransition.FadeScreen(true);
-            ResetApplication();
-            //SceneManager.LoadScene(0);
         }
-        
+
+        public virtual void Shutdown() { }
+
         public virtual void ResetApplication() { }
 
         /// <summary>
@@ -257,8 +260,12 @@ namespace Twinny.System
                 _ = ChangeScene(scene, landMark);
 
         }
-
         [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_ResetForAll()
+        {
+           _ = ResetExperience();
+        }
+            [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_ChangeScene(string scene, int landMark)
         {
             if (SceneManager.sceneCount > 1)//It means the Simulation is running

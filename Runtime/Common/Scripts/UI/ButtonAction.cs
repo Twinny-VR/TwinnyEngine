@@ -10,7 +10,7 @@ namespace Twinny.UI
     public enum ButtonType
     {
         START,
-        EXIT,
+        QUIT,
         SETTINGS,
         CHANGE_SCENE,
         NAVIGATION,
@@ -38,7 +38,7 @@ namespace Twinny.UI
 
         private void OnValidate() 
         {
-            showParameter = type != ButtonType.EXIT && type != ButtonType.RESET && type != ButtonType.NAVIGATION;
+            showParameter = type != ButtonType.QUIT && type != ButtonType.RESET && type != ButtonType.NAVIGATION;
             showIndex = type == ButtonType.START || type == ButtonType.NAVIGATION || type == ButtonType.CHANGE_SCENE;
         }
 #endif
@@ -72,7 +72,7 @@ namespace Twinny.UI
                 case ButtonType.RESET:
                     _ = LevelManager.Instance.ResetExperience();
                     break;
-                case ButtonType.EXIT:
+                case ButtonType.QUIT:
                     Application.Quit();
                     break;
                 case ButtonType.ACTION:
