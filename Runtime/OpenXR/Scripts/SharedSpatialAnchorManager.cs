@@ -94,7 +94,8 @@ namespace Twinny.System.XR
         private async void CreateAndShareAlignmentAnchor()
         {
             Debug.Log("[SharedSpatialAnchorManager] Creating alignment anchor...");
-
+            Transform anchorTransform = AnchorManager.Instance.transform;
+            //_sharedAnchor = await CreateAnchor(anchorTransform.position, anchorTransform.rotation);
             _sharedAnchor = await CreateAnchor();
 
             if (_sharedAnchor == null) Debug.LogError("[SharedSpatialAnchorManager] Failed to create Alignment Anchor.");
@@ -127,12 +128,11 @@ namespace Twinny.System.XR
 
         private async Task<OVRSpatialAnchor> CreateAnchor(Vector3? position = default, Quaternion? rotation = default)
         {
-            Transform anchorTransform = AnchorManager.Instance.transform;
-            Debug.LogWarning($"SHARED MANAGER: POS: {anchorTransform.position} | ROT: {anchorTransform.eulerAngles}");
 
-            var desiredPosition = position ?? anchorTransform.position;
+
+            var desiredPosition = position ?? Vector3.zero;
             desiredPosition.y = 0;
-            var desiredRotation = rotation ?? anchorTransform.rotation;
+            var desiredRotation = rotation ?? Quaternion.identity;
 
 
             var anchorDebug = Instantiate(_anchorDebug,desiredPosition,desiredRotation);
@@ -174,7 +174,7 @@ namespace Twinny.System.XR
                         anchor.BindTo(_sharedAnchor);
 
                         AlignUserToAnchor(_sharedAnchor);
-                        AnchorManager.PlaceSafeArea(_sharedAnchor);
+                       // AnchorManager.PlaceSafeArea(_sharedAnchor);
 
                         // RPC_GetSafeArea();
                         return;
