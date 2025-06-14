@@ -192,6 +192,13 @@ namespace Twinny.XR
             RPC_ChangeScene("HallScene", 0);
         }
 
+        public override async Task QuitExperience()
+        {
+            await base.QuitExperience();
+            await NetworkRunnerHandler.runner.Shutdown(true);
+            Shutdown();
+
+        }
         public override async Task ResetExperience()
         {
             await base.ResetExperience();
@@ -202,8 +209,6 @@ namespace Twinny.XR
 
         public override void Shutdown()
         {
-            if (UnityEngine.Application.isEditor) return;
-
             using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");

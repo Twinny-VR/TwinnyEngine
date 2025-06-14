@@ -137,19 +137,34 @@ namespace Twinny.System
         }
 
         [ContextMenu("Quit Experience")]
+        public static void Quit()
+        {
+            Instance.RPC_QuitForAll();
+
+        }
+        [ContextMenu("Quit Experience")]
         public static void Reset()
         {
             Instance._isManager = false;
 
-            Instance.Shutdown();
 
-            //Instance.RPC_ResetForAll();
+            Instance.RPC_ResetForAll();
         }
 
         public virtual async Task ResetExperience()
         {
+            if (UnityEngine.Application.isEditor) return;
+
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
             await CanvasTransition.FadeScreen(true);
+        }
+
+        public virtual async Task QuitExperience() {
+            if (UnityEngine.Application.isEditor) return;
+
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
+            await CanvasTransition.FadeScreen(true);
+
         }
 
         public virtual void Shutdown() { }
@@ -260,6 +275,12 @@ namespace Twinny.System
                 _ = ChangeScene(scene, landMark);
 
         }
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_QuitForAll()
+        {
+           _ = QuitExperience();
+        }
+
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_ResetForAll()
         {

@@ -62,6 +62,9 @@ namespace Twinny.UI
                 case ButtonType.START:
                     LevelManagerXR.StartExperience(parameter, landMarkIndex);
                     break;
+                    case ButtonType.QUIT:
+                    LevelManagerXR.Quit();
+                    break;
                 case ButtonType.RESET:
                     LevelManagerXR.Reset();
                     break;
