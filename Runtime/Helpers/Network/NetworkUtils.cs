@@ -3,18 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 namespace Concept.Helpers
 {
+    [Serializable] public class OnInternetConnectedEvent : UnityEvent { }
+    [Serializable] public class OnInternetDisconnectedEvent : UnityEvent { }
+
+
     /// <summary>
     ///  This class is to manage network features.
     /// </summary>
     public static class NetworkUtils
     {
 
-        public delegate void onInternetConnectionChanged(bool status);
-        public static onInternetConnectionChanged OnInternetConnectionChanged;
+        public static OnInternetConnectedEvent OnInternetConnectedEvent = new OnInternetConnectedEvent();
+        public static OnInternetDisconnectedEvent OnInternetDisconnectedEvent = new OnInternetDisconnectedEvent();
+
 
 
         static NetworkUtils() { CheckInternetConnection(); } //Start to check by initialization
@@ -79,12 +85,12 @@ namespace Concept.Helpers
                 if (!conected && NetworkUtils.IsWiFiConnected())
                 {
                     conected = true;
-                    OnInternetConnectionChanged?.Invoke(true);
+                    OnInternetConnectedEvent?.Invoke();
                 }
                 else if (conected && !NetworkUtils.IsWiFiConnected())
                 {
                     conected = false;
-                    OnInternetConnectionChanged?.Invoke(false);
+                    OnInternetDisconnectedEvent?.Invoke();
                 }
                 await Task.Delay(1000);
             }

@@ -123,6 +123,10 @@ namespace Twinny.UI {
                         ShowControlsMenu(status);
 
         }
+
+        public void OnPlayerList(int count)
+        {
+        }
         #endregion
     }
     [Serializable]

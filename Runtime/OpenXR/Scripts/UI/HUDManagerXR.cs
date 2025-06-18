@@ -9,9 +9,11 @@ using Twinny.XR;
 using UnityEngine.SceneManagement;
 using Concept.Core;
 using Concept.Helpers;
+using UnityEngine.Events;
 
 namespace Twinny.UI
 {
+    [Serializable] public class OnPlayerListEvent : UnityEvent<int> { }
 
 
     /// <summary>
@@ -35,7 +37,7 @@ namespace Twinny.UI
         [SerializeField] private Transform _canvasRoot;
         [SerializeField] private GameObject _configMenu;
         [SerializeField] private GameObject _mainMenu;
-       // [SerializeField] private Transform _mainMenu2;
+        // [SerializeField] private Transform _mainMenu2;
         private GameObject _extensionMenu;
         [Space]
         [Tooltip("Ângulo limite de visão até iniciar rotação.")]
@@ -58,18 +60,26 @@ namespace Twinny.UI
         private Vector3 _previousCameraPos;
 
         #endregion
+        private Transform _mainCameraTransform;
         #region Delegates
 
+        public delegate void onPlayerListEvent(int count);
+        public onPlayerListEvent OnPlayerListEvent;
 
-        private Transform _mainCameraTransform;
         #endregion
+
+        [SerializeField] private OnInternetConnectedEvent OnInternetConnectedEvent;
+        [SerializeField] private OnInternetDisconnectedEvent OnInternetDisconnectedEvent;
+        
+
 
         #region MonoBehaviour Methods
 
         //Awake is called before the script is started
         private void Awake()
         {
-
+            NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
+            NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
         }
 
         // Start is called before the first frame update
@@ -107,7 +117,10 @@ namespace Twinny.UI
         private void OnDisable()
         {
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
-            CallbackHub .UnregisterCallback(this);
+            CallbackHub.UnregisterCallback(this);
+            NetworkUtils.OnInternetConnectedEvent.RemoveListener(OnInternetConnected);
+            NetworkUtils.OnInternetDisconnectedEvent.RemoveListener(OnInternetDisconnected);
+
         }
         #endregion
 
@@ -186,6 +199,7 @@ namespace Twinny.UI
 
         #region Private Methods
 
+
         /// <summary>
         /// This method makes HUD follow the user orbit.
         /// </summary>
@@ -215,6 +229,15 @@ namespace Twinny.UI
             tracer.position = desiredPosition;
         }
 
+        private void OnInternetConnected()
+        {
+            OnInternetConnectedEvent?.Invoke();
+        }
+
+        private void OnInternetDisconnected()
+        {
+            OnInternetDisconnectedEvent?.Invoke();
+        }
 
         #endregion
 
@@ -293,7 +316,7 @@ namespace Twinny.UI
                     if (feature.enableNavigationMenu)
                         NavigationMenu.Instance?.SetArrows(feature?.landMarks[NetworkedLevelManager.Instance.currentLandMark].node);
                 }, 500);
-            
+
             Debug.LogError("[HUDManagerXR] Error impossible to connect without a multiplayer system installed.");
 
         }
@@ -313,7 +336,7 @@ namespace Twinny.UI
 
         public void OnLoadExtensionMenu(GameObject menu, bool isStatic)
         {
-            LoadExtensionMenu(menu,isStatic);
+            LoadExtensionMenu(menu, isStatic);
 
         }
 
@@ -368,8 +391,9 @@ namespace Twinny.UI
             //TODO Make inactive and fadeout H.U.D
             if (_extensionMenu)
                 _extensionMenu.SetActive(isActive);
-            else { 
-               // _mainMenu?.SetActive(isActive);
+            else
+            {
+                // _mainMenu?.SetActive(isActive);
                 _banner?.SetActive(isActive);
             }
             var feature = SceneFeature.Instance as SceneFeatureXR;
@@ -378,7 +402,7 @@ namespace Twinny.UI
         }
         public void OnPlatformInitialize()
         {
-            AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
+            // AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%CONNECTING_MESSAGE"), AlertViewHUD.MessageType.Warning, LevelManagerXR.Config.connectionTimeout);
         }
 
         public void OnExperienceReady()
@@ -397,7 +421,12 @@ namespace Twinny.UI
 
         public void OnCameraLocked(Transform target) { }
 
-        public void OnStandby(bool status) {}
+        public void OnStandby(bool status) { }
+
+        public void OnPlayerList(int count)
+        {
+            OnPlayerListEvent?.Invoke(count);
+        }
 
         #endregion
     }

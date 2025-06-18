@@ -12,24 +12,29 @@ namespace Twinny.UI
     /// </summary>
     public class RadialMenu : MonoBehaviour
     {
+        [SerializeField] private OnInternetConnectedEvent OnInternetConnectedEvent;
+        [SerializeField] private OnInternetDisconnectedEvent OnInternetDisconnectedEvent;
 
         #region Fields
         private bool _isActive = false;
         [Tooltip("Tempo de vida do menu sem atividade.")]
         [SerializeField] private float _closeInactiveMenuTime = 3f;
         private float _closeTimer = 0f;
+
+        [SerializeField] private HUDManagerXR _hudManager;
         [Header("UI Elements")]
         [SerializeField] private GameObject _mainButton;
         [SerializeField] private GameObject _foldedButton;
         [SerializeField] private GameObject _radialMenu;
         [SerializeField] private GameObject _closeButton;
         [SerializeField] private GameObject _anchorButton;
-        [SerializeField] private GameObject _wifiOnIcon;
-        [SerializeField] private GameObject _wifiOffIcon;
         [SerializeField] private GameObject _soundOnIcon;
         [SerializeField] private GameObject _soundOffIcon;
         [SerializeField] private GameObject _voiceOnIcon;
         [SerializeField] private GameObject _voiceOffIcon;
+        [Header("Players List")]
+        [SerializeField] private Transform _playersList;
+        [SerializeField] private GameObject _playerKnobPrefab;
 
    //     private Action<bool> OnClose;
         #endregion
@@ -41,7 +46,9 @@ namespace Twinny.UI
         void Start()
         {
             //Set CallBacks
-            NetworkUtils.OnInternetConnectionChanged += OnInternetConnectionChanged;
+            NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
+            NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
+            _hudManager.OnPlayerListEvent += ResizePlayersList;
             AudioManager.OnVolumeChanged += OnVolumeChange;
             AudioManager.OnVoipChanged += OnVoipChange;
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
@@ -50,12 +57,17 @@ namespace Twinny.UI
             OnVolumeChange(AudioManager.GetAudioVolume());
 
             //Sets Voip Feed UI Icon
-           // OnVoipChange(LevelManager.GetVoipStatus());
+            // OnVoipChange(LevelManager.GetVoipStatus());
 
             //Sets WiFi Feed UI Icon
-            OnInternetConnectionChanged(NetworkUtils.IsWiFiConnected());
-            
-            ResizeRadialMenu();
+            bool hasInternet = NetworkUtils.IsWiFiConnected();
+
+            if (hasInternet)
+                OnInternetConnected();
+            else
+                OnInternetDisconnected();
+
+                ResizeRadialMenu();
         }
 
         // Update is called once per frame
@@ -75,7 +87,9 @@ namespace Twinny.UI
         private void OnDestroy()
         {
             //Unset all callbacks
-            NetworkUtils.OnInternetConnectionChanged -= OnInternetConnectionChanged;
+            NetworkUtils.OnInternetConnectedEvent.RemoveListener(OnInternetConnected);
+            NetworkUtils.OnInternetDisconnectedEvent.RemoveListener(OnInternetDisconnected);
+            _hudManager.OnPlayerListEvent -= ResizePlayersList;
             AudioManager.OnVolumeChanged -= OnVolumeChange;
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
             AudioManager.OnVoipChanged -= OnVoipChange;
@@ -87,13 +101,19 @@ namespace Twinny.UI
 
 
         /// <summary>
-        /// This CallBack is called when Wifi connection have changes.
+        /// This CallBack is called when find Wifi connection.
         /// </summary>
-        /// <param name="status">Has connection.</param>
-        private void OnInternetConnectionChanged(bool status)
+        private void OnInternetConnected()
         {
-            _wifiOnIcon.SetActive(status);
-            _wifiOffIcon.SetActive(!status);
+            OnInternetConnectedEvent?.Invoke();
+        }
+
+        /// <summary>
+        /// This CallBack is called when Wifi connection lost.
+        /// </summary>
+        private void OnInternetDisconnected()
+        {
+            OnInternetDisconnectedEvent?.Invoke();
         }
 
         /// <summary>
@@ -160,6 +180,21 @@ namespace Twinny.UI
             }
         }
 
+
+        public void ResizePlayersList(int count)
+        {
+            Debug.Log("ERA PRA RESIZAR PRA: " + count);
+
+            foreach (Transform child in _playersList)
+            {
+                Destroy(child.gameObject);
+            }
+
+            for (int i = 0; i < count; i++) {
+
+                Instantiate(_playerKnobPrefab, _playersList);
+            }
+        }
         #endregion
 
         #region Buttons Actions

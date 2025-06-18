@@ -149,6 +149,8 @@ namespace Twinny.System.Network
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
+
             Debug.LogWarning($"{runner.ActivePlayers.Count()} ONLINE.");
             if (player == _runner.LocalPlayer)
             {

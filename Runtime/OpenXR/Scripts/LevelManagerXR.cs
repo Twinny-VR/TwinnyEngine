@@ -98,7 +98,7 @@ namespace Twinny.XR
                 }
                 catch (Exception e)
                 {
-                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                    //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                     await Task.Delay(4000);
                     await ResetExperience();
                     UnityEngine.Debug.LogError(e.Message);
@@ -108,7 +108,7 @@ namespace Twinny.XR
             try
             {
                 // Connection uncessfully try singleplayer
-                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+               // Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
 
                 _bootstrap.StartSinglePlayer();
@@ -118,14 +118,14 @@ namespace Twinny.XR
             }
             catch (Exception e)
             {
-                Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
                 await ResetExperience();
                 UnityEngine.Debug.LogError(e.Message);
             }
 
             // Impossible to connect
-            Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+            //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%ERROR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
             await Task.Delay(4000);
             await ResetExperience();
         }
