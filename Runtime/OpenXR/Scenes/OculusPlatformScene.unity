@@ -33697,7 +33697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1600004541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40662,6 +40662,7 @@ MonoBehaviour:
   _currentLandMark: -1
   _passThrough: {fileID: 1985252260}
   _bootstrap: {fileID: 366325652}
+  _sharedAnchorManager: {fileID: 8320857212215331480}
 --- !u!114 &1900741461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46230,7 +46231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8320857212215331479
 MonoBehaviour:
   m_ObjectHideFlags: 0

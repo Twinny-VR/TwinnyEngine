@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
+using Twinny.System.XR;
 using Twinny.UI;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace Twinny.XR
 
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
-
+        [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
         private void OnValidate()
         {
 
@@ -44,6 +45,7 @@ namespace Twinny.XR
         protected override void Start()
         {
             base.Start();
+            if(_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
             TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
         }
 
@@ -128,7 +130,12 @@ namespace Twinny.XR
             await ResetExperience();
         }
 
+        protected override void SetMaster()
+        {
+            base.SetMaster();
+            _sharedAnchorManager.AdvertiseColocationSession();
 
+        }
         private async Task<bool> WaitForConnectionOrTimeout(float timeoutSeconds)
         {
             float elapsed = 0f;
@@ -138,14 +145,14 @@ namespace Twinny.XR
             {
                 if (NetworkRunnerHandler.runner != null && NetworkRunnerHandler.runner.IsConnectedToServer)
                 {
-                    return true; // Já conectou, vamo nessa!
+                    return true; 
                 }
 
                 await Task.Delay((int)(checkInterval * 1000));
                 elapsed += checkInterval;
             }
 
-            return false; // Passou o tempo e nada
+            return false; // Connection timeout
         }
 
 

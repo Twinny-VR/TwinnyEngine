@@ -22,10 +22,12 @@ namespace Twinny.System
         private static NetworkedLevelManager _instance;
         public static NetworkedLevelManager Instance { get { return _instance; } }
         #endregion
+        private bool _isSpawned;
 
         #region Fields
 
         protected NetworkObject _networkObject;
+        [Networked] public PlayerRef master { get; set; } = PlayerRef.None;
 
         [Space]
         [Header("Linked Components")]
@@ -99,7 +101,10 @@ namespace Twinny.System
         // Update is called once per frame
         void Update()
         {
-
+            if (_isSpawned && HasStateAuthority && master != NetworkRunnerHandler.runner.LocalPlayer)
+            {
+                SetMaster();
+            }
         }
         // Destroy is called when component/object was removed
         private void OnDestroy()
@@ -108,9 +113,20 @@ namespace Twinny.System
 
 
 
+
         #endregion
 
+
+
+
         #region Public Methods
+
+        protected virtual void SetMaster()
+        {
+                master = NetworkRunnerHandler.runner.LocalPlayer;
+                Debug.Log("[NetworkedLevelManager] You are the MASTER!");
+
+        }
 
         public static void SetOwner(NetworkRunner runner)
         {
@@ -363,6 +379,10 @@ namespace Twinny.System
         public override void Spawned()
         {
             base.Spawned();
+
+
+            _isSpawned = true;
+
 
             /* TODO Ver depois
             StartCoroutine(DelayedAction(() =>

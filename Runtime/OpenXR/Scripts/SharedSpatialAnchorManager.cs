@@ -44,7 +44,7 @@ namespace Twinny.System.XR
                 DiscoverNearbySession();
         }
 
-        private async void AdvertiseColocationSession()
+        public async void AdvertiseColocationSession()
         {
           //  if (AnchorManager.currentAnchor == null) return; //TODO Create a waiting for an anchor system
             Debug.Log("[SharedSpatialAnchorManager] Starting advertisement...");
@@ -85,8 +85,6 @@ namespace Twinny.System.XR
         private void OnColocationSessionDiscovered(OVRColocationSession.Data data)
         {
             OVRColocationSession.ColocationSessionDiscovered -= OnColocationSessionDiscovered;
-
-            _sharedGuid = data.AdvertisementUuid;
             Debug.Log($"[SharedSpatialAnchorManager] Discovery session with UUID: {_sharedGuid}");
             LoadAndAlignToAnchor(_sharedGuid);
         }
@@ -173,6 +171,7 @@ namespace Twinny.System.XR
                         _sharedAnchor = anchorDebug.gameObject.AddComponent<OVRSpatialAnchor>();
                         anchor.BindTo(_sharedAnchor);
 
+                        await sharedAnchor.SaveAnchorAsync();
                         AlignUserToAnchor(_sharedAnchor);
                        // AnchorManager.PlaceSafeArea(_sharedAnchor);
 

@@ -12,6 +12,7 @@ using Twinny.UI;
 using Twinny.XR;
 using Concept.Helpers;
 using Concept.Core;
+using Twinny.System.XR;
 
 namespace Twinny.System.Network
 {
@@ -44,7 +45,7 @@ namespace Twinny.System.Network
         protected override void Awake()
         {
             base.Awake();
-            
+
             _runner = GetComponent<NetworkRunner>();
 
         }
@@ -54,8 +55,8 @@ namespace Twinny.System.Network
         protected override void Start()
         {
             base.Start();
-        NetworkedLevelManager.SetOwner(_runner);
-           
+            NetworkedLevelManager.SetOwner(_runner);
+
 
 
             _VoiceRecorder.SetActive(true);
@@ -158,12 +159,11 @@ namespace Twinny.System.Network
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
 
-
-            Debug.Log($"SAIU:{player} | MODERADOR:{NetworkedLevelManager.Instance.manager}");
-
+            bool isMaster = player == NetworkedLevelManager.Instance.master;
+            Debug.Log($"SAIU:{(isMaster ? "MASTER" : player)}");
+            if (isMaster) runner.RequestStateAuthority(LevelManagerXR.instance.Object.Id);
             if (player == NetworkedLevelManager.Instance.manager)
             {
-
                 SwitchModerator();
 
             }
@@ -174,14 +174,18 @@ namespace Twinny.System.Network
         {
             _runner.RemoveCallbacks(this);
         }
-        public void OnConnectedToServer(NetworkRunner runner) { }
+        public void OnConnectedToServer(NetworkRunner runner)
+        {
+
+            Debug.LogWarning($"[NetworkRunnerHandler] *** CONNECTED. {(runner.IsSharedModeMasterClient ? "MASTER" : "USER")}.");
+        }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
         {
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
             if (LevelManagerXR.Config.tryReconnect)
             {
-                Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!",Twinny.UI.AlertViewHUD.MessageType.Error,10f);
+                Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!", Twinny.UI.AlertViewHUD.MessageType.Error, 10f);
                 TryReconnect();
             }
         }
@@ -209,15 +213,16 @@ namespace Twinny.System.Network
                     {
                         SceneFeature.Instance.TeleportToLandMark(currentLandMark);
                         //TODO Q diabos fiz aqui
-                      /*
-                        if (SceneFeatureXR.Instance.landMarks.Length > 0 && SceneFeatureXR.Instance.currentLandMark != SceneFeatureXR.Instance.landMarks[currentLandMark])
-                            SceneFeatureXR.Instance.TeleportToLandMark(currentLandMark);
-                      */
+                        /*
+                          if (SceneFeatureXR.Instance.landMarks.Length > 0 && SceneFeatureXR.Instance.currentLandMark != SceneFeatureXR.Instance.landMarks[currentLandMark])
+                              SceneFeatureXR.Instance.TeleportToLandMark(currentLandMark);
+                        */
                     }
 
                     CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadSceneFeature());
 
-                }else
+                }
+                else
                     CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
 
             }
@@ -226,7 +231,7 @@ namespace Twinny.System.Network
         }
         public void OnSceneLoadStart(NetworkRunner runner) { }
 
-#endregion
+        #endregion
 
     }
 }

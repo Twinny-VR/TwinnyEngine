@@ -29,6 +29,10 @@ namespace Twinny.System
         private Transform _transform;
         #endregion
 
+        public static Vector3 position { get => Instance._transform.position;  }
+        public static Quaternion rotation { get => Instance._transform.rotation; }
+
+
         #region Fields
         private Transform _mainCamera;
         [SerializeField] private Transform _cameraRig;
