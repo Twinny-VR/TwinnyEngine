@@ -279,7 +279,7 @@ namespace Twinny.System
             currentLandMark = landMark;
             manager = source;
 
-            if (source == NetworkRunnerHandler.runner.LocalPlayer) _isManager = true;
+            _isManager = (source == NetworkRunnerHandler.runner.LocalPlayer);
 
             Debug.LogWarning(IsManager ? "YOU ARE THE MASTER!" : (source != PlayerRef.None ? $"{source} IS THE MASTER!" : "NO MASTERS"));
 
