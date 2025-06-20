@@ -15,6 +15,7 @@ using Twinny.System.Network;
 using Twinny.System.XR;
 using Twinny.UI;
 using UnityEngine;
+using static Twinny.XR.LevelManagerXR;
 
 namespace Twinny.XR
 {
@@ -27,6 +28,13 @@ namespace Twinny.XR
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
         [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
+
+
+        #region Delegates
+        public delegate void onSetPassthrough(bool status);
+        public static onSetPassthrough OnSetPassthrough;
+        #endregion
+
         private void OnValidate()
         {
 
@@ -189,6 +197,8 @@ namespace Twinny.XR
             if (NetworkRunnerHandler.runner.IsSceneAuthority)
                 AnchorManager.AnchorScene();
         }
+
+#if UNITY_EDITOR
         [ContextMenu("INICIAR")]
         public void Iniciar()
         {
@@ -202,6 +212,8 @@ namespace Twinny.XR
 
             RPC_ChangeScene("HallScene", 0);
         }
+
+#endif
 
         public override async Task QuitExperience()
         {
@@ -273,6 +285,7 @@ namespace Twinny.XR
                 Camera.main.clearFlags = CameraClearFlags.Skybox;
 
             }
+
             if (_passThrough)
             {
                 _passThrough.enabled = status;
@@ -282,7 +295,9 @@ namespace Twinny.XR
             else
             {
                 UnityEngine.Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
+                return;
             }
+            OnSetPassthrough?.Invoke(status);
 
         }
     }
