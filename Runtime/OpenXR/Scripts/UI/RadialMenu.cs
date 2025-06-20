@@ -21,7 +21,6 @@ namespace Twinny.UI
         [SerializeField] private float _closeInactiveMenuTime = 3f;
         private float _closeTimer = 0f;
 
-        [SerializeField] private HUDManagerXR _hudManager;
         [Header("UI Elements")]
         [SerializeField] private GameObject _mainButton;
         [SerializeField] private GameObject _foldedButton;
@@ -32,9 +31,6 @@ namespace Twinny.UI
         [SerializeField] private GameObject _soundOffIcon;
         [SerializeField] private GameObject _voiceOnIcon;
         [SerializeField] private GameObject _voiceOffIcon;
-        [Header("Players List")]
-        [SerializeField] private Transform _playersList;
-        [SerializeField] private GameObject _playerKnobPrefab;
 
    //     private Action<bool> OnClose;
         #endregion
@@ -48,7 +44,6 @@ namespace Twinny.UI
             //Set CallBacks
             NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
             NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
-            _hudManager.OnPlayerListEvent += ResizePlayersList;
             AudioManager.OnVolumeChanged += OnVolumeChange;
             AudioManager.OnVoipChanged += OnVoipChange;
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
@@ -89,7 +84,6 @@ namespace Twinny.UI
             //Unset all callbacks
             NetworkUtils.OnInternetConnectedEvent.RemoveListener(OnInternetConnected);
             NetworkUtils.OnInternetDisconnectedEvent.RemoveListener(OnInternetDisconnected);
-            _hudManager.OnPlayerListEvent -= ResizePlayersList;
             AudioManager.OnVolumeChanged -= OnVolumeChange;
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
             AudioManager.OnVoipChanged -= OnVoipChange;
@@ -180,21 +174,6 @@ namespace Twinny.UI
             }
         }
 
-
-        public void ResizePlayersList(int count)
-        {
-            Debug.Log("ERA PRA RESIZAR PRA: " + count);
-
-            foreach (Transform child in _playersList)
-            {
-                Destroy(child.gameObject);
-            }
-
-            for (int i = 0; i < count; i++) {
-
-                Instantiate(_playerKnobPrefab, _playersList);
-            }
-        }
         #endregion
 
         #region Buttons Actions
