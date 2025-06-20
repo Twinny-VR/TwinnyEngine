@@ -205,7 +205,7 @@ namespace Twinny.System
             if (scene == "PlatformScene")
             {
                 await NetworkSceneManager.UnloadAdditivesScenes();
-                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(isRunning));
+                RPC_RestartForAll();
             }
             else
             {
@@ -302,7 +302,13 @@ namespace Twinny.System
         {
            _ = ResetExperience();
         }
-            [Rpc(RpcSources.All, RpcTargets.All)]
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_RestartForAll()
+        {
+            CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnExperienceFinished(isRunning));
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_ChangeScene(string scene, int landMark)
         {
             if (SceneManager.sceneCount > 1)//It means the Simulation is running

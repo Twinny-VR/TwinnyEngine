@@ -426,6 +426,7 @@ namespace Twinny.UI
         {
             _dynamicHud?.SetActive(isRunning);
             _mainMenu?.SetActive(isRunning);
+            _banner?.SetActive(isRunning);
         }
 
         public void OnCameraChanged(Transform camera, string type) { }
