@@ -78,13 +78,13 @@ namespace Twinny.UI
         //Awake is called before the script is started
         private void Awake()
         {
-            NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
-            NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
+            NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
             //_banner.transform.SetParent(AnchorManager.Instance.transform);
             _staticHud.transform.SetParent(AnchorManager.Instance.transform);
@@ -93,6 +93,14 @@ namespace Twinny.UI
             _mainCameraTransform = Camera.main.transform;
             _previousCameraPos = _mainCameraTransform.position;
             _mainMenu.SetActive(false);
+
+
+            bool hasInternet = NetworkUtils.IsWiFiConnected();
+
+            if (hasInternet)
+                OnInternetConnected();
+            else
+                OnInternetDisconnected();
 
         }
 
