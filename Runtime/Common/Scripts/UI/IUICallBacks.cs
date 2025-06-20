@@ -13,8 +13,6 @@ namespace Twinny.UI
         #region Experience Callbacks
 
         void OnPlatformInitialize();
-
-        void OnPlayerList(int count);
         void OnExperienceReady();
         void OnExperienceFinished(bool isRunning);
         void OnLoadExtensionMenu(GameObject menu, bool isStatic = false);
@@ -127,8 +125,6 @@ namespace Twinny.UI
         {
         }
 
-        public void OnPlayerList(int count)
-        {
-        }
+  
     }
 }

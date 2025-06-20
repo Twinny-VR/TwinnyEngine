@@ -19,7 +19,7 @@ namespace Twinny.UI
     /// <summary>
     /// This is a singleton class to control H.U.D Anchor elements
     /// </summary>
-    public class HUDManagerXR : MonoBehaviour, IUICallBacks
+    public class HUDManagerXR : MonoBehaviour, IUIXRCallbacks
     {
 
         #region Fields
@@ -68,8 +68,11 @@ namespace Twinny.UI
 
         #endregion
 
-        [SerializeField] private OnInternetConnectedEvent OnInternetConnectedEvent;
-        [SerializeField] private OnInternetDisconnectedEvent OnInternetDisconnectedEvent;
+        [SerializeField] public UnityEvent OnInternetConnectedEvent;
+        [SerializeField] public UnityEvent OnInternetDisconnectedEvent;
+        [SerializeField] public UnityEvent OnSingleplayerConnectEvent;
+        [SerializeField] public UnityEvent OnMultiplayerConnectEvent;
+        [SerializeField] public UnityEvent OnDisconnectEvent;
         
 
 
@@ -434,6 +437,19 @@ namespace Twinny.UI
         public void OnPlayerList(int count)
         {
             OnPlayerListEvent?.Invoke(count);
+        }
+
+        public void OnConnected(GameMode gameMode)
+        {
+            if (gameMode == GameMode.Single)
+                OnSingleplayerConnectEvent?.Invoke();
+            else
+                OnMultiplayerConnectEvent?.Invoke();
+        }
+
+        public void OnDisconnected()
+        {
+                OnDisconnectEvent?.Invoke();
         }
 
         #endregion

@@ -1,3 +1,4 @@
+using Concept.Core;
 using Concept.Helpers;
 using Fusion;
 using Meta.XR.MultiplayerBlocks.Shared;
@@ -45,7 +46,7 @@ namespace Twinny.XR
         protected override void Start()
         {
             base.Start();
-            if(_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
+            if (_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
             TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
         }
 
@@ -108,13 +109,16 @@ namespace Twinny.XR
             try
             {
                 // Connection uncessfully try singleplayer
-               // Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
+                // Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_NETWORK_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Warning, 5);
                 await Task.Delay(4000);
 
                 _bootstrap.StartSinglePlayer();
 
                 bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
-                if (connected) return;
+                if (connected) {
+                    CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnConnected(GameMode.Single));
+                    return; 
+                }
             }
             catch (Exception e)
             {
@@ -143,9 +147,9 @@ namespace Twinny.XR
 
             while (elapsed < timeoutSeconds)
             {
-                if (NetworkRunnerHandler.runner != null && NetworkRunnerHandler.runner.IsConnectedToServer)
+                if (NetworkRunnerHandler.runner != null && (NetworkRunnerHandler.runner.IsConnectedToServer || NetworkRunnerHandler.runner.GameMode == GameMode.Single))
                 {
-                    return true; 
+                    return true;
                 }
 
                 await Task.Delay((int)(checkInterval * 1000));

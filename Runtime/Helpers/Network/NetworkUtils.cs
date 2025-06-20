@@ -8,8 +8,6 @@ using UnityEngine.Networking;
 
 namespace Concept.Helpers
 {
-    [Serializable] public class OnInternetConnectedEvent : UnityEvent { }
-    [Serializable] public class OnInternetDisconnectedEvent : UnityEvent { }
 
 
     /// <summary>
@@ -17,9 +15,10 @@ namespace Concept.Helpers
     /// </summary>
     public static class NetworkUtils
     {
-
-        public static OnInternetConnectedEvent OnInternetConnectedEvent = new OnInternetConnectedEvent();
-        public static OnInternetDisconnectedEvent OnInternetDisconnectedEvent = new OnInternetDisconnectedEvent();
+        public static UnityEvent OnInternetConnectedEvent = new UnityEvent();
+        public static UnityEvent OnInternetDisconnectedEvent = new UnityEvent();
+//        public static OnInternetConnectedEvent OnInternetConnectedEvent = new OnInternetConnectedEvent();
+  //      public static OnInternetDisconnectedEvent OnInternetDisconnectedEvent = new OnInternetDisconnectedEvent();
 
 
 

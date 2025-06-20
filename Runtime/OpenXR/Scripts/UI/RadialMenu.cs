@@ -2,6 +2,7 @@ using Concept.Helpers;
 using Twinny.Helpers;
 using Twinny.System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Twinny.UI
@@ -12,14 +13,20 @@ namespace Twinny.UI
     /// </summary>
     public class RadialMenu : MonoBehaviour
     {
-        [SerializeField] private OnInternetConnectedEvent OnInternetConnectedEvent;
-        [SerializeField] private OnInternetDisconnectedEvent OnInternetDisconnectedEvent;
+        [SerializeField] private UnityEvent OnInternetConnectedEvent;
+        [SerializeField] private UnityEvent OnInternetDisconnectedEvent;
+        [SerializeField] private UnityEvent OnSingleplayerConnectEvent;
+        [SerializeField] private UnityEvent OnMultiplayerConnectEvent;
+        [SerializeField] private UnityEvent OnDisconnectEvent;
 
         #region Fields
         private bool _isActive = false;
         [Tooltip("Tempo de vida do menu sem atividade.")]
         [SerializeField] private float _closeInactiveMenuTime = 3f;
         private float _closeTimer = 0f;
+
+        [SerializeField] private HUDManagerXR _hudManager;
+
 
         [Header("UI Elements")]
         [SerializeField] private GameObject _mainButton;
@@ -41,9 +48,16 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
+            if (_hudManager == null) _hudManager = FindFirstObjectByType<HUDManagerXR>();
+
             //Set CallBacks
             NetworkUtils.OnInternetConnectedEvent.AddListener(OnInternetConnected);
             NetworkUtils.OnInternetDisconnectedEvent.AddListener(OnInternetDisconnected);
+
+            _hudManager.OnSingleplayerConnectEvent.AddListener(OnSingleplayerConnect);
+            _hudManager.OnMultiplayerConnectEvent.AddListener(OnMultiplayerConnect);
+            _hudManager.OnInternetDisconnectedEvent.AddListener(OnDisconnect);
+
             AudioManager.OnVolumeChanged += OnVolumeChange;
             AudioManager.OnVoipChanged += OnVoipChange;
             AnchorManager.OnAnchorStateChanged += OnAnchorStateChanged;
@@ -84,6 +98,12 @@ namespace Twinny.UI
             //Unset all callbacks
             NetworkUtils.OnInternetConnectedEvent.RemoveListener(OnInternetConnected);
             NetworkUtils.OnInternetDisconnectedEvent.RemoveListener(OnInternetDisconnected);
+
+            _hudManager.OnSingleplayerConnectEvent.RemoveListener(OnSingleplayerConnect);
+            _hudManager.OnMultiplayerConnectEvent.RemoveListener(OnMultiplayerConnect);
+            _hudManager.OnInternetDisconnectedEvent.RemoveListener(OnDisconnect);
+
+
             AudioManager.OnVolumeChanged -= OnVolumeChange;
             AnchorManager.OnAnchorStateChanged -= OnAnchorStateChanged;
             AudioManager.OnVoipChanged -= OnVoipChange;
@@ -109,6 +129,13 @@ namespace Twinny.UI
         {
             OnInternetDisconnectedEvent?.Invoke();
         }
+
+
+
+        private void OnSingleplayerConnect() { OnSingleplayerConnectEvent?.Invoke(); }
+        private void OnMultiplayerConnect() { OnMultiplayerConnectEvent?.Invoke(); }
+        private void OnDisconnect() { OnDisconnectEvent?.Invoke(); }
+
 
         /// <summary>
         /// This CallBakc is called when MasterVolume has changed.

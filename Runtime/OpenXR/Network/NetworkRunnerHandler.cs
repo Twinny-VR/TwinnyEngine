@@ -149,7 +149,7 @@ namespace Twinny.System.Network
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
+            CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
 
             Debug.LogWarning($"{runner.ActivePlayers.Count()} ONLINE.");
             if (player == _runner.LocalPlayer)
@@ -160,7 +160,7 @@ namespace Twinny.System.Network
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
+            CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
 
             bool isMaster = player == NetworkedLevelManager.Instance.master;
             Debug.Log($"SAIU:{(isMaster ? "MASTER" : player)}");
@@ -179,11 +179,13 @@ namespace Twinny.System.Network
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {
+            CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnConnected(runner.GameMode));
 
             Debug.LogWarning($"[NetworkRunnerHandler] *** CONNECTED. {(runner.IsSharedModeMasterClient ? "MASTER" : "USER")}.");
         }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
         {
+            CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnDisconnected());
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
             if (LevelManagerXR.Config.tryReconnect)
