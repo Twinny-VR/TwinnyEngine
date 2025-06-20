@@ -160,6 +160,7 @@ namespace Twinny.System.Network
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlayerList(runner.ActivePlayers.Count()));
 
             bool isMaster = player == NetworkedLevelManager.Instance.master;
             Debug.Log($"SAIU:{(isMaster ? "MASTER" : player)}");
