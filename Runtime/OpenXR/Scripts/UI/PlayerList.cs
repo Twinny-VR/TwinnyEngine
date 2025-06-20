@@ -1,3 +1,5 @@
+using System.Linq;
+using Twinny.System.Network;
 using UnityEngine;
 
 namespace Twinny.UI
@@ -14,7 +16,7 @@ namespace Twinny.UI
             if (_playersList == null) _playersList = transform;
             if(_hudManager == null) _hudManager = FindFirstObjectByType<HUDManagerXR>();
             _hudManager.OnPlayerListEvent += ResizePlayersList;
-
+            if (NetworkRunnerHandler.runner.IsConnectedToServer) ResizePlayersList(NetworkRunnerHandler.runner.ActivePlayers.Count());
 
         }
 

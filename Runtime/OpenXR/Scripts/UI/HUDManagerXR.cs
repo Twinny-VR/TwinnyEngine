@@ -105,6 +105,9 @@ namespace Twinny.UI
             else
                 OnInternetDisconnected();
 
+            if (NetworkRunnerHandler.runner != null)
+                OnConnected(NetworkRunnerHandler.runner.GameMode);
+
         }
 
         // Update is called once per frame
