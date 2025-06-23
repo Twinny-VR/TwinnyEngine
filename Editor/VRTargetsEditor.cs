@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_EDITOR && TWINNY_OPENXR
 using System;
 using System.Linq;
 using UnityEditor;
