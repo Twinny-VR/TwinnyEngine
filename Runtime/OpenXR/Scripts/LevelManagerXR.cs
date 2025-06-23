@@ -94,9 +94,12 @@ namespace Twinny.XR
         public async void ConnectToServer()
         {
             bool isWifiConnected = NetworkUtils.IsWiFiConnected();
-
+            
+            
             if (isWifiConnected && !Config.startSinglePlayer)
             {
+            string ip = await NetworkHelper.GetPublicIP();
+            _bootstrap.DefaultRoomName = ip;
                 try
                 {
                     _bootstrap.StartSharedClient();
