@@ -1,9 +1,8 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && TWINNY_OPENXR
 using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
 
-#if TWINNY_OPENXR
 [CustomEditor(typeof(ButtonActionXR))]
 public class ButtonActionXREditor : Editor
 {
@@ -43,5 +42,4 @@ public class ButtonActionEditor : Editor
 
     }
 }
-#endif
 #endif

@@ -22,19 +22,10 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "TWINNY_OPENXR"
+        "TWINNY_OPENXR",
+        "FUSION2",
+        " PHOTON_VOICE_DEFINED"
     ],
-    "versionDefines": [
-        {
-            "name": "com.unity.modules.xr",
-            "expression": "2",
-            "define": "TWINNY_OPENXR"
-        },
-        {
-            "name": "com.meta.xr.sdk.all",
-            "expression": "68.0.2",
-            "define": "TWINNY_OPENXR"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }
