@@ -27,9 +27,9 @@ namespace Twinny.System.Network
 if (!EditorPrefs.GetBool("Twinny_Fusion2_InstallationStarted", false))
     {
             Debug.LogWarning("[Twinny] Photon Fusion não encontrado! Instalando...");
-           // EditorPrefs.SetBool("Twinny_Fusion2_InstallationStarted", true);
+            EditorPrefs.SetBool("Twinny_Fusion2_InstallationStarted", true);
             string path = "Packages/com.twinny.twe25/Samples~/PF2.unitypackage";
-         //   AssetDatabase.ImportPackage(path, false);
+            AssetDatabase.ImportPackage(path, false);
     }
 #else
                 EditorPrefs.DeleteKey("Twinny_Fusion2_InstallationStarted");
@@ -39,10 +39,10 @@ if (!EditorPrefs.GetBool("Twinny_Fusion2_InstallationStarted", false))
 if (!EditorPrefs.GetBool("Twinny_Voice2_InstallationStarted", false))
     {
             Debug.LogWarning("[Twinny] Photon Voice2 não encontrado! Instalando...");
-          //  EditorPrefs.SetBool("Twinny_Voice2_InstallationStarted", true);
+            EditorPrefs.SetBool("Twinny_Voice2_InstallationStarted", true);
 
             string path = "Packages/com.twinny.twe25/Samples~/PV2.unitypackage";
-          //  AssetDatabase.ImportPackage(path, false);
+            AssetDatabase.ImportPackage(path, false);
 }
 #elif PHOTON_VOICE_DEFINED
                 EditorPrefs.DeleteKey("Twinny_Voice2_InstallationStarted");

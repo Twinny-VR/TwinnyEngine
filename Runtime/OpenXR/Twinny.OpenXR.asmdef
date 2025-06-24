@@ -26,6 +26,12 @@
         "FUSION2",
         " PHOTON_VOICE_DEFINED"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.meta.xr.sdk.all",
+            "expression": "77",
+            "define": "TWINNY_OPENXR"
+        }
+    ],
     "noEngineReferences": false
 }
