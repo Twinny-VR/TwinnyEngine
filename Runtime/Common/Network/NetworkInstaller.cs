@@ -68,7 +68,7 @@ if (!EditorPrefs.GetBool("Twinny_Voice2_InstallationStarted", false))
             {
                 if (package.name == name)
                 {
-                    Debug.Log($"[NetworkInstaller] Package '{name}' encontrado!");
+                   // Debug.Log($"[NetworkInstaller] Package '{name}' encontrado!");
                     return true;
                 }
             }

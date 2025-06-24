@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
-using Twinny.Helpers;
 using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
@@ -22,15 +19,33 @@ namespace Twinny.System
         WEBGL
     }
 
+    [InitializeOnLoad]
     public static class TwinnyManager
     {
+
+        const string DEFAULT_KEYSTORE = "Packages/com.twinny.twe25/Samples~/TwinnyKey.keystore";
+
+
         public static Platform Platform = Platform.UNKNOW;
 
         public static TwinnyRuntime config;
 
-
         public delegate void onPlatformInitilize(Platform platform);
         public static onPlatformInitilize OnPlatformInitialize;
+       
+        static TwinnyManager()
+        {
+#if UNITY_ANDROID
+            string currentKeyStore = PlayerSettings.Android.keystoreName;
+
+            if (string.IsNullOrEmpty(currentKeyStore))
+            {
+                Debug.LogWarning($"[TwinnyManager] None keystore defined. Using default: '{DEFAULT_KEYSTORE}'.");
+                PlayerSettings.Android.keystoreName = DEFAULT_KEYSTORE;
+            }
+#endif
+        }
+
         public static async Task InitializePlatform()
         {
 
@@ -38,7 +53,6 @@ namespace Twinny.System
             AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
             await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
-
 
 
 #if UNITY_EDITOR

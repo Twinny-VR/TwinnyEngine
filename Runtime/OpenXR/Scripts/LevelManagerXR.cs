@@ -29,7 +29,6 @@ namespace Twinny.XR
         [SerializeField] private FusionBootstrap _bootstrap;
         [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
 
-
         #region Delegates
         public delegate void onSetPassthrough(bool status);
         public static onSetPassthrough OnSetPassthrough;
@@ -37,10 +36,7 @@ namespace Twinny.XR
 
         private void OnValidate()
         {
-
-
             TwinnyManager.LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
-
         }
 
         protected override void Awake()
