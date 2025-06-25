@@ -21,12 +21,14 @@ namespace Twinny.System
         MOBILE,
         WEBGL
     }
-
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
     public static class TwinnyManager
     {
         public const string PACKAGE_NAME = "com.twinny.twe25";
         const string DEFAULT_KEYSTORE = "TwinnyKey.keystore";
+        public const string SAMPLE_ROOT = "Assets/Samples/Twinny Engine";
 
         public static Platform Platform = Platform.UNKNOW;
 
@@ -46,7 +48,7 @@ namespace Twinny.System
             if(overwrite)
             {
                 string newKey = Path.Combine(defaultKeyStore, "Samples~", DEFAULT_KEYSTORE); ;
-                Debug.LogWarning($"[TwinnyManager] No valid keystore defined. Using default: '{newKey}'.");
+                Debug.LogWarning($"[TwinnyManager] No valid keystore defined. Using default: '{DEFAULT_KEYSTORE}'.");
                 PlayerSettings.Android.keystoreName = newKey;
                 EditorUtility.SetDirty(UnityEditor.AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
                 AssetDatabase.SaveAssets();

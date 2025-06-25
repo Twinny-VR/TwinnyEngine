@@ -21,8 +21,8 @@
   },
   "samples": [
     {
-      "displayName": "OpenXR Platform",
-      "description": "Contains all resources for Twinny XR Experiences.",
+      "displayName": "Twinny XR Essentials",
+      "description": "Contains scenes and default configuration for XR Twinny Experience.",
       "path": "Samples~/OpenXR"
     }
   ]
