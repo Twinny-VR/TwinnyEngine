@@ -42,11 +42,13 @@ namespace Twinny.System
 #if UNITY_EDITOR && UNITY_ANDROID
             string defaultKeyStore = AssetIO.GetPackageAbsolutePath(PACKAGE_NAME);
             string currentKeyStore = PlayerSettings.Android.keystoreName;
+            string path = Path.Combine(Directory.GetParent(Application.dataPath).FullName, currentKeyStore);
 
-            bool overwrite = (string.IsNullOrEmpty(currentKeyStore) || !File.Exists(currentKeyStore));
+            bool overwrite = (string.IsNullOrEmpty(currentKeyStore) || !File.Exists(path));
 
             if(overwrite)
             {
+
                 string newKey = Path.Combine(defaultKeyStore, "Samples~", DEFAULT_KEYSTORE); ;
                 Debug.LogWarning($"[TwinnyManager] No valid keystore defined. Using default: '{DEFAULT_KEYSTORE}'.");
                 PlayerSettings.Android.keystoreName = newKey;

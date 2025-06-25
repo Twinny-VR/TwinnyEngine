@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Fusion;
+using Fusion.Editor;
 using NUnit.Framework;
 using Twinny.System;
 using UnityEditor;
@@ -57,14 +58,67 @@ namespace Twinny.XR
             var config = fusionConfig.Config;
             List<string> assemblies = new List<string>(config.AssembliesToWeave);
 
-            if (assemblies.Contains(assembly)) 
+            if (assemblies.Contains(assembly))
                 return;
 
-                assemblies.Add(assembly);
-                config.AssembliesToWeave = assemblies.ToArray();
-                EditorUtility.SetDirty(fusionConfig);
+            assemblies.Add(assembly);
+            fusionConfig.Config.AssembliesToWeave = assemblies.ToArray();
+            NetworkProjectConfigUtilities.SaveGlobalConfig();
+            Debug.Log($"Assembly '{assembly}' added to Fusion AssembliesToWeave Network Config File.");
+        }
+
+        public static void AddAssemblyToWeave()
+        {
+            var fusionConfig = AssetDatabase.LoadAssetAtPath<NetworkProjectConfigAsset>(FUSION_NETWORK_CONFIG_PATH);
+            if (fusionConfig == null)
+            {
+                Debug.LogError("NetworkProjectConfigAsset não encontrado.");
+                return;
+            }
+
+            var so = new SerializedObject(fusionConfig);
+            var configProp = so.FindProperty("Config");
+
+            if (configProp == null)
+            {
+                Debug.LogError("Propriedade 'Config' não encontrada.");
+                return;
+            }
+
+            var assembliesProp = configProp.FindPropertyRelative("AssembliesToWeave");
+            if (assembliesProp == null)
+            {
+                Debug.LogError("Propriedade 'AssembliesToWeave' não encontrada.");
+                return;
+            }
+
+            string newAssembly = "CARALHO!";
+
+            // Verifica se já existe
+            bool exists = false;
+            for (int i = 0; i < assembliesProp.arraySize; i++)
+            {
+                if (assembliesProp.GetArrayElementAtIndex(i).stringValue == newAssembly)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists)
+            {
+                assembliesProp.InsertArrayElementAtIndex(assembliesProp.arraySize);
+                assembliesProp.GetArrayElementAtIndex(assembliesProp.arraySize - 1).stringValue = newAssembly;
+
+                so.ApplyModifiedProperties();
                 AssetDatabase.SaveAssets();
-                Debug.Log($"Assembly '{assembly}' added to Fusion AssembliesToWeave Network Config File.");
+
+                Debug.Log($"Assembly '{newAssembly}' adicionado com sucesso.");
+            }
+            else
+            {
+                Debug.Log($"Assembly '{newAssembly}' já existe na lista.");
+            }
         }
 
 
@@ -114,7 +168,7 @@ namespace Twinny.XR
                     Debug.LogWarning($"Scene not found: {scenes[i]}");
                     continue;
                 }
-                sceneList.Add(new EditorBuildSettingsScene(scenes[i],true));
+                sceneList.Add(new EditorBuildSettingsScene(scenes[i], true));
             }
 
             EditorBuildSettings.scenes = sceneList.ToArray();
