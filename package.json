@@ -24,11 +24,6 @@
       "displayName": "OpenXR Platform",
       "description": "Contains all resources for Twinny XR Experiences.",
       "path": "Samples~/OpenXR"
-    },
-    {
-      "displayName": "Twinny Avatars",
-      "description": "Contains scenes and default configuration for Twinny Experience.",
-      "path": "Samples~/Characters"
     }
   ]
 }

@@ -1,8 +1,11 @@
+using System.IO;
 using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
 using Twinny.UI;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 #if TWINNY_OPENXR
@@ -22,9 +25,8 @@ namespace Twinny.System
     [InitializeOnLoad]
     public static class TwinnyManager
     {
-
-        const string DEFAULT_KEYSTORE = "Packages/com.twinny.twe25/Samples~/TwinnyKey.keystore";
-
+        public const string PACKAGE_NAME = "com.twinny.twe25";
+        const string DEFAULT_KEYSTORE = "TwinnyKey.keystore";
 
         public static Platform Platform = Platform.UNKNOW;
 
@@ -35,16 +37,23 @@ namespace Twinny.System
        
         static TwinnyManager()
         {
-#if UNITY_ANDROID
+#if UNITY_EDITOR && UNITY_ANDROID
+            string defaultKeyStore = AssetIO.GetPackageAbsolutePath(PACKAGE_NAME);
             string currentKeyStore = PlayerSettings.Android.keystoreName;
 
-            if (string.IsNullOrEmpty(currentKeyStore))
+            bool overwrite = (string.IsNullOrEmpty(currentKeyStore) || !File.Exists(currentKeyStore));
+
+            if(overwrite)
             {
-                Debug.LogWarning($"[TwinnyManager] None keystore defined. Using default: '{DEFAULT_KEYSTORE}'.");
-                PlayerSettings.Android.keystoreName = DEFAULT_KEYSTORE;
+                string newKey = Path.Combine(defaultKeyStore, "Samples~", DEFAULT_KEYSTORE); ;
+                Debug.LogWarning($"[TwinnyManager] No valid keystore defined. Using default: '{newKey}'.");
+                PlayerSettings.Android.keystoreName = newKey;
+                EditorUtility.SetDirty(UnityEditor.AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
+                AssetDatabase.SaveAssets();
             }
 #endif
         }
+
 
         public static async Task InitializePlatform()
         {
@@ -164,6 +173,8 @@ namespace Twinny.System
                 Debug.LogError($"[TwinnyManager] Impossible to load '{fileName}'.");
             }
         }
+
+
 
     }
 }
