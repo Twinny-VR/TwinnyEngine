@@ -67,61 +67,6 @@ namespace Twinny.XR
             Debug.Log($"Assembly '{assembly}' added to Fusion AssembliesToWeave Network Config File.");
         }
 
-        public static void AddAssemblyToWeave()
-        {
-            var fusionConfig = AssetDatabase.LoadAssetAtPath<NetworkProjectConfigAsset>(FUSION_NETWORK_CONFIG_PATH);
-            if (fusionConfig == null)
-            {
-                Debug.LogError("NetworkProjectConfigAsset não encontrado.");
-                return;
-            }
-
-            var so = new SerializedObject(fusionConfig);
-            var configProp = so.FindProperty("Config");
-
-            if (configProp == null)
-            {
-                Debug.LogError("Propriedade 'Config' não encontrada.");
-                return;
-            }
-
-            var assembliesProp = configProp.FindPropertyRelative("AssembliesToWeave");
-            if (assembliesProp == null)
-            {
-                Debug.LogError("Propriedade 'AssembliesToWeave' não encontrada.");
-                return;
-            }
-
-            string newAssembly = "CARALHO!";
-
-            // Verifica se já existe
-            bool exists = false;
-            for (int i = 0; i < assembliesProp.arraySize; i++)
-            {
-                if (assembliesProp.GetArrayElementAtIndex(i).stringValue == newAssembly)
-                {
-                    exists = true;
-                    break;
-                }
-            }
-
-            if (!exists)
-            {
-                assembliesProp.InsertArrayElementAtIndex(assembliesProp.arraySize);
-                assembliesProp.GetArrayElementAtIndex(assembliesProp.arraySize - 1).stringValue = newAssembly;
-
-                so.ApplyModifiedProperties();
-                AssetDatabase.SaveAssets();
-
-                Debug.Log($"Assembly '{newAssembly}' adicionado com sucesso.");
-            }
-            else
-            {
-                Debug.Log($"Assembly '{newAssembly}' já existe na lista.");
-            }
-        }
-
-
         private static void CheckForSamples()
         {
 

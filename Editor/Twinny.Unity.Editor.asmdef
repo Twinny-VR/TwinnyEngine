@@ -1,6 +1,6 @@
 {
-    "name": "com.twinny.twe25.editor",
-    "rootNamespace": "",
+    "name": "Twinny.Unity.Editor",
+    "rootNamespace": "Twinny.Editor",
     "references": [
         "GUID:a8f676c24a947874381a083bf134ec1c",
         "GUID:e40ba710768534012815d3193fa296cb",

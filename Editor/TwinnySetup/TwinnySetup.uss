@@ -1,0 +1,49 @@
+.window-root {
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.sidebar {
+    width: 180px;
+    background-color: #2a2a2a;
+    flex-shrink: 0;
+    flex-direction: column;
+}
+
+.content-panel {
+    flex-grow: 1;
+    background-color: #1e1e1e;
+    padding: 15px;
+}
+
+.sidebar-button {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    width: 200px;
+    height: 100px;
+    unity-text-align: left;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-button-label {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.sidebar-button:hover {
+    background-color: #222; /* só um destaque discreto */
+    border-left: 4px solid #44aaff;
+}
+
+.sidebar-button.selected {
+    background-color: #1e1e1e;
+    border-left: 4px solid #2299ff;
+}
+
+
