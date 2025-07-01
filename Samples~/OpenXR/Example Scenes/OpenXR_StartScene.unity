@@ -655,7 +655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8327702657641564906, guid: c88a3ff1797025c47b4f087d9f8e7160, type: 3}
       propertyPath: parameter
-      value: OculusMockupScene
+      value: OpenXR_MockupScene
       objectReference: {fileID: 0}
     - target: {fileID: 8327702657641564906, guid: c88a3ff1797025c47b4f087d9f8e7160, type: 3}
       propertyPath: _pointable

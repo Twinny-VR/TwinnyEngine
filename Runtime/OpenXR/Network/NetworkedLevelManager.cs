@@ -202,7 +202,7 @@ namespace Twinny.System
             await CanvasTransition.FadeScreen(true);
 
             //TODO Mudar o sistema de carregamento de cenas
-            if (scene == "PlatformScene")
+            if (scene == "PlatformScene" || scene == "OpenXR_PlatformScene")
             {
                 await NetworkSceneManager.UnloadAdditivesScenes();
                 RPC_RestartForAll();
