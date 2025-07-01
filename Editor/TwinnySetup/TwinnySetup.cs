@@ -4,9 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Meta.XR.InputActions;
 using Twinny.System;
+using Twinny.XR;
 using UnityEditor;
 using UnityEditor.PackageManager;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UIElements;
@@ -23,6 +26,7 @@ namespace Twinny.Editor
         [SerializeField] private VisualTreeAsset m_SideBarElement = default;
         [SerializeField] private VisualTreeAsset m_WelcomeTreeAsset = default;
         [SerializeField] private VisualTreeAsset m_OpenXRTreeAsset = default;
+        [SerializeField] private VisualTreeAsset m_MobileTreeAsset = default;
         private VisualElement m_SideBar;
         private VisualElement m_MainContent;
 
@@ -77,7 +81,7 @@ namespace Twinny.Editor
             {
                 name = "OpenXr",
                 title = "Open XR",
-                layout = m_WelcomeTreeAsset,
+                layout = m_OpenXRTreeAsset,
                 button = AddSidebarButton(
                     "Open XR",
                     "ICO_XRPlatform",
@@ -92,7 +96,7 @@ namespace Twinny.Editor
             {
                 name = "Mobile",
                 title = "Mobile",
-                layout = m_WelcomeTreeAsset,
+                layout = m_MobileTreeAsset,
                 button = AddSidebarButton(
                     "Mobile",
                     "ICO_MobilePlatform",
@@ -235,7 +239,16 @@ namespace Twinny.Editor
                     versionField.RegisterValueChangedCallback(evt => { PlayerSettings.bundleVersion = evt.newValue; });
                     var company = PlayerSettings.companyName == "DefaultCompany" ? "Twinny VR" : Application.companyName;
                     companyField.value = company;
+                    break;
 
+                    case "OpenXr":
+                    RuntimeXR runtimeXR = AssetDatabase.LoadAssetAtPath<RuntimeXR>("Assets/Resources/RuntimeXRPreset.asset");
+                    DrawScriptable(runtimeXR, m_MainContent.Q<VisualElement>("runtimeConfig"));
+                    break;
+
+                    case "Mobile":
+                    MobileRuntime runtimeMobile = AssetDatabase.LoadAssetAtPath<MobileRuntime>("Assets/Resources/MobileRuntimePreset.asset");
+                    DrawScriptable(runtimeMobile, m_MainContent.Q<VisualElement>("runtimeConfig"));
                     break;
             }
 
@@ -257,7 +270,13 @@ namespace Twinny.Editor
             SelectButton(section.button);
         }
 
+        void DrawScriptable(UnityEngine.Object scriptable, VisualElement element)
+        {
 
+            InspectorElement inspector = new InspectorElement(scriptable);
+
+            element.Add(inspector);
+        }
         public static Sprite[] LoadSpritesFromAtlas(string path)
         {
             UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);

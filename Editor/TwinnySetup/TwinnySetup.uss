@@ -27,12 +27,6 @@
 -unity-font-style: bold;
 }
 
-.sidebar {
-    width: 180px;
-    background-color: #2a2a2a;
-    flex-shrink: 0;
-    flex-direction: column;
-}
 
 .content-panel {
   background-color: #1e1e1e;
@@ -42,6 +36,13 @@
   min-height: 0;
 }
 
+/* ========== BEGIN SIDEBAR SECTION ========== */
+.sidebar {
+    width: 180px;
+    background-color: #2a2a2a;
+    flex-shrink: 0;
+    flex-direction: column;
+}
 .sidebar-button {
     background-color: transparent;
     border-width: 0px;
@@ -86,7 +87,7 @@
 
 .sidebar-button.disabled .icon,
 .sidebar-button.disabled .label{
-  opacity: 0.5;
+  opacity: 0.25;
 }
 
 .sidebar-button .plus-icon {
@@ -100,31 +101,32 @@
 .sidebar-button.disabled:hover .plus-icon {
   visibility: visible;
 }
+/* ========== END SIDEBAR SECTION ========== */
 
 
-
-.welcome-container {
+.content-container{
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.welcome-container .banner {
+.content-container .banner{
   height: 150px;
   align-self: center; 
   margin-bottom: 4px;
 }
 
-.welcome-container .h1, 
-.welcome-container .h2, 
-.welcome-container .info{ 
+.content-container .h1, 
+.content-container .h2, 
+.content-container .info{ 
   -unity-text-align: middle-center;
   margin: 4px;
 }
 
-.welcome-container .global-config,
-.welcome-container .smart-build{
+.content-container .global-config,
+.content-container .runtime-config,
+.content-container .smart-build{
   background-color: #2a2a2a;
   margin: 4px 16px 16px 16px;
   border-radius: 4px;
@@ -137,7 +139,9 @@
 }
 
 
-.welcome-container .smart-build{
+.content-container .smart-build,
+.content-container .runtime-config{
   flex: 1 1 0;
   min-height: 0;
 }
+

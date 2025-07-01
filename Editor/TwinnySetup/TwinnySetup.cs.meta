@@ -7,9 +7,9 @@ MonoImporter:
   - m_ViewDataDictionary: {instanceID: 0}
   - m_VisualTreeAsset: {fileID: 9197481963319205126, guid: d9557bfa8d278a54eac6dba2778d9d9b, type: 3}
   - m_SideBarElement: {fileID: 9197481963319205126, guid: 3ac8782248b487e4388fc4e4ec7c87d1, type: 3}
-  - m_WelcomeIcon: {instanceID: 0}
   - m_WelcomeTreeAsset: {fileID: 9197481963319205126, guid: 697bf8bed17cd9e4281ba14b74d76ce2, type: 3}
   - m_OpenXRTreeAsset: {fileID: 9197481963319205126, guid: 922df30d2b24acd4885bc589fcb09bb7, type: 3}
+  - m_MobileTreeAsset: {fileID: 9197481963319205126, guid: 99d634e726cf551459c5aae9060761c0, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

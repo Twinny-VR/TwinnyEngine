@@ -1,0 +1,14 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/TwinnySetup.uss?fileID=7433441132597879392&amp;guid=995a15ceda468b54d964864c82f7d315&amp;type=3#TwinnySetup" />
+<engine:VisualElement name="mobileContainer" class="content-container">
+        <engine:Image name="banner" class="banner" style="--unity-image: url(&quot;project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/Sprites/Banner.png?fileID=21300000&amp;guid=1229d599d091f6f44a170e71ebd55d93&amp;type=3#Banner&quot;);" />
+        <engine:Label name="Label" text="Mobile Experiences" class="h1" />
+                <engine:ScrollView  name="runtimeConfig" class="runtime-config">
+                <engine:Label name="mobileConfigLabel" class="h2" text="Configurações da Experiência" />
+                </engine:ScrollView>
+                <engine:ScrollView  name="cameraConfig" class="runtime-config">
+                <engine:Label name="cameraConfigLabel" class="h2" text="Configurações de Câmera" />
+                </engine:ScrollView >
+</engine:VisualElement>
+
+</engine:UXML>
