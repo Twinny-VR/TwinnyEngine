@@ -1,10 +1,14 @@
 #if UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Twinny.System;
 using UnityEditor;
-using UnityEditor.PackageManager.UI;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UIElements;
 
 namespace Twinny.Editor
@@ -16,7 +20,7 @@ namespace Twinny.Editor
         private static Vector2 _windowSize = new Vector2(800, 600);
 
         [SerializeField] private VisualTreeAsset m_VisualTreeAsset = default;
-        [SerializeField] private Texture2D m_WelcomeIcon;
+        [SerializeField] private VisualTreeAsset m_SideBarElement = default;
         [SerializeField] private VisualTreeAsset m_WelcomeTreeAsset = default;
         [SerializeField] private VisualTreeAsset m_OpenXRTreeAsset = default;
         private VisualElement m_SideBar;
@@ -24,17 +28,22 @@ namespace Twinny.Editor
 
         private List<Section> m_sections = new List<Section>();
 
-        [MenuItem("Window/UI Toolkit/TwinnySetup")]
-        [MenuItem("Twinny/Setup")]
+        private static string m_RootPath;
+
+        [MenuItem("Twinny/Setup &T")]
         public static void Open()
         {
             TwinnySetupWindow wnd = GetWindow<TwinnySetupWindow>();
             wnd.titleContent = new GUIContent("Twinny Engine 2025");
             wnd.minSize = _windowSize;
             wnd.maxSize = _windowSize;
+            var path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(wnd));
         }
         private void OnEnable()
         {
+            var script = MonoScript.FromScriptableObject(this);
+            var fullPath = AssetDatabase.GetAssetPath(script);
+            m_RootPath = Path.GetDirectoryName(fullPath);
         }
 
         public void CreateGUI()
@@ -47,6 +56,8 @@ namespace Twinny.Editor
             // Pega referências
             m_SideBar = root.Q<VisualElement>("Sidebar");
             m_MainContent = root.Q<VisualElement>("mainContent");
+            var versionInfo = root.Q<Label>("VersionInfo");
+            versionInfo.text = "v" + GetPackageVersion();
 
             InitSections();
         }
@@ -55,38 +66,134 @@ namespace Twinny.Editor
         {
             m_sections.Add(new Section()
             {
-                title = "Welcome",
+                name = "Welcome",
+                title = "TWINNY ENGINE",
                 layout = m_WelcomeTreeAsset,
-                button = AddSidebarButton("Bem-vindo", () => ShowSection("Welcome"))
+                button = AddSidebarButton("", "ICO_Twinny", () => ShowSection("Welcome"))
             });
 
 
-#if TWINNY_OPENXR
             m_sections.Add(new Section()
             {
-                title = "OpenXr",
-                layout = m_OpenXRTreeAsset,
-                button = AddSidebarButton("Configurar OpenXR", () => ShowSection("OpenXr"))
-            });
+                name = "OpenXr",
+                title = "Open XR",
+                layout = m_WelcomeTreeAsset,
+                button = AddSidebarButton(
+                    "Open XR",
+                    "ICO_XRPlatform",
+                    () => ShowSection("OpenXr")
+#if !TWINNY_OPENXR
+                    , false
 #endif
+                    )
+            });
+
+            m_sections.Add(new Section()
+            {
+                name = "Mobile",
+                title = "Mobile",
+                layout = m_WelcomeTreeAsset,
+                button = AddSidebarButton(
+                    "Mobile",
+                    "ICO_MobilePlatform",
+                    () => ShowSection("Mobile")
+#if !TWINNY_MOBILE
+                    , false
+#endif
+                    )
+            });
+
+
+            m_sections.Add(new Section()
+            {
+                name = "WebGL",
+                title = "WebGL",
+                layout = m_WelcomeTreeAsset,
+                button = AddSidebarButton(
+                    "WebGL",
+                    "ICO_WebGLPlatform",
+                    () => ShowSection("WebGL")
+#if !TWINNY_WEBGL
+                    , false
+#endif
+                    )
+            });
+
+            m_sections.Add(new Section()
+            {
+                name = "Win",
+                title = "Windows",
+                layout = m_WelcomeTreeAsset,
+                button = AddSidebarButton(
+                    "Windows",
+                    "ICO_WinPlatform",
+                    () => ShowSection("Win")
+#if !TWINNY_WIN
+                    , false
+#endif
+                    )
+            });
 
             ShowSection("Welcome");
 
         }
 
-        private VisualElement AddSidebarButton(string title, Action onClick)
+        private VisualElement AddSidebarButton(string title, string spriteName, Action onClick, bool enabled = true)
         {
-            var button = new VisualElement();
+            string atlasPath = "SetupIcons.png";
+            var path = Path.Combine(m_RootPath, "src", "Sprites", atlasPath).Replace("\\", "/");
+
+            var sprites = LoadSpritesFromAtlas(path);
+            if (sprites == null)
+            {
+                throw new Exception($"[TwinnySetupWindow] Atlas not found in '{path}'");
+            }
+            Sprite sprite = sprites.FirstOrDefault(s => s.name == spriteName);
+            if (sprite == null)
+            {
+                throw new Exception($"[TwinnySetupWindow] No sprite '{spriteName}' found on atlas '{path}'");
+            }
+
+            Sprite plus = sprites.FirstOrDefault(s => s.name == "ICO_Plus");
+            if (plus == null)
+            {
+                throw new Exception($"[TwinnySetupWindow] No 'ICO_Plus' texture found on atlas '{path}'");
+            }
+
+
+            return AddSidebarButton(title, sprite, plus, onClick, enabled);
+        }
+
+
+        private VisualElement AddSidebarButton(string title, Sprite iconTexture, Sprite plusTexture, Action onClick, bool enabled)
+        {
+            var button = m_SideBarElement.Instantiate();
             button.RegisterCallback<ClickEvent>(evt =>
             {
+                if (button.ClassListContains("disabled"))
+                {
+                    InstallPlatform(title);
+                    return;//TODO Install Platform
+                }
                 SelectButton(button);
                 onClick?.Invoke();
             });
-            button.tooltip = title;
-            button.AddToClassList("sidebar-button");
+            if (!enabled)
+                button.tooltip = $"Install {title} platform";
 
-            var label = new Label(title);
-            button.Add(label);
+            button.AddToClassList("sidebar-button");
+            var label = button.Q<Label>("label");
+            var icon = button.Q<Image>("icon");
+            var plus = button.Q<Image>("plus");
+            label.text = title;
+
+            if (iconTexture != null)
+            {
+                icon.sprite = iconTexture;
+            }
+            plus.sprite = plusTexture;
+
+            button.AddToClassList(enabled ? "enabled" : "disabled");
 
             m_SideBar.Add(button);
             return button;
@@ -104,15 +211,36 @@ namespace Twinny.Editor
         [Serializable]
         class Section
         {
+            public string name;
             public string title;
             public VisualElement button;
             public VisualTreeAsset layout;
         }
 
-        void ShowSection(string title)
+        void ShowSection(string name)
         {
-            var section = m_sections.FirstOrDefault(s => s.title == title);
+            var section = m_sections.FirstOrDefault(s => s.name == name);
             ShowSection(section);
+
+            switch (name)
+            {
+                case "Welcome":
+                    var productField = m_MainContent.Q<TextField>("ProductNameField");
+                    productField.value = PlayerSettings.productName;
+                    var companyField = m_MainContent.Q<TextField>("CompanyNameField");
+                    var versionField = m_MainContent.Q<TextField>("VersionField");
+                    versionField.value = PlayerSettings.bundleVersion;
+                    companyField.RegisterValueChangedCallback(evt => { PlayerSettings.companyName = evt.newValue; });
+                    productField.RegisterValueChangedCallback(evt => { PlayerSettings.productName = evt.newValue; });
+                    versionField.RegisterValueChangedCallback(evt => { PlayerSettings.bundleVersion = evt.newValue; });
+                    var company = PlayerSettings.companyName == "DefaultCompany" ? "Twinny VR" : Application.companyName;
+                    companyField.value = company;
+
+                    break;
+            }
+
+
+
         }
 
         void ShowSection(Section section)
@@ -123,12 +251,43 @@ namespace Twinny.Editor
             if (section.layout != null)
             {
                 var clone = section.layout.CloneTree();
+                clone.style.flexGrow = 1f;
                 m_MainContent.Add(clone);
             }
             SelectButton(section.button);
         }
 
 
+        public static Sprite[] LoadSpritesFromAtlas(string path)
+        {
+            UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
+
+            var sprites = assets.OfType<Sprite>().ToArray();
+
+            return sprites;
+        }
+
+
+        public static string GetPackageVersion()
+        {
+            var pkgInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(TwinnyManager).Assembly);
+            return pkgInfo != null ? pkgInfo.version : "?.?.?";
+        }
+
+
+        public static void InstallPlatform(string platformName)
+        {
+            Debug.Log($"Install {platformName} platform");
+
+            switch (platformName)
+            {
+                case "":
+                    break;
+            }
+        }
+
+        public static void InstallOpenXR() { 
+        }
     }
 }
 #endif

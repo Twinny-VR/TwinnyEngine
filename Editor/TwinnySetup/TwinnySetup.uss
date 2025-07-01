@@ -1,7 +1,30 @@
 .window-root {
+    display: flex;
     flex-direction: row;
     height: 100%;
     width: 100%;
+  --font-title: url("src/Fonts/DINNextLTPro-Condensed.otf");
+}
+
+.version-info {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 12px;
+  color: #888;
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.h1 {
+  font-size: 18px; 
+-unity-font-style: bold;
+}
+
+.h2 {
+  font-size: 12px; 
+-unity-font-style: bold;
 }
 
 .sidebar {
@@ -12,38 +35,109 @@
 }
 
 .content-panel {
-    flex-grow: 1;
-    background-color: #1e1e1e;
-    padding: 15px;
+  background-color: #1e1e1e;
+   flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .sidebar-button {
     background-color: transparent;
-    border: none;
-    box-shadow: none;
-    outline: none;
-    width: 200px;
+    border-width: 0px;
+    -unity-text-outline: 0px;
+    width: 180px;
     height: 100px;
-    unity-text-align: left;
-    cursor: pointer;
-    user-select: none;
+    -unity-text-align: upper-left;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.sidebar-button-label {
+.sidebar-button .label {
+    -unity-font: var(--font-title);
+    -unity-font-style: normal;    
     color: #ccc;
     font-size: 14px;
+    -unity-text-align: middle-center;
+}
+.sidebar-button .icon {
+    width : 64px;
+    height : 64px;
 }
 
-.sidebar-button:hover {
-    background-color: #222; /* só um destaque discreto */
-    border-left: 4px solid #44aaff;
+.sidebar-button.enabled:hover {
+    background-color: #222; 
+    border-left-width: 4px;
+    border-left-color: #87AFD4;
+
 }
 
 .sidebar-button.selected {
     background-color: #1e1e1e;
-    border-left: 4px solid #2299ff;
+    border-left-width: 4px;
+    border-left-color: #A89BC6;
+}
+
+.sidebar-button.disabled {
+  cursor: arrow; 
+}
+
+.sidebar-button.disabled .icon,
+.sidebar-button.disabled .label{
+  opacity: 0.5;
+}
+
+.sidebar-button .plus-icon {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  visibility: hidden;
+  opacity: 0.8;
+}
+
+.sidebar-button.disabled:hover .plus-icon {
+  visibility: visible;
 }
 
 
+
+.welcome-container {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.welcome-container .banner {
+  height: 150px;
+  align-self: center; 
+  margin-bottom: 4px;
+}
+
+.welcome-container .h1, 
+.welcome-container .h2, 
+.welcome-container .info{ 
+  -unity-text-align: middle-center;
+  margin: 4px;
+}
+
+.welcome-container .global-config,
+.welcome-container .smart-build{
+  background-color: #2a2a2a;
+  margin: 4px 16px 16px 16px;
+  border-radius: 4px;
+  padding: 8px;
+
+  border-width: 1px;           
+  border-color: #666;          
+  border-radius: 4px;
+
+}
+
+
+.welcome-container .smart-build{
+  flex: 1 1 0;
+  min-height: 0;
+}

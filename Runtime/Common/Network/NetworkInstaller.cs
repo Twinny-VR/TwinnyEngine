@@ -72,8 +72,6 @@ if (!EditorPrefs.GetBool("Twinny_Voice2_InstallationStarted", false))
                     return true;
                 }
             }
-
-            Debug.Log($"[NetworkInstaller] Package '{name}' não encontrado!");
             return false;
         }
 
