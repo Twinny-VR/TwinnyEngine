@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" xmlns:twinny="Twinny.Editor" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/TwinnySetup.uss?fileID=7433441132597879392&amp;guid=995a15ceda468b54d964864c82f7d315&amp;type=3#TwinnySetup" />
+    <twinny:Section name="container" section-title="Open XR Experiences" section-name="openxr" section-icon="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/Sprites/SetupIcons.png?fileID=-6512361531423006671&amp;guid=cc885f87ee614d74dbc45e6d1289404b&amp;type=3#ICO_XRPlatform" section-platform="XR" class="content-container">
+        <engine:Image name="banner" class="banner" style="background-image: url(&quot;project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/Sprites/Banners.png?fileID=2040440353&amp;guid=9ed118666651a6248880bbaae83bb2b0&amp;type=3#Banner_OpenXR&quot;);" />
+        <engine:Label name="Label" text="OPEN XR Experiences" class="h1" />
+        <engine:ScrollView name="runtimeConfig" class="runtime-config">
+            <engine:Label name="openXRConfigLabel" text="Configurações da Experiência" class="h2" />
+        </engine:ScrollView>
+    </twinny:Section>
+</engine:UXML>

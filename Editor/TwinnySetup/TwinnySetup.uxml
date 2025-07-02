@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/TwinnySetup.uss?fileID=7433441132597879392&amp;guid=995a15ceda468b54d964864c82f7d315&amp;type=3#TwinnySetup" />
-    <engine:VisualElement name="root" class="window-root">
-        <engine:VisualElement name="Sidebar" class="sidebar" />
-        <engine:VisualElement name="mainContent" class="content-panel" />
-        <engine:Label name="VersionInfo" class="version-info" text="v0.0.0" />
-    </engine:VisualElement>
-</engine:UXML>

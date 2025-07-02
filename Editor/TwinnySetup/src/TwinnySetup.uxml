@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" xmlns:twinny="Twinny.Editor" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/TwinnySetup.uss?fileID=7433441132597879392&amp;guid=995a15ceda468b54d964864c82f7d315&amp;type=3#TwinnySetup" />
+    <engine:VisualElement name="root" class="window-root">
+        <engine:VisualElement name="Sidebar" class="sidebar" />
+        <engine:VisualElement name="mainContent" class="content-panel" />
+        <engine:Label name="VersionInfo" class="version-info" text="v0.0.0" />
+
+        <engine:VisualElement name="modalOverlay" class="modal-overlay" style="display: none;">
+            <engine:VisualElement name="modalBox" class="modal-box">
+                <engine:Label name="caption" class="caption" text="" />
+                <engine:ListView name="packagesList" class="packages-list" />
+                <engine:VisualElement name="buttons" class="buttons-box">
+                    <engine:Button name="buttonInstall" text="Instalar" />
+                    <engine:Button name="buttonCancel" text="Fechar" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+
+    </engine:VisualElement>
+</engine:UXML>

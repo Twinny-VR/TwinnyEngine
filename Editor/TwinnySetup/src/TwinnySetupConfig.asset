@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec13fd897adb9c4daab10b719a7812d, type: 3}
+  m_Name: TwinnySetupConfig
+  m_EditorClassIdentifier: 
+  visualTreeAsset: {fileID: 9197481963319205126, guid: d9557bfa8d278a54eac6dba2778d9d9b, type: 3}
+  sideBarElement: {fileID: 9197481963319205126, guid: 3ac8782248b487e4388fc4e4ec7c87d1, type: 3}
+  sections:
+  - {fileID: 9197481963319205126, guid: 697bf8bed17cd9e4281ba14b74d76ce2, type: 3}
+  - {fileID: 9197481963319205126, guid: 922df30d2b24acd4885bc589fcb09bb7, type: 3}
+  - {fileID: 9197481963319205126, guid: 99d634e726cf551459c5aae9060761c0, type: 3}

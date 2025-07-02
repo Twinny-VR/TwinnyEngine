@@ -1,0 +1,18 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" xmlns:twinny="Twinny.Editor" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/TwinnySetup.uss?fileID=7433441132597879392&amp;guid=995a15ceda468b54d964864c82f7d315&amp;type=3#TwinnySetup" />
+    <twinny:Section name="container" section-name="welcome" section-icon="project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/Sprites/SetupIcons.png?fileID=108183706443341405&amp;guid=cc885f87ee614d74dbc45e6d1289404b&amp;type=3#ICO_Twinny" class="content-container">
+        <engine:Image name="banner" class="banner" style="background-image: url(&quot;project://database/Packages/com.twinny.twe25/Editor/TwinnySetup/src/Sprites/Banners.png?fileID=-814871983&amp;guid=9ed118666651a6248880bbaae83bb2b0&amp;type=3#Banner_Welcome&quot;);" />
+        <engine:Label name="Label" text="BEM VINDO A TWINNY ENGINE" class="h1" />
+        <engine:Label name="Info" text="Escolha uma plataforma para instalar ou configurar." class="info" />
+        <engine:ScrollView name="globalConfig" class="global-config">
+            <engine:Label name="globalConfigLabel" text="Configurações Globais" class="h2" />
+            <engine:TextField name="ProductNameField" label="Nome do Projeto:" />
+            <engine:TextField name="CompanyNameField" label="Nome da Empresa:" />
+            <engine:TextField name="VersionField" label="VersÃ£o:" />
+            <engine:VisualElement name="IconContainer" />
+        </engine:ScrollView>
+        <engine:ScrollView name="smartBuild" class="smart-build">
+            <engine:Label name="smartBuildLabel" text="Smart Building" class="h2" />
+        </engine:ScrollView>
+    </twinny:Section>
+</engine:UXML>
