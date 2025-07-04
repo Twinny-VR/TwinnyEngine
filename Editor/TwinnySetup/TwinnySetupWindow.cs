@@ -20,6 +20,7 @@ namespace Twinny.Editor
 {
     public class TwinnySetupWindow : EditorWindow
     {
+
         public readonly struct PackageInfo
         {
             public string name { get; }
@@ -237,12 +238,12 @@ namespace Twinny.Editor
 
                 case "openxr":
                     RuntimeXR runtimeXR = AssetDatabase.LoadAssetAtPath<RuntimeXR>("Assets/Resources/RuntimeXRPreset.asset");
-                    DrawScriptable(runtimeXR, m_MainContent.Q<VisualElement>("runtimeConfig"));
+                    m_MainContent.Q<VisualElement>("runtimeConfig").Add(DrawScriptable(runtimeXR));
                     break;
 
                 case "mobile":
                     MobileRuntime runtimeMobile = AssetDatabase.LoadAssetAtPath<MobileRuntime>("Assets/Resources/MobileRuntimePreset.asset");
-                    DrawScriptable(runtimeMobile, m_MainContent.Q<VisualElement>("runtimeConfig"));
+                    m_MainContent.Q<VisualElement>("runtimeConfig").Add(DrawScriptable(runtimeMobile));
                     break;
             }
 
@@ -264,12 +265,12 @@ namespace Twinny.Editor
             SelectButton(section.sectionButton);
         }
 
-        void DrawScriptable(UnityEngine.Object scriptable, VisualElement element)
+        InspectorElement DrawScriptable(UnityEngine.Object scriptable)
         {
 
             InspectorElement inspector = new InspectorElement(scriptable);
 
-            element.Add(inspector);
+            return inspector;
         }
         public static Sprite[] LoadSpritesFromAtlas(string path)
         {
