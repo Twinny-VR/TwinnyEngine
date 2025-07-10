@@ -61,7 +61,7 @@ namespace Twinny.System
 
         public static async Task InitializePlatform()
         {
-
+            
             //Load current platform StartScene
             AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
@@ -165,7 +165,11 @@ namespace Twinny.System
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
             OnPlatformInitialize?.Invoke(Platform);
 
-
+            if(config != null && config.forceFrameRate)
+            {
+                Application.targetFrameRate = config.targetFrameRate;
+                Debug.LogWarning($"[TwinnyManager] Application frame rate locked at {config.targetFrameRate}FPS.");
+            }
         }
 
         public static void LoadRuntimeProfile<T>(string fileName) where T : TwinnyRuntime
