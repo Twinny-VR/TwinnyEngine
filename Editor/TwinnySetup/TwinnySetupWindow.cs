@@ -233,16 +233,18 @@ namespace Twinny.Editor
                     var company = PlayerSettings.companyName == "DefaultCompany" ? "Twinny VR" : Application.companyName;
                     companyField.value = company;
                     break;
-
+#if TWINNY_OPENXR
                 case "openxr":
                     RuntimeXR runtimeXR = AssetDatabase.LoadAssetAtPath<RuntimeXR>("Assets/Resources/RuntimeXRPreset.asset");
                     m_MainContent.Q<VisualElement>("runtimeConfig").Add(DrawScriptable(runtimeXR));
                     break;
-
+#endif
+#if TWINNY_MOBILE
                 case "mobile":
                     MobileRuntime runtimeMobile = AssetDatabase.LoadAssetAtPath<MobileRuntime>("Assets/Resources/MobileRuntimePreset.asset");
                     m_MainContent.Q<VisualElement>("runtimeConfig").Add(DrawScriptable(runtimeMobile));
                     break;
+#endif
             }
 
 
