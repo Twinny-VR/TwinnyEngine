@@ -6,7 +6,9 @@ using System.IO;
 using System.Linq;
 using Concept.Editor;
 using Twinny.System;
+#if TWINNY_OPENXR
 using Twinny.XR;
+#endif
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
