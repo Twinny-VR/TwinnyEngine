@@ -90,12 +90,15 @@ namespace Twinny.XR
         public async void ConnectToServer()
         {
             bool isWifiConnected = NetworkUtils.IsWiFiConnected();
-            
-            
+
+
             if (isWifiConnected && !Config.startSinglePlayer)
             {
-            string ip = await NetworkHelper.GetPublicIP();
-            _bootstrap.DefaultRoomName = ip;
+                if (Config.allowNetworkConnections)
+                {
+                    string ip = await NetworkHelper.GetPublicIP();
+                    _bootstrap.DefaultRoomName = ip;
+                }
                 try
                 {
                     _bootstrap.StartSharedClient();
@@ -122,9 +125,10 @@ namespace Twinny.XR
                 _bootstrap.StartSinglePlayer();
 
                 bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
-                if (connected) {
+                if (connected)
+                {
                     CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnConnected(GameMode.Single));
-                    return; 
+                    return;
                 }
             }
             catch (Exception e)

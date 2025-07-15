@@ -10,6 +10,7 @@ namespace Twinny.System.Network
 
         [Header("Experience")]
         public bool startSinglePlayer = false;
+        public bool allowNetworkConnections = false;
 
         
         
