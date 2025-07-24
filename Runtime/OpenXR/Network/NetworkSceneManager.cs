@@ -52,12 +52,16 @@ namespace Twinny.System.Network
                 await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
 
 
-/* 
-            if (scene is string name)
-                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));
+            if(scene is string sceneName)
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
             else
-                await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
-*/
+                SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)scene));
+            /* 
+                        if (scene is string name)
+                            await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync(name));
+                        else
+                            await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
+            */
 
         }
 
