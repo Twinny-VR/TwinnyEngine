@@ -13,6 +13,9 @@ using UnityEngine.EventSystems;
 
 namespace Twinny.System
 {
+    using static TwinnyManager;
+
+
     public class MobileLevelManager : LevelManager
     {
 
@@ -40,7 +43,7 @@ namespace Twinny.System
                 Debug.Log("Novo preset 'MobileRuntimePreset' criado e salvo em: " + assetPath);
             }
 
-            TwinnyManager.LoadRuntimeProfile<MobileRuntime>(fileName);
+            LoadRuntimeProfile<MobileRuntime>(fileName);
 
         }
 #endif
@@ -49,7 +52,7 @@ namespace Twinny.System
         {
             Init();
             string fileName = "MobileRuntimePreset";
-            TwinnyManager.LoadRuntimeProfile<MobileRuntime>(fileName);
+            LoadRuntimeProfile<MobileRuntime>(fileName);
         }
 
 
@@ -75,7 +78,7 @@ namespace Twinny.System
             var envenSystem = EventSystem.current;
             envenSystem.enabled = false;
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
 
 
@@ -111,7 +114,7 @@ namespace Twinny.System
 
             await Task.Delay(1500);
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
-            await CanvasTransition.FadeScreen(false);
+            await CanvasTransition.FadeScreen(false, config.fadeTime);
             envenSystem.enabled = true;
 
 
@@ -158,7 +161,7 @@ namespace Twinny.System
 
         public async void SetFPS()
         {
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
             if (FirstPersonAgent.isActive)
                 CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));
@@ -166,7 +169,7 @@ namespace Twinny.System
             FirstPersonAgent.TakeControl(!FirstPersonAgent.isActive);
 
             
-            await CanvasTransition.FadeScreen(false);
+            await CanvasTransition.FadeScreen(false, config.fadeTime);
 
 
         }

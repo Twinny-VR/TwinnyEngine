@@ -1,21 +1,16 @@
 using Concept.Core;
 using Concept.Helpers;
 using Fusion;
-using Meta.XR.MultiplayerBlocks.Shared;
-
-//using Meta.XR.Movement.Networking.Fusion;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.System.XR;
 using Twinny.UI;
 using UnityEngine;
-using static Twinny.XR.LevelManagerXR;
+using static Twinny.System.TwinnyManager;
 
 namespace Twinny.XR
 {
@@ -23,7 +18,7 @@ namespace Twinny.XR
     {
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
-        public static RuntimeXR Config { get => TwinnyManager.config as RuntimeXR; }
+        public static RuntimeXR Config { get => config as RuntimeXR; }
 
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
@@ -36,13 +31,13 @@ namespace Twinny.XR
 
         private void OnValidate()
         {
-            TwinnyManager.LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
+            LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
         }
 
         protected override void Awake()
         {
             base.Awake();
-            TwinnyManager.LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
+            LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
 
         }
 
@@ -51,16 +46,16 @@ namespace Twinny.XR
         {
             base.Start();
             if (_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
-            TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
+            OnPlatformInitialize += OnPlatformInitialized;
         }
 
         private void OnDestroy()
         {
-            TwinnyManager.OnPlatformInitialize -= OnPlatformInitialized;
+            OnPlatformInitialize -= OnPlatformInitialized;
 
         }
 
-        private void OnPlatformInitialized(Platform platform)
+        private void OnPlatformInitialized(Twinny.System.Platform platform)
         {
 
             /* TODO Ver melhor como isso funciona
@@ -72,7 +67,7 @@ namespace Twinny.XR
 
 
             //Initialize as XR Platform
-            if (platform == Platform.XR)
+            if (platform == Twinny.System.Platform.XR)
             {
 
                 ConnectToServer();
@@ -82,7 +77,7 @@ namespace Twinny.XR
                 UnityEngine.Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
 
-            _ = CanvasTransition.FadeScreen(false);
+            _ = CanvasTransition.FadeScreen(false,config.fadeTime);
 
 
         }
@@ -280,7 +275,7 @@ namespace Twinny.XR
             Camera.main.backgroundColor = Color.clear;
             if (status)
             {
-                RenderSettings.skybox = (TwinnyManager.config as RuntimeXR).defaultSkybox;
+                RenderSettings.skybox = (config as RuntimeXR).defaultSkybox;
                 Camera.main.clearFlags = CameraClearFlags.SolidColor;
             }
             else

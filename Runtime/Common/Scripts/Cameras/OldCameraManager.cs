@@ -392,7 +392,7 @@ namespace Twinny.System.Cameras
                     if (building)
                     {
 
-                        _ = CanvasTransition.FadeScreen(true);
+                        _ = CanvasTransition.FadeScreen(true, TwinnyManager.config.fadeTime);
                         yield return new WaitForSeconds(TwinnyManager.config.fadeTime);
                         OnCameraLocked?.Invoke(building);
                         yield return new WaitForSeconds(1f);
@@ -400,7 +400,7 @@ namespace Twinny.System.Cameras
                         {
                             yield return null;
                         }
-                        _ = CanvasTransition.FadeScreen(false);
+                        _ = CanvasTransition.FadeScreen(false, TwinnyManager.config.fadeTime);
                         yield return new WaitForSeconds(3f);
                         OnEnterInStandby?.Invoke();
                         yield return new WaitForSeconds(config.standbyLockedDuration);
