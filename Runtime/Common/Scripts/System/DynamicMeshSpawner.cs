@@ -73,7 +73,7 @@ namespace Twinny.System
 
                 for (int j = i; j < i + chunkSize && j < total; j++)
                 {
-                    renderers[j].gameObject.SetActive(active);
+                    renderers[j]?.gameObject.SetActive(active);
                 }
 
                 float progress = (i + chunkSize) / (float)total;

@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 namespace Twinny.System
 {
-using static TwinnyManager;
+    using static TwinnyManager;
 
 
     [RequireComponent(typeof(NetworkObject))]
@@ -80,16 +80,16 @@ using static TwinnyManager;
         //Awake is called before the script is started
         protected virtual void Awake()
         {
-            if(_instance == null)
+            if (_instance == null)
                 _instance = this;
             else
             {
                 Destroy(_instance);
                 Debug.LogWarning("[LevelManager] Multiple instance removed.");
             }
-                
+
             _networkObject = GetComponent<NetworkObject>();
-         //   TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
+            //   TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
 
         }
         // Start is called before the first frame update
@@ -123,8 +123,8 @@ using static TwinnyManager;
 
         protected virtual void SetMaster()
         {
-                master = NetworkRunnerHandler.runner.LocalPlayer;
-                Debug.Log("[NetworkedLevelManager] You are the MASTER!");
+            master = NetworkRunnerHandler.runner.LocalPlayer;
+            Debug.Log("[NetworkedLevelManager] You are the MASTER!");
 
         }
 
@@ -175,7 +175,8 @@ using static TwinnyManager;
             await CanvasTransition.FadeScreen(true, config.fadeTime);
         }
 
-        public virtual async Task QuitExperience() {
+        public virtual async Task QuitExperience()
+        {
             if (UnityEngine.Application.isEditor) return;
 
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
@@ -213,14 +214,18 @@ using static TwinnyManager;
 
             }
 
-            RPC_FadingStatus(0);
             RPC_Message(Runner.LocalPlayer, PlayerRef.None, "");
 
-            await CanvasTransition.FadeScreen(false, config.fadeTime);
+            SceneFeature sceneFeature = SceneFeature.Instance;
+            if (sceneFeature == null )
+                {
+                RPC_FadingStatus(0);
+                await CanvasTransition.FadeScreen(false, config.fadeTime);
+                }
+            }
 
-            
 
-        }
+
 
 
         /// <summary>
@@ -294,13 +299,13 @@ using static TwinnyManager;
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_QuitForAll()
         {
-           _ = QuitExperience();
+            _ = QuitExperience();
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_ResetForAll()
         {
-           _ = ResetExperience();
+            _ = ResetExperience();
         }
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_RestartForAll()
@@ -373,7 +378,7 @@ using static TwinnyManager;
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_OnPlayerPause(PlayerRef source, int pause, string thread)
         {
-            Debug.LogWarning($"[NetworkedLevelManager] {source} PAUSED:{pause==1}. IS THREAD:{thread}");
+            Debug.LogWarning($"[NetworkedLevelManager] {source} PAUSED:{pause == 1}. IS THREAD:{thread}");
         }
 
 

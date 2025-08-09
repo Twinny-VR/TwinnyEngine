@@ -20,6 +20,10 @@ namespace Twinny.XR
 
         public static RuntimeXR Config { get => config as RuntimeXR; }
 
+        [SerializeField] private Transform m_cameraRigTransform;
+
+        public static Transform cameraRig => instance.m_cameraRigTransform;
+
         [SerializeField] private OVRPassthroughLayer _passThrough;
         [SerializeField] private FusionBootstrap _bootstrap;
         [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
@@ -47,6 +51,7 @@ namespace Twinny.XR
             base.Start();
             if (_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
             OnPlatformInitialize += OnPlatformInitialized;
+
         }
 
         private void OnDestroy()

@@ -167,7 +167,7 @@ namespace Twinny.System
         /// This method is only for handle the Fade Screen during the teleporting
         /// </summary>
         /// <param name="landMarkIndex">LandMark to Teleport</param>
-        public async void NavigateTo(int landMarkIndex)
+        public static async void NavigateTo(int landMarkIndex)
         {
             await CanvasTransition.FadeScreen(true, config.fadeTime);
             SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
