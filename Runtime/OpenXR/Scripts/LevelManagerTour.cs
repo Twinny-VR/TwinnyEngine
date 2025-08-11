@@ -5,6 +5,7 @@ using Twinny.System;
 using Twinny.UI;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using static Twinny.System.TwinnyManager;
 
 namespace Twinny.GamePlay
@@ -97,6 +98,20 @@ namespace Twinny.GamePlay
             m_cameraRigTransform.SetParent(m_currentLandMark.node.changeParent ? m_cartPlayerSlot : null);
             m_currentLandMark.node.OnLandMarkSelected?.Invoke();
         }
+
+        public async void ChangeScene(string sceneName)
+        {
+            await CanvasTransition.FadeScreen(true, 1f);
+            SceneManager.LoadScene(sceneName);
+        }
+        public async void ChangeScene(int scene)
+        {
+            await CanvasTransition.FadeScreen(true, 1f);
+            SceneManager.LoadScene(scene);
+        }
+
+
+
     }
 
 }
