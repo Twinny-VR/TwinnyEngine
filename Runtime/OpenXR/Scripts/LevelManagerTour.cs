@@ -97,6 +97,15 @@ namespace Twinny.GamePlay
 
             m_cameraRigTransform.SetParent(m_currentLandMark.node.changeParent ? m_cartPlayerSlot : null);
             m_currentLandMark.node.OnLandMarkSelected?.Invoke();
+
+            if(m_currentLandMark?.skyBoxMaterial != null)
+            {
+                if (RenderSettings.skybox != m_currentLandMark.skyBoxMaterial)
+                {
+                    RenderSettings.skybox = m_currentLandMark.skyBoxMaterial;
+                    DynamicGI.UpdateEnvironment();
+                }
+            }
         }
 
         public async void ChangeScene(string sceneName)
