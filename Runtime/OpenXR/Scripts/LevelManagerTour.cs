@@ -57,7 +57,7 @@ namespace Twinny.GamePlay
                 else
                     await CanvasTransition.FadeScreen(false, 1f);
 
-                m_timeline?.Play();
+                if(m_timeline != null)  m_timeline.Play();
 
             }
             catch (TaskCanceledException)
@@ -74,11 +74,11 @@ namespace Twinny.GamePlay
 
         public async void NavigateTo(int landMarkIndex)
         {
-            m_timeline?.Pause();
+            if(m_timeline != null) m_timeline.Pause();
             await CanvasTransition.FadeScreen(true, 1f);
             TeleportToLandMark(landMarkIndex);
             await CanvasTransition.FadeScreen(false, 1f);
-            m_timeline?.Resume();
+            if (m_timeline != null) m_timeline.Resume();
         }
 
 
