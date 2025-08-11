@@ -74,11 +74,11 @@ namespace Twinny.GamePlay
 
         public async void NavigateTo(int landMarkIndex)
         {
-            m_timeline.Pause();
+            m_timeline?.Pause();
             await CanvasTransition.FadeScreen(true, 1f);
             TeleportToLandMark(landMarkIndex);
             await CanvasTransition.FadeScreen(false, 1f);
-            m_timeline.Resume();
+            m_timeline?.Resume();
         }
 
 
