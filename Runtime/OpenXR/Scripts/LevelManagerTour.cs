@@ -18,8 +18,7 @@ namespace Twinny.GamePlay
 
         [SerializeField] private PlayableDirector m_timeline;
 
-        //[SerializeField] private CustomSplineAnimate m_cart;
-        [SerializeField] private Transform m_cartPlayerSlot;
+        [SerializeField] private Material[] m_skyboxMaterials;
 
         [SerializeField] private DynamicMeshSpawner m_spawner;
         private CancellationTokenSource m_spawnCancellation;
@@ -58,7 +57,7 @@ namespace Twinny.GamePlay
                 else
                     await CanvasTransition.FadeScreen(false, 1f);
 
-                m_timeline.Play();
+                m_timeline?.Play();
 
             }
             catch (TaskCanceledException)
@@ -95,16 +94,19 @@ namespace Twinny.GamePlay
             m_cameraRigTransform.position = m_currentLandMark.position;
             m_cameraRigTransform.rotation = m_currentLandMark.rotation;
 
-            m_cameraRigTransform.SetParent(m_currentLandMark.node.changeParent ? m_cartPlayerSlot : null);
+            m_cameraRigTransform.SetParent(m_currentLandMark.node.changeParent ? m_currentLandMark.node.newParent : null);
             m_currentLandMark.node.OnLandMarkSelected?.Invoke();
 
-            if(m_currentLandMark?.skyBoxMaterial != null)
+            if(m_currentLandMark?.skyBoxMaterial != null) SetHDRI(m_currentLandMark.skyBoxMaterial);
+            
+        }
+
+        private void SetHDRI(Material skyBoxMaterial)
+        {
+            if (RenderSettings.skybox != skyBoxMaterial)
             {
-                if (RenderSettings.skybox != m_currentLandMark.skyBoxMaterial)
-                {
-                    RenderSettings.skybox = m_currentLandMark.skyBoxMaterial;
-                    DynamicGI.UpdateEnvironment();
-                }
+                RenderSettings.skybox = skyBoxMaterial;
+                DynamicGI.UpdateEnvironment();
             }
         }
 
@@ -119,9 +121,13 @@ namespace Twinny.GamePlay
             SceneManager.LoadScene(scene);
         }
 
-        public async void CarTeleport()
+        public async void CarTeleport(int skyboxID)
         {
             await CanvasTransition.FadeScreen(true, 1f);
+            
+            if (m_skyboxMaterials.Length >= skyboxID)
+                SetHDRI(m_skyboxMaterials[skyboxID]);
+
             await CanvasTransition.FadeScreen(false, 1f,.5f);
         }
 
