@@ -110,7 +110,11 @@ namespace Twinny.GamePlay
             SceneManager.LoadScene(scene);
         }
 
-
+        public async void CarTeleport()
+        {
+            await CanvasTransition.FadeScreen(true, 1f);
+            await CanvasTransition.FadeScreen(true, 1f,.5f);
+        }
 
     }
 
