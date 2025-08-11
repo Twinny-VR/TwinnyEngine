@@ -113,7 +113,7 @@ namespace Twinny.GamePlay
         public async void CarTeleport()
         {
             await CanvasTransition.FadeScreen(true, 1f);
-            await CanvasTransition.FadeScreen(true, 1f,.5f);
+            await CanvasTransition.FadeScreen(false, 1f,.5f);
         }
 
     }
