@@ -9,6 +9,7 @@ using Twinny.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Twinny.System.TwinnyManager;
 
 namespace Twinny.System
 {
@@ -30,19 +31,19 @@ namespace Twinny.System
         protected override void Awake()
         {
             base.Awake();
-            TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
+            LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
         }
 
         protected override void Start()
         {
             base.Start();
-            TwinnyManager.OnPlatformInitialize += OnPlatformInitialized;
-            _ = TwinnyManager.InitializePlatform();
+            OnPlatformInitialize += OnPlatformInitialized;
+            _ = InitializePlatform();
         }
 
         private void OnDestroy()
         {
-            TwinnyManager.OnPlatformInitialize -= OnPlatformInitialized;
+            OnPlatformInitialize -= OnPlatformInitialized;
 
         }
 
@@ -60,7 +61,7 @@ namespace Twinny.System
             OnExperienceFinished?.Invoke();
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
 
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
             SceneManager.LoadScene(0);
         }
@@ -76,7 +77,7 @@ namespace Twinny.System
         public virtual async Task ChangeScene(object scene, int landMarkIndex)
         {
 
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
@@ -123,7 +124,7 @@ namespace Twinny.System
             */
             await Task.Delay(1500);
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
-            await CanvasTransition.FadeScreen(false);
+            await CanvasTransition.FadeScreen(false, config.fadeTime);
 
         }
 
@@ -166,11 +167,11 @@ namespace Twinny.System
         /// This method is only for handle the Fade Screen during the teleporting
         /// </summary>
         /// <param name="landMarkIndex">LandMark to Teleport</param>
-        public async void NavigateTo(int landMarkIndex)
+        public static async void NavigateTo(int landMarkIndex)
         {
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
             SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
-            await CanvasTransition.FadeScreen(false);
+            await CanvasTransition.FadeScreen(false, config.fadeTime);
         }
 
 
@@ -218,7 +219,7 @@ namespace Twinny.System
 
         protected virtual void OnPlatformInitialized(Platform platform)
         {
-                _ = CanvasTransition.FadeScreen(false);
+                _ = CanvasTransition.FadeScreen(false, config.fadeTime);
         }
         #endregion
 

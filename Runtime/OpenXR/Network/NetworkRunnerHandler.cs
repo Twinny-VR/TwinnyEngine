@@ -216,7 +216,7 @@ namespace Twinny.System.Network
                     OnLoadSceneFeature?.Invoke();
                     if (currentLandMark >= 0)
                     {
-                        SceneFeature.Instance.TeleportToLandMark(currentLandMark);
+                       // SceneFeature.Instance.TeleportToLandMark(currentLandMark);
                         //TODO Q diabos fiz aqui
                         /*
                           if (SceneFeatureXR.Instance.landMarks.Length > 0 && SceneFeatureXR.Instance.currentLandMark != SceneFeatureXR.Instance.landMarks[currentLandMark])

@@ -22,11 +22,14 @@ namespace Twinny.System
         [NonSerialized]
         public Transform[] interestPoints;
 
+        public bool fadeOnAwake = true;
 
         protected override void Start()
         {
             base.Start();
-             SetHDRI(_sceneSkyBox);
+            Init();
+            if(_sceneSkyBox != null)
+            SetHDRI(_sceneSkyBox);
         }
 
         public virtual void TeleportToLandMark(int landMarkIndex) { }

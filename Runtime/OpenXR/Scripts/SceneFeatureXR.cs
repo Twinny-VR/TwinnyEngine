@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Fusion;
 using Twinny.System.Network;
 using Concept.Core;
+using UnityEngine.SceneManagement;
 
 namespace Twinny.XR
 {
@@ -26,12 +27,11 @@ namespace Twinny.XR
 
         [SerializeField] public LandMark[] landMarks = new LandMark[0];
         [SerializeField] public bool enableNavigationMenu;
-        [HideInInspector]
-        public LandMark currentLandMark;
         public GameObject extensionMenu;
         public bool isMenuStatic;
+        private LandMark currentLandMark;
         private LandMark _currentLandMark;
-#endregion
+        #endregion
 
         #region Delegates
         public delegate void onTeleportToLandMark(int landMarkIndex);
@@ -73,27 +73,36 @@ namespace Twinny.XR
         // Start is called before the first frame update
         protected override void Start()
         {
-            Init();
+
+            if (fadeOnAwake)
+            {
+                NetworkedLevelManager.Instance.RPC_FadingStatus(0);
+                _ = CanvasTransition.FadeScreen(false, TwinnyManager.config.fadeTime);
+            }
+
+
+
+            
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose += OnRecenterDetected;
 
             if (extensionMenu)
-                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu,isMenuStatic));
+                CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(extensionMenu, isMenuStatic));
 
             int layer = LayerMask.NameToLayer("Character");
 
             if (layer == -1) return;
 
 
-            if(sceneType == SceneType.VR)
+            if (sceneType == SceneType.VR)
             {
-                   // AvatarSpawner.SpawnAvatar();
+                // AvatarSpawner.SpawnAvatar();
                 //                Camera.main.cullingMask |= (1 << layer);
             }
             else
             {
-              //AvatarSpawner.DespawnAvatar();
-  //              Camera.main.cullingMask &= ~(1 << layer);
+                //AvatarSpawner.DespawnAvatar();
+                //              Camera.main.cullingMask &= ~(1 << layer);
 
             }
 
@@ -114,13 +123,13 @@ namespace Twinny.XR
             if (OVRManager.display != null)
                 OVRManager.display.RecenteredPose -= OnRecenterDetected;
 
-            if(NetworkedLevelManager.Instance.currentLandMark < 0 
-                && NetworkRunnerHandler.runner.IsConnectedToServer 
+            if (NetworkedLevelManager.Instance.currentLandMark < 0
+                && NetworkRunnerHandler.runner.IsConnectedToServer
                 && NetworkRunnerHandler.runner.SessionInfo != null)
                 CallbackHub.CallAction<IUICallBacks>(callback => callback.OnUnloadSceneFeature());
         }
 
-#endregion
+        #endregion
 
         #region Overrided Methods
 
@@ -129,15 +138,16 @@ namespace Twinny.XR
         /// This method change World Transform position to a especific landMark position.
         /// </summary>
         /// <param name="landMarkIndex">Index on landMarks array.</param>
-         public override void TeleportToLandMark(int landMarkIndex)
+        public override void TeleportToLandMark(int landMarkIndex)
         {
-                SetHDRI(landMarkIndex);
+
+
+            SetHDRI(landMarkIndex);
             if (landMarks.Length > 0)
             {
-                Vector3 localAnchor = transform.position;
-                if(_currentLandMark != null)
-                _currentLandMark.node?.OnLandMarkUnselected?.Invoke();
+                if (_currentLandMark != null) _currentLandMark.node?.OnLandMarkUnselected?.Invoke();
                 _currentLandMark = landMarks[landMarkIndex];
+
                 worldTransform.localPosition = Vector3.zero;
                 worldTransform.localRotation = Quaternion.identity;
 
@@ -146,9 +156,25 @@ namespace Twinny.XR
                 Vector3 desiredPosition = -_currentLandMark.node.transform.localPosition;
                 worldTransform.localPosition = desiredPosition;
                 worldTransform.RotateAround(AnchorManager.Instance.transform.position, Vector3.up, -_currentLandMark.node.transform.localRotation.eulerAngles.y);
+               
                 NavigationMenu.Instance?.SetArrows(enableNavigationMenu ? _currentLandMark.node : null);
+                
                 SetHDRIRotation(worldTransform.localRotation.eulerAngles.y + transform.rotation.eulerAngles.y);
+
                 _currentLandMark.node?.OnLandMarkSelected?.Invoke();
+
+                Transform cameraRig = LevelManagerXR.cameraRig;
+                bool turnParent = _currentLandMark.node.changeParent;
+
+
+                if (turnParent)
+                    cameraRig.SetParent(_currentLandMark.node.newParent);
+                else
+                {
+                    cameraRig.SetParent(null);
+                    cameraRig.position = Vector3.zero;
+                    SceneManager.MoveGameObjectToScene(cameraRig.gameObject, SceneManager.GetActiveScene());
+                }
             }
             else
             {
@@ -198,11 +224,11 @@ namespace Twinny.XR
             //TODO Arrumar ao troca de cena
 
 
-                if (landMarkIndex < 0)//If no LandMark to set, reset skybox to Passthroug
-                {
+            if (landMarkIndex < 0)//If no LandMark to set, reset skybox to Passthroug
+            {
                 LevelManagerXR.instance.SetPassthrough(true);
-                    return;
-                }
+                return;
+            }
 
             if (landMarks.Length > 0)
             {
@@ -256,11 +282,11 @@ namespace Twinny.XR
         {
 
             bool active = (NetworkRunnerHandler.runner.GameMode != Fusion.GameMode.Single);
-                NetworkTransform[] networks = _transform.GetComponentsInChildren<NetworkTransform>();
-                foreach (var item in networks)
-                {
-                    item.enabled = active;
-                }
+            NetworkTransform[] networks = _transform.GetComponentsInChildren<NetworkTransform>();
+            foreach (var item in networks)
+            {
+                item.enabled = active;
+            }
 
         }
         private async Task RecenterSkyBox()

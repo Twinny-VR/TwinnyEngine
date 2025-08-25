@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Concept.Helpers;
 using Twinny.System;
@@ -30,19 +31,21 @@ namespace Twinny.UI
         /// </summary>
         /// <param name="fadeIn">true to show, false to hide.</param>
         /// <param name="callback">bool return: Callback function (true for hided, false for showing)</param>
-        public static async Task<bool> FadeScreen(bool fadeIn)
+        public static async Task<bool> FadeScreen(bool fadeIn, float fadeTime, float delay = default)
         {
             if(!Instance)
             {
                 Debug.LogWarning("[CanvasTransition] Instance not found.");
                 return false;
             }
+
+            await Task.Delay((int) (delay * 1000));
+
             _isTransitioning = true;
             float startAlpha = Instance. _fadeScreen.alpha;
             float targetAlpha = fadeIn ? 1f : 0f;
             float elapsedTime = 0f;
-            float fadeTime = 0;
-            fadeTime = TwinnyManager.config.fadeTime;
+            //if(fadeTime == default) fadeTime = TwinnyManager.config.fadeTime;
             // Smooth fade progress
             while (elapsedTime < fadeTime)
             {

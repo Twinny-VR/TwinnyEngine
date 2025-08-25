@@ -4,19 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+<<<<<<< HEAD
 using Concept.Helpers;
 using Twinny.System;
 #if TWINNY_OPENXR
 using Meta.XR.InputActions;
+=======
+using Concept.Editor;
+using Twinny.System;
+#if TWINNY_OPENXR
+>>>>>>> abb973a097560d9b0f055dd537134de4fe026457
 using Twinny.XR;
 #endif
 using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UIElements;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Twinny.Editor
 {
@@ -82,7 +85,7 @@ namespace Twinny.Editor
             var script = MonoScript.FromScriptableObject(this);
             var fullPath = AssetDatabase.GetAssetPath(script);
             m_RootPath = Path.GetDirectoryName(fullPath);
-            _plusIcon = ImageUtils.LoadSpriteFromProjectURL(PLUS_ICON_PATH);
+            _plusIcon = EditorImageUtils.LoadSpriteFromProjectPath(PLUS_ICON_PATH);
         }
 
         public void CreateGUI()

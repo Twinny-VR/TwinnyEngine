@@ -67,7 +67,7 @@ namespace Twinny.UI
                     _ = LevelManager.Instance.ChangeScene(parameter, landMarkIndex);
                     break;
                 case ButtonType.NAVIGATION:
-                    LevelManager.Instance.NavigateTo(landMarkIndex);
+                    LevelManager.NavigateTo(landMarkIndex);
                     break;
                 case ButtonType.RESET:
                     _ = LevelManager.Instance.ResetExperience();

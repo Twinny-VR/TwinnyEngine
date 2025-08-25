@@ -5,13 +5,13 @@ using Twinny.Helpers;
 using Twinny.Localization;
 using Twinny.System.Network;
 using Twinny.UI;
-using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Twinny.System
 {
+    using static TwinnyManager;
 
 
     [RequireComponent(typeof(NetworkObject))]
@@ -80,22 +80,22 @@ namespace Twinny.System
         //Awake is called before the script is started
         protected virtual void Awake()
         {
-            if(_instance == null)
+            if (_instance == null)
                 _instance = this;
             else
             {
                 Destroy(_instance);
                 Debug.LogWarning("[LevelManager] Multiple instance removed.");
             }
-                
+
             _networkObject = GetComponent<NetworkObject>();
-         //   TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
+            //   TwinnyManager.LoadRuntimeProfile<TwinnyRuntime>("RuntimePreset");
 
         }
         // Start is called before the first frame update
         protected virtual void Start()
         {
-            _ = TwinnyManager.InitializePlatform();
+            _ = InitializePlatform();
         }
 
         // Update is called once per frame
@@ -123,8 +123,8 @@ namespace Twinny.System
 
         protected virtual void SetMaster()
         {
-                master = NetworkRunnerHandler.runner.LocalPlayer;
-                Debug.Log("[NetworkedLevelManager] You are the MASTER!");
+            master = NetworkRunnerHandler.runner.LocalPlayer;
+            Debug.Log("[NetworkedLevelManager] You are the MASTER!");
 
         }
 
@@ -172,14 +172,15 @@ namespace Twinny.System
             if (UnityEngine.Application.isEditor) return;
 
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
         }
 
-        public virtual async Task QuitExperience() {
+        public virtual async Task QuitExperience()
+        {
             if (UnityEngine.Application.isEditor) return;
 
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnExperienceFinished(false));
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
         }
 
@@ -199,7 +200,7 @@ namespace Twinny.System
             RPC_FadingStatus(1);
             RPC_Message(Runner.LocalPlayer, PlayerRef.None, LocalizationProvider.GetTranslated("%LOADING_SCENE"), time: 90f);
 
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
 
             //TODO Mudar o sistema de carregamento de cenas
             if (scene == "PlatformScene" || scene == "OpenXR_PlatformScene")
@@ -213,14 +214,18 @@ namespace Twinny.System
 
             }
 
-            RPC_FadingStatus(0);
             RPC_Message(Runner.LocalPlayer, PlayerRef.None, "");
 
-            await CanvasTransition.FadeScreen(false);
+            SceneFeature sceneFeature = SceneFeature.Instance;
+            if (sceneFeature == null )
+                {
+                RPC_FadingStatus(0);
+                await CanvasTransition.FadeScreen(false, config.fadeTime);
+                }
+            }
 
-            
 
-        }
+
 
 
         /// <summary>
@@ -229,9 +234,9 @@ namespace Twinny.System
         /// <param name="landMarkIndex">LandMark to Teleport</param>
         public async void NavigateTo(int landMarkIndex)
         {
-            await CanvasTransition.FadeScreen(true);
+            await CanvasTransition.FadeScreen(true, config.fadeTime);
             SceneFeature.Instance.TeleportToLandMark(landMarkIndex);
-            await CanvasTransition.FadeScreen(false);
+            await CanvasTransition.FadeScreen(false, config.fadeTime);
         }
 
 
@@ -254,7 +259,7 @@ namespace Twinny.System
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_FadingStatus(int status)
         {
-            if (!NetworkRunnerHandler.runner.IsSceneAuthority) _ = CanvasTransition.FadeScreen(status == 1);
+            if (!NetworkRunnerHandler.runner.IsSceneAuthority) _ = CanvasTransition.FadeScreen(status == 1, config.fadeTime);
         }
 
 
@@ -294,13 +299,13 @@ namespace Twinny.System
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_QuitForAll()
         {
-           _ = QuitExperience();
+            _ = QuitExperience();
         }
 
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_ResetForAll()
         {
-           _ = ResetExperience();
+            _ = ResetExperience();
         }
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_RestartForAll()
@@ -373,7 +378,7 @@ namespace Twinny.System
         [Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_OnPlayerPause(PlayerRef source, int pause, string thread)
         {
-            Debug.LogWarning($"[NetworkedLevelManager] {source} PAUSED:{pause==1}. IS THREAD:{thread}");
+            Debug.LogWarning($"[NetworkedLevelManager] {source} PAUSED:{pause == 1}. IS THREAD:{thread}");
         }
 
 

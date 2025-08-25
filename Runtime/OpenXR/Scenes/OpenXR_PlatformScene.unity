@@ -40704,6 +40704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isManager: 0
   _currentLandMark: -1
+  m_cameraRigTransform: {fileID: 1161289929}
   _passThrough: {fileID: 1985252260}
   _bootstrap: {fileID: 366325652}
   _sharedAnchorManager: {fileID: 8320857212215331480}
