@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Concept.Helpers;
 using Twinny.System;
 using Twinny.UI;
 using UnityEngine;
@@ -92,7 +93,7 @@ namespace Twinny.GamePlay
 
 
             m_cameraRigTransform.position = m_currentLandMark.position;
-            m_cameraRigTransform.rotation = m_currentLandMark.rotation;
+            m_cameraRigTransform.eulerAngles = m_currentLandMark.rotation.eulerAngles;
 
             m_cameraRigTransform.SetParent(m_currentLandMark.node.changeParent ? m_currentLandMark.node.newParent : null);
             m_currentLandMark.node.OnLandMarkSelected?.Invoke();
