@@ -1,3 +1,4 @@
+#if false
 using System.Diagnostics;
 using TMPro;
 using UnityEngine;
@@ -169,3 +170,4 @@ public class DebugPanel : MonoBehaviour
     }
 }
 
+#endif

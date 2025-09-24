@@ -283,8 +283,8 @@ GameObject:
   - component: {fileID: 2876186747303349523}
   - component: {fileID: 6763554847259722654}
   - component: {fileID: 897024055491907944}
-  - component: {fileID: 918690821222399765}
   - component: {fileID: 316260250901333758}
+  - component: {fileID: 4536525120715190491}
   m_Layer: 4
   m_Name: DEBUG_PANEL
   m_TagString: Untagged
@@ -358,28 +358,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &918690821222399765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8602384357941057721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97af016cee5aed343937a8451d7e13f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startVisible: 1
-  _startFolded: 0
-  _followUser: 1
-  _followSpeed: 1
-  _debugPanel: {fileID: 2540629698819800145}
-  TMP_DebugText: {fileID: 3216284858693435957}
-  _showMessages: 1
-  _showWarnings: 1
-  _showErrors: 1
-  animator: {fileID: 316260250901333758}
 --- !u!95 &316260250901333758
 Animator:
   serializedVersion: 7
@@ -402,3 +380,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4536525120715190491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8602384357941057721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb60985b34fab6e4eb0451c6318e5985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startVisible: 1
+  _startFolded: 1
+  _followUser: 1
+  _followSpeed: 1
+  _debugPanel: {fileID: 2540629698819800145}
+  TMP_DebugText: {fileID: 3216284858693435957}
+  _showMessages: 0
+  _showWarnings: 1
+  _showErrors: 1
+  animator: {fileID: 316260250901333758}
