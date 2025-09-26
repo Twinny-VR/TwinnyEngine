@@ -31,7 +31,7 @@
     "versionDefines": [
         {
             "name": "com.meta.xr.sdk.all",
-            "expression": "77",
+            "expression": "99",
             "define": "TWINNY_OPENXR"
         }
     ],
