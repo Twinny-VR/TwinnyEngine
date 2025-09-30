@@ -39,6 +39,17 @@ namespace Twinny.UI
         }
         #endregion
 
+        #region Private Methods
+
+        private void ShowProjects()
+        {
+
+        }
+
+
+        #endregion
+
+
         #region UI Callback Methods
 
         public void OnHudStatusChanged(bool status) {}
