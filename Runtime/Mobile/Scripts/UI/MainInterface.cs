@@ -1,13 +1,18 @@
 using Concept.Core;
 using Concept.UI;
+using Twinny.System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Twinny.System.TwinnyManager;
 
 namespace Twinny.UI
 {
     [RequireComponent(typeof(UIDocument))]
     public class MainInterface : MonoBehaviour, IUICallBacks
     {
+        private static MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
+
+
         public UIDocument document { get; private set; }
         private VisualElement m_root;
         private VisualElement m_mainContent;
@@ -36,6 +41,14 @@ namespace Twinny.UI
         private void OnDisable()
         {
             CallbackHub.UnregisterCallback(this);
+        }
+
+        private async void Start()
+        {
+            var projectList = await MobileRuntime.GetProjectListAsync();
+
+            Debug.LogWarning(projectList);
+            _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
         }
         #endregion
 

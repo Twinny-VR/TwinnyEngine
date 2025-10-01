@@ -17,17 +17,18 @@ namespace Twinny.Editor
 
     public class TwinnySceneMenu
     {
+        private static TwinnyRuntime m_config => TwinnyRuntime.GetInstance<TwinnyRuntime>();
         public const string ROOT_NAME = "root";
         public const string WORLD_NAME = "world";
 
         [MenuItem("Twinny/Realtime Settings")]
         public static void PingConfigAsset()
         {
-            if (TwinnyManager.config != null)
+            if (m_config != null)
             {
                 EditorApplication.ExecuteMenuItem("Window/General/Project");
-                Selection.activeObject = TwinnyManager.config;
-                EditorGUIUtility.PingObject(TwinnyManager.config);
+                Selection.activeObject = m_config;
+                EditorGUIUtility.PingObject(m_config);
             }
             else
             {

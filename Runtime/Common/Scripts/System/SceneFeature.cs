@@ -39,7 +39,7 @@ namespace Twinny.System
 #if NETWORK
             if (hdri == null) hdri = NetworkedLevelManager.Config.defaultSkybox;
 #endif
-            if (hdri == null) hdri = TwinnyManager.config.defaultSkybox;
+            if (hdri == null) hdri = TwinnyRuntime.GetInstance<TwinnyRuntime>().defaultSkybox;
 
             if (RenderSettings.skybox != hdri)
                     {

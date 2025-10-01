@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace Twinny.System
 {
@@ -15,6 +16,9 @@ namespace Twinny.System
     [Serializable]
     public class ProjectInfo
     {
+        [JsonIgnore]
+        public bool uploadThis = true;
+
         public string addressableKey;
         public string displayName;
         public string displaySub;
@@ -25,9 +29,14 @@ namespace Twinny.System
         [HideInInspector]
         public string thumbnailURL;
         [JsonIgnore]
+        public VideoClip video;
+        [HideInInspector]
+        public string videoURL;
+        [JsonIgnore]
         public Texture2D[] galery;
         [HideInInspector]
         public string[] imageGaleryURL;
-    }
 
+    }
+        
 }

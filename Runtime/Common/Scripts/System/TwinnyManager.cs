@@ -1,7 +1,7 @@
 using System.IO;
-using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
+using DG.DemiEditor;
 using Twinny.Helpers;
 using Twinny.UI;
 #if UNITY_EDITOR
@@ -31,12 +31,12 @@ namespace Twinny.System
         const string DEFAULT_KEYSTORE = "TwinnyKey.keystore";
         public const string SAMPLE_ROOT = "Assets/Samples/Twinny Engine";
 
-        public static Platform Platform = Platform.UNKNOW;
+        public static Platform currentPlatform = Platform.UNKNOW;
 
-        public static TwinnyRuntime config;
+        private static TwinnyRuntime m_config => TwinnyRuntime.GetInstance<TwinnyRuntime>();
 
-        public delegate void onPlatformInitilize(Platform platform);
-        public static onPlatformInitilize OnPlatformInitialize;
+        //public delegate void onPlatformInitilize(Platform platform);
+        //public static onPlatformInitilize OnPlatformInitialize;
        
         static TwinnyManager()
         {
@@ -57,17 +57,11 @@ namespace Twinny.System
                 AssetDatabase.SaveAssets();
             }
 #endif
+            GetCurrentPlatform();
         }
 
-
-        public static async Task InitializePlatform()
+        public static void GetCurrentPlatform()
         {
-            
-            //Load current platform StartScene
-            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-
-            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
-
 
 #if UNITY_EDITOR
 
@@ -75,34 +69,34 @@ namespace Twinny.System
             {
 
 #if TWINNY_OPENXR
-                Platform = Platform.XR;
+                currentPlatform = Platform.XR;
                 Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
-#else
-                    Platform = Platform.MOBILE;
-                    Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
 #endif
+
+                currentPlatform = Platform.MOBILE;
+                    Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
             }
             else
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
             {
-                Platform = Platform.MOBILE;
+                currentPlatform = Platform.MOBILE;
                 Debug.LogWarning("[TwinnyManager] iOS Platform initialized.");
             }
             else
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows || EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64)
             {
-                Platform = Platform.WINDOWS;
+                currentPlatform = Platform.WINDOWS;
                 Debug.LogWarning("[TwinnyManager] Windows Platform initialized.");
             }
             else
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WebGL)
             {
-                Platform = Platform.WEBGL;
+                currentPlatform = Platform.WEBGL;
                 Debug.LogWarning("[TwinnyManager] WebGL Platform initialized.");
             }
             else
             {
-                Platform = Platform.UNKNOW;
+                currentPlatform = Platform.UNKNOW;
                 Debug.LogError($"[TwinnyManager] Unknow Platform initialized ({Application.platform}).");
             }
 
@@ -110,12 +104,11 @@ namespace Twinny.System
 #else
                 if (Application.platform == RuntimePlatform.Android)
             {
-
 #if TWINNY_OPENXR
-                Platform = Platform.XR;
+                currentPlatform = Platform.XR;
                 Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
 #else
-                    Platform = Platform.MOBILE;
+                    currentPlatform = Platform.MOBILE;
                     Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
 #endif
 
@@ -125,7 +118,7 @@ namespace Twinny.System
             else
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
-                Platform = Platform.MOBILE;
+                currentPlatform = Platform.MOBILE;
                 Debug.LogWarning("[TwinnyManager] iOS Platform initialized.");
             }
             else
@@ -136,53 +129,54 @@ namespace Twinny.System
             else
             if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
             {
-                Platform = Platform.WINDOWS;
+                currentPlatform = Platform.WINDOWS;
                 Debug.LogWarning("[TwinnyManager] Windows Platform initialized.");
             }
             else
             if (Application.platform == RuntimePlatform.WebGLPlayer)
             {
-                Platform = Platform.WEBGL;
+                currentPlatform = Platform.WEBGL;
                 Debug.LogWarning("[TwinnyManager] WebGL Platform initialized.");
             }
             else
             {
-                Platform = Platform.UNKNOW;
+                currentPlatform = Platform.UNKNOW;
                 Debug.LogError($"[TwinnyManager] Unknow Platform initialized ({Application.platform}).");
             }
 #endif
-            if (config.isTestBuild)
+           
+        }
+
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static async void Initialize()
+        {
+            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+
+            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
+
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
+
+            if (m_config.isTestBuild)
             {
                 Debug.LogWarning("*** TEST VERSION BUILD! Unset in Config file before Release!");
                 if (DebugPanel.Instance != null)
                 {
-                    DebugPanel.Instance.visible = config.isTestBuild;
+                    DebugPanel.Instance.visible = m_config.isTestBuild;
                     DebugPanel.Debug("===============================\n" +
                                      "=          <color=#3cbcd6>TEST VERSION BUILD!</color>          =\n" +
                                      "= <color=#3cbcd6>Unset in Config file before Release.</color> =\n" +
-                                     "==============================="," ",LogType.Warning);
+                                     "===============================", " ", LogType.Warning);
                 }
             }
-            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
-            OnPlatformInitialize?.Invoke(Platform);
 
-            if(config != null && config.forceFrameRate)
+            if (m_config != null && m_config.forceFrameRate)
             {
-                Application.targetFrameRate = config.targetFrameRate;
-                Debug.LogWarning($"[TwinnyManager] Application frame rate locked at {config.targetFrameRate}FPS.");
+                Application.targetFrameRate = m_config.targetFrameRate;
+                Debug.LogWarning($"[TwinnyManager] Application frame rate locked at {m_config.targetFrameRate}FPS.");
             }
+
         }
-
-        public static void LoadRuntimeProfile<T>(string fileName) where T : TwinnyRuntime
-        {
-            config = Resources.Load<T>(fileName);
-
-            if (config == null)
-            {
-                Debug.LogError($"[TwinnyManager] Impossible to load '{fileName}'.");
-            }
-        }
-
 
 
     }

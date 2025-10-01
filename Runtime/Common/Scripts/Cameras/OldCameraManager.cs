@@ -24,6 +24,7 @@ namespace Twinny.System.Cameras
 
     public class OldCameraManager : TSingleton<OldCameraManager>
     {
+        private TwinnyRuntime m_config => TwinnyRuntime.GetInstance<TwinnyRuntime>();
         [SerializeField]
         private State _state;
         public static State state
@@ -392,15 +393,15 @@ namespace Twinny.System.Cameras
                     if (building)
                     {
 
-                        _ = CanvasTransition.FadeScreen(true, TwinnyManager.config.fadeTime);
-                        yield return new WaitForSeconds(TwinnyManager.config.fadeTime);
+                        _ = CanvasTransition.FadeScreen(true, m_config.fadeTime);
+                        yield return new WaitForSeconds(m_config.fadeTime);
                         OnCameraLocked?.Invoke(building);
                         yield return new WaitForSeconds(1f);
                         while (brain.IsBlending)
                         {
                             yield return null;
                         }
-                        _ = CanvasTransition.FadeScreen(false, TwinnyManager.config.fadeTime);
+                        _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
                         yield return new WaitForSeconds(3f);
                         OnEnterInStandby?.Invoke();
                         yield return new WaitForSeconds(config.standbyLockedDuration);
