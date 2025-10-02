@@ -13,6 +13,7 @@ using System;
 using UnityEditor.SearchService;
 using System.Linq;
 using Concept.Editor;
+using Concept.SmartTools.Editor;
 
 namespace Twinny.Editor
 {
@@ -444,6 +445,6 @@ namespace Twinny.Editor
 
 
     }
-#endif
 
 }
+#endif
