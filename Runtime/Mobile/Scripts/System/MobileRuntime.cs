@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Twinny.Addressables;
 using UnityEngine;
 
 namespace Twinny.System
@@ -30,6 +31,7 @@ namespace Twinny.System
             return Path.Combine(instance.hostDirectory, instance.remoteProjectListDirectory);
         }
 
+        [Obsolete("Use AddressableManager.LoadSeparateAssetAsync instead")]
         public static async Task<ProjectList> GetProjectListAsync() 
         {
             try

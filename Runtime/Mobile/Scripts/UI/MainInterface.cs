@@ -1,9 +1,12 @@
 using Concept.Core;
+using Concept.Addressables;
 using Concept.UI;
+using Twinny.Addressables;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Twinny.System.TwinnyManager;
+using System.Collections.Generic;
 
 namespace Twinny.UI
 {
@@ -45,9 +48,27 @@ namespace Twinny.UI
 
         private async void Start()
         {
-            var projectList = await MobileRuntime.GetProjectListAsync();
+            ProjectList projectList = await AddressablesManager.LoadSeparateAssetAsync<ProjectList>("project_list");
 
-            Debug.LogWarning(projectList);
+            List<ProjectInfo> projectInfos = new List<ProjectInfo>(); 
+           
+            foreach (var id in projectList.projectGroups)
+            {
+                Debug.LogWarning($"Downloading Group '{id}'.");
+                var downloadGroup = await AddressablesManager.DownloadEntireGroupAsync(id);
+                Debug.LogWarning($"Group '{id}':{downloadGroup}");
+                if (downloadGroup)
+                {
+                    Debug.LogWarning($"Carregando ProjectInfo '{id}'.");
+                    ProjectInfo projectInfo = await AddressablesManager.LoadAssetFromGroupAsync<ProjectInfo>(id);
+                    Debug.LogWarning($"ProjectInfo '{id}':{projectInfo}");
+                    if(projectInfo != null) projectInfos.Add(projectInfo);
+                }
+            }     
+            
+            Debug.LogWarning("PROJECTS TOTAL: "+projectInfos.Count);
+            
+
             _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
         }
         #endregion

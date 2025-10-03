@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,8 +39,7 @@ namespace Twinny.System
         protected override void Start()
         {
             base.Start();
-            //OnPlatformInitialize += OnPlatformInitialized;
-            //_ = InitializePlatform();
+            InitializePlatform();
         }
 
         private void OnDestroy()
@@ -51,7 +51,17 @@ namespace Twinny.System
 
         #endregion
 
+        protected virtual async void InitializePlatform()
+        {
+            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
+            TwinnyManager.Initialize();
+
+        }
+
         #region Public Methods
+
+
 
         public static void StartExperience(string scene, int landMarkIndex) { }
         public static void QuitExperience() { }

@@ -52,7 +52,7 @@ namespace Twinny.System
 
         protected override void Awake()
         {
-            Init();
+            TwinnyRuntime.GetInstance<MobileRuntime>();
         }
 
 

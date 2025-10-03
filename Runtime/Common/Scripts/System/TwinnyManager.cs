@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
 using Twinny.Helpers;
@@ -147,13 +148,9 @@ namespace Twinny.System
         }
 
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        public static async void Initialize()
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        public static void Initialize()
         {
-            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-
-            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
-
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
             if (m_config.isTestBuild)
@@ -176,7 +173,6 @@ namespace Twinny.System
             }
 
         }
-
 
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Concept.UI;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Twinny.System
             }
 
             var config = Resources.Load<T>(fileName);
-
+           
             if (config == null)
             {
                 Debug.LogError($"[TwinnyManager] Impossible to load '{fileName}'.");
@@ -38,7 +39,6 @@ namespace Twinny.System
             Debug.Log($"[TwinnyManager] RuntimeProfile '{fileName}' loaded successfully.");
             return config;
         }
-
 
         public static T GetInstance<T>() where T : TwinnyRuntime
         {

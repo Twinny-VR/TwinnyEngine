@@ -2,10 +2,11 @@
     "name": "Twinny.Common",
     "rootNamespace": "",
     "references": [
+        "GUID:5dce1e5efc474ce4791e7ab351a3ddb4",
+        "GUID:45a37f969656c3340995519be79219a9",
+        "GUID:b7d9e9465bdc1c345b4b1003049a2335",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:b7d9e9465bdc1c345b4b1003049a2335",
-        "GUID:5dce1e5efc474ce4791e7ab351a3ddb4",
         "GUID:e40ba710768534012815d3193fa296cb",
         "GUID:21d1eb854b91ade49bc69a263d12bee2",
         "GUID:d8b63aba1907145bea998dd612889d6b"
