@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static Twinny.System.TwinnyManager;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.InputSystem;
 
 namespace Twinny.UI
 {
@@ -19,6 +22,7 @@ namespace Twinny.UI
         public UIDocument document { get; private set; }
         private VisualElement m_root;
         private VisualElement m_mainContent;
+        private VisualElement m_cardsContainer;
 
         private Foldout m_descriptionFoldout;
 
@@ -29,6 +33,7 @@ namespace Twinny.UI
 
             m_root = document?.rootVisualElement;
             m_mainContent = m_root?.Q<VisualElement>("MainContent");
+            m_cardsContainer = m_root?.Q<VisualElement>("ProjectCardsContainer");
 
             m_descriptionFoldout = m_root.Q<Foldout>("DescriptionFoldout");
             ResponsiveElement nearestDeepResponsive = m_descriptionFoldout.GetFirstAncestorOfType<ResponsiveElement>();
@@ -48,6 +53,9 @@ namespace Twinny.UI
 
         private async void Start()
         {
+            var init = await UnityEngine.AddressableAssets.Addressables.InitializeAsync().Task;
+            Debug.Log("[Addressables] Catálogos carregados:");
+
             ProjectList projectList = await AddressablesManager.LoadSeparateAssetAsync<ProjectList>("project_list");
 
             List<ProjectInfo> projectInfos = new List<ProjectInfo>(); 
@@ -55,18 +63,21 @@ namespace Twinny.UI
             foreach (var id in projectList.projectGroups)
             {
                 Debug.LogWarning($"Downloading Group '{id}'.");
-                var downloadGroup = await AddressablesManager.DownloadEntireGroupAsync(id);
-                Debug.LogWarning($"Group '{id}':{downloadGroup}");
-                if (downloadGroup)
+                
+                ProjectInfo projectInfo = await AddressablesManager.LoadSeparateAssetAsync<ProjectInfo>(id);
+
+                Debug.LogWarning("INFO:" + projectInfo);
+                if (projectInfo)
                 {
-                    Debug.LogWarning($"Carregando ProjectInfo '{id}'.");
-                    ProjectInfo projectInfo = await AddressablesManager.LoadAssetFromGroupAsync<ProjectInfo>(id);
-                    Debug.LogWarning($"ProjectInfo '{id}':{projectInfo}");
+                    Debug.LogWarning($"ProjectInfo '{id}' encontrado.");
                     if(projectInfo != null) projectInfos.Add(projectInfo);
-                }
+                } else
+                    Debug.LogError($"ProjectInfo '{id}' não encontrado.");
             }     
             
             Debug.LogWarning("PROJECTS TOTAL: "+projectInfos.Count);
+
+            _=FillCardsContainer(projectInfos);
             
 
             _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
@@ -75,9 +86,49 @@ namespace Twinny.UI
 
         #region Private Methods
 
-        private void ShowProjects()
+        private async Task FillCardsContainer(List<ProjectInfo> projectInfos)
         {
+            m_cardsContainer.Clear();
+            foreach (var info in projectInfos) {
 
+
+                Texture2D thumb = await AddressablesManager.LoadSeparateAssetAsync<Texture2D>(info.thumbnailRef);
+                Debug.Log($"thumb: {thumb.name}, width: {thumb.width}, height: {thumb.height}, isReadable: {thumb.isReadable}");
+                /*
+
+                Texture2D thumb = null;
+
+                if(info.thumbnail != null && info.thumbnail.RuntimeKeyIsValid())
+                {
+                    var handle = info.thumbnail.LoadAssetAsync<Texture2D>();
+                    await handle.Task;
+                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    {
+
+                        thumb = handle.Result;
+                        Debug.LogWarning("Thumb: "+ thumb);
+                    }
+                    else
+                        Debug.LogError($"Falha ao carregar thumbnail de {info.projectName}");
+                }
+                */
+                CardElement card = new CardElement()
+                {
+                    title = info.projectName,
+                    description = info.description,
+                    thumbnail = thumb
+                };
+
+                card.OnClickEvent += () => selectProject(info.addressableKey);
+                m_cardsContainer.Add(card);
+
+            
+            }
+        }
+
+        private void selectProject(string projectKey)
+        {
+            Debug.LogWarning($"'{projectKey}' Selected.");
         }
 
 

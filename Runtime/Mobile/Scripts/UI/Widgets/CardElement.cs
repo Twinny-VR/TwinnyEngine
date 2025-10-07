@@ -37,7 +37,7 @@ namespace Twinny.UI
         private Texture2D m_background;
 
         [UxmlAttribute("Background")]
-        public Texture2D background
+        public Texture2D thumbnail
         {
             get
             {
@@ -133,7 +133,56 @@ namespace Twinny.UI
             SetBackground(m_background);
         }
 
-        public void SetBackground(Texture2D texture) {
+
+        private bool _backgroundApplied = false;
+
+        public void SetBackground(Texture2D texture)
+        {
+            if (m_backgroundElement == null)
+                return;
+
+            if (float.IsNaN(m_backgroundElement.resolvedStyle.width) || float.IsNaN(m_backgroundElement.resolvedStyle.height))
+            {
+                // A geometria ainda não foi resolvida, espera o evento
+                m_backgroundElement.RegisterCallback<GeometryChangedEvent>((evt) =>
+                {
+                    if (!_backgroundApplied) // evita aplicar múltiplas vezes
+                    {
+                        ApplyBackground(texture);
+                        _backgroundApplied = true;
+                    }
+                });
+                return;
+            }
+
+            ApplyBackground(texture);
+        }
+
+        private void ApplyBackground(Texture2D texture)
+        {
+            if (texture == null)
+            {
+                Texture2D defaultTexture = Resources.Load<Texture2D>("Images/CardItem_PlaceHolder");
+                m_backgroundElement.style.backgroundImage = defaultTexture != null
+                    ? defaultTexture
+                    : StyleKeyword.Null;
+                return;
+            }
+
+            m_backgroundElement.style.backgroundImage = CreateRuntimeTexture(texture);
+
+        }
+
+        Texture2D CreateRuntimeTexture(Texture2D src)
+        {
+            Texture2D tex = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false);
+            tex.SetPixels(src.GetPixels());
+            tex.Apply();
+            return tex;
+        }
+
+
+        public void SetBackgroundOLD(Texture2D texture) {
 
             if (texture == null)
             {
