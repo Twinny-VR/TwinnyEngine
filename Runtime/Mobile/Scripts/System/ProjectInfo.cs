@@ -18,6 +18,9 @@ namespace Twinny.Addressables
         public string description;
         public string info;
         public string thumbnailRef;
+        public string videoRef;
+        public string[] galeryRef;
+
         //public AssetReferenceTexture2D thumbnail;
         //public AssetReferenceT<VideoClip> video;
         //public AssetReferenceTexture2D[] galery;

@@ -12,36 +12,22 @@ namespace Twinny.UI
     [UxmlElement]
     public partial class CardElement : VisualElement
     {
-
-
-        public enum ButtonType
-        {
-            START,
-            QUIT,
-            SETTINGS,
-            CHANGE_SCENE,
-            NAVIGATION,
-            ACTION,
-            RESET
-        }
-
-
         private const string USSClassName = "twinny-card-element";
 
-        [UxmlAttribute("Title")]
+        [UxmlAttribute("title")]
         public string title { get => m_titleLabel.text; set => m_titleLabel.text = value; }
 
-        [UxmlAttribute("Description")]
+        [UxmlAttribute("description")]
         public string description { get => m_descLabel.text; set => m_descLabel.text = value; }
 
         private Texture2D m_background;
 
-        [UxmlAttribute("Background")]
+        [UxmlAttribute("background")]
         public Texture2D thumbnail
         {
             get
             {
-                return m_background;
+               // return m_background;
                 // Tenta obter do estilo resolvido
                 var backgroundImage = m_backgroundElement.resolvedStyle.backgroundImage;
                 if (backgroundImage != null)
@@ -57,24 +43,37 @@ namespace Twinny.UI
             }
         }
 
+        private bool m_expanded = true;
+        [UxmlAttribute("expanded-info")]
+        public bool expanded
+        {
+            get => m_expanded;
+
+            set
+            {
+                m_expanded = value;
+                m_footer.EnableInClassList("expanded", value);
+                m_footer.style.display = DisplayStyle.Flex;
+
+            }
+        }
+
         private Label m_titleLabel;
         private Label m_descLabel;
-        private AspectElement m_backgroundElement;
-
-        [UxmlAttribute]
-        public ButtonType buttonType { get; set; } = ButtonType.START;
-
+        protected AspectElement m_backgroundElement;
+        private VisualElement m_footer;
 
         [UxmlAttribute]
         public string stringParameter { get; set; }
 
         [UxmlAttribute]
-        public int integerParameter{ get; set; }
+        public int integerParameter { get; set; }
 
 
         public event Action OnClickEvent;
 
-        public CardElement() {
+        public CardElement()
+        {
 
             var visualTree = Resources.Load<VisualTreeAsset>("CardElement");
             if (visualTree == null)
@@ -86,7 +85,7 @@ namespace Twinny.UI
             var treeInstance = visualTree.CloneTree();
 
 
-            var cardElement = treeInstance.Q<VisualElement>("Card");
+            var cardElement = treeInstance.Q<VisualElement>().GetFirstOfType<AspectElement>();
             if (cardElement != null)
             {
                 // Move todos os filhos do Card para este elemento
@@ -110,26 +109,37 @@ namespace Twinny.UI
             }
 
 
-
+            m_footer = this.Q<VisualElement>("Footer");
             m_titleLabel = this.Q<Label>("TitleLabel");
             m_descLabel = this.Q<Label>("DescLabel");
+
             m_backgroundElement = this.Q<AspectElement>();
             m_backgroundElement.RegisterCallback<ClickEvent>(evt =>
             {
-                OnClick();
                 OnClickEvent?.Invoke();
             });
 
             AddToClassList(USSClassName);
-            styleSheets.Add(Resources.Load<StyleSheet>(GetType().Name + "Styles"));
-
             RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
+
+            var styleName = GetType().Name + "Styles";
+            var styleSheet = Resources.Load<StyleSheet>(styleName);
+
+            if(styleSheet == null)
+            {
+                styleName = GetType().BaseType.Name + "Styles";
+                styleSheet = Resources.Load<StyleSheet>(styleName);
+            }
+
+            if(styleSheet != null) styleSheets.Add(styleSheet);
+
 
         }
 
-
         private void OnAttachToPanel(AttachToPanelEvent evt)
         {
+            //Hide footer if starts false
+            m_footer.style.display = (expanded) ? DisplayStyle.Flex : DisplayStyle.None;
             SetBackground(m_background);
         }
 
@@ -175,53 +185,35 @@ namespace Twinny.UI
 
         Texture2D CreateRuntimeTexture(Texture2D src)
         {
-            Texture2D tex = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false);
-            tex.SetPixels(src.GetPixels());
-            tex.Apply();
-            return tex;
+            try
+            {
+                Texture2D tex = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false);
+                tex.SetPixels(src.GetPixels());
+                tex.Apply();
+                return tex;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
         }
 
 
-        public void SetBackgroundOLD(Texture2D texture) {
+        public void SetBackgroundOLD(Texture2D texture)
+        {
 
             if (texture == null)
             {
                 Texture2D defaultTexture = Resources.Load<Texture2D>("Images/CardItem_PlaceHolder");
-                m_backgroundElement.style.backgroundImage = defaultTexture? new StyleBackground(defaultTexture) : StyleKeyword.Null;
+                m_backgroundElement.style.backgroundImage = defaultTexture ? new StyleBackground(defaultTexture) : StyleKeyword.Null;
                 return;
             }
-                m_backgroundElement.style.backgroundImage = new StyleBackground(texture);
+            m_backgroundElement.style.backgroundImage = new StyleBackground(texture);
 
         }
-
-        private void OnClick()
-        {
-
-            if (CanvasTransition.isTransitioning)
-                return;
-            switch (buttonType)
-            {
-                case ButtonType.START:
-                    break;
-                case ButtonType.SETTINGS:
-                    break;
-                case ButtonType.CHANGE_SCENE:
-                    _ = LevelManager.Instance.ChangeScene(stringParameter, integerParameter);
-                    break;
-                case ButtonType.NAVIGATION:
-                    LevelManager.NavigateTo(integerParameter);
-                    break;
-                case ButtonType.RESET:
-                    _ = LevelManager.Instance.ResetExperience();
-                    break;
-                case ButtonType.QUIT:
-                    Application.Quit();
-                    break;
-                case ButtonType.ACTION:
-                    ActionManager.CallAction(stringParameter);
-                    break;
-            }
-        }
+       
     }
 
 }

@@ -11,16 +11,43 @@
     min-width: 480px;
     min-height: 360px;
     max-height: 480px;
+    position: relative;
 }
+
+.twinny-card-element.clone {
+    position: absolute; 
+    height: auto;
+    width: auto;
+    max-height: none;
+    transition: top 3s ease, left 3s ease, right 3s ease, bottom 3s ease;
+}
+.twinny-card-element.clone.expanded {
+    top: 32px !important;
+    left: 32px !important;
+    right: 32px !important;  
+    bottom: 32px !important; 
+}
+
+.twinny-video-element{
+    min-width: 100% !important;
+}
+
+
 
 .twinny-card-footer {
     position: absolute;
     width: 100%;
     height: 96px;
-    bottom: 0;
+    bottom: -96;
     background-color: rgba(255, 255, 255, 0.59);
+    transition-property: bottom;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
 }
 
+.twinny-card-footer.expanded {
+    bottom: 0;
+}
 
 
 .twinny-card-element AspectElement .overlay {
