@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Twinny.System.Cameras
 {
-
     public class CameraHandler : MonoBehaviour, ICameraCallBacks, IInputCallBacks
     {
 
