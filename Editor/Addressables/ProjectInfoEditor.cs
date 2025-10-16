@@ -6,7 +6,6 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using System.IO;
 using System.Linq;
-using UnityEngine.Video;
 using Twinny.Addressables;
 
 [CustomEditor(typeof(ProjectInfo))]

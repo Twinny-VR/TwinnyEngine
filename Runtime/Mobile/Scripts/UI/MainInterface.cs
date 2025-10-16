@@ -1,18 +1,15 @@
-using Concept.Core;
 using Concept.Addressables;
+using Concept.Core;
 using Concept.UI;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Threading.Tasks;
 using Twinny.Addressables;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static Twinny.System.TwinnyManager;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.InputSystem;
-using UnityEngine.Video;
-using UnityEngine.Rendering;
-using System;
+using WebSocketSharp;
 
 namespace Twinny.UI
 {
@@ -21,6 +18,7 @@ namespace Twinny.UI
     {
         private static MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
 
+        public static Action<float> OnCutoffChanged;
 
         public UIDocument document { get; private set; }
         private VisualElement m_root;
@@ -49,6 +47,7 @@ namespace Twinny.UI
             }
         }
         private Button m_homeButton;
+        private Button m_enterButton;
 
         private VisualElement m_mainContent;
         private VisualElement m_mainCardsContainer;
@@ -63,6 +62,10 @@ namespace Twinny.UI
         private VisualElement m_projCardsContainer;
 
 
+        //Right Menu
+        private VisualElement m_rightMenu;
+        private Slider m_cutoffSlider;
+
         #region MonoBehaviour Methods
         private void OnEnable()
         {
@@ -73,6 +76,8 @@ namespace Twinny.UI
             m_footer = m_root.Q<VisualElement>("Footer");
             m_homeButton = m_footer.Q<Button>("ButtonHome");
             m_homeButton.clicked += BackToHome;
+            m_enterButton = m_footer.Q<Button>("ButtonEnter");
+            m_enterButton.clicked += StartExperience;
 
             m_mainContent = m_root?.Q<VisualElement>("MainContent");
             m_mainCardsContainer = m_mainContent?.Q<VisualElement>("ProjectCardsContainer");
@@ -87,6 +92,11 @@ namespace Twinny.UI
             m_projCardsContainer = m_projContent?.Q<VisualElement>("ProjectCardsContainer");
             m_descriptionFoldout = m_projContent.Q<Foldout>("DescriptionFoldout");
             m_descriptionLabel = m_projContent.Q<Label>("DescriptionLabel");
+
+            //Right Menu
+            m_rightMenu = m_root.Q<VisualElement>("RightMenu");
+            m_cutoffSlider = m_root.Q<Slider>("CutoffSlider");
+            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => OnCutoffChanged?.Invoke(evt.newValue));
 
             ResponsiveElement nearestDeepResponsive = m_descriptionFoldout.GetFirstAncestorOfType<ResponsiveElement>();
             if (nearestDeepResponsive != null) nearestDeepResponsive.OnResize += (isLandscape) => {
@@ -317,6 +327,15 @@ namespace Twinny.UI
 
         }
 
+        private void StartExperience()
+        {
+            Shader.SetGlobalFloat("_CutoffHeight", 4.5f);
+
+            _ = MobileLevelManager.Instance.ChangeScene("MobileMockupScene", 0);
+        }
+
+
+
         #endregion
 
 
@@ -341,6 +360,11 @@ namespace Twinny.UI
 
         public void OnLoadScene()
         {
+            m_mainContent.style.display =
+            m_projContent.style.display = DisplayStyle.None;
+
+            m_rightMenu.style.display = DisplayStyle.Flex;
+
         }
 
         public void OnLoadSceneFeature()

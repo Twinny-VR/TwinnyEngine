@@ -171,7 +171,7 @@ MonoBehaviour:
   _firstInstancePersistent: 0
   _keepAllInstances: 0
   _fpsAgent: {fileID: 0}
-  _config: {fileID: 11400000, guid: bb086d36738608e45ad703af262053fe, type: 2}
+  _config: {fileID: 11400000, guid: 24424731ff0e60b4a9c09435f75168f2, type: 2}
 --- !u!1 &107484633
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +650,7 @@ GameObject:
   - component: {fileID: 754262056}
   - component: {fileID: 754262060}
   - component: {fileID: 754262061}
+  - component: {fileID: 754262062}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -807,6 +808,22 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &754262062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754262055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1 &796435789
 GameObject:
   m_ObjectHideFlags: 0
