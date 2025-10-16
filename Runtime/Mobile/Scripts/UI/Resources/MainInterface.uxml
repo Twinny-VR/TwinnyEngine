@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:concept="Concept.UI" xmlns:twinny="Twinny.UI" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Packages/com.twinny.twe25/Runtime/Mobile/Scripts/UI/Resources/MainInterfaceStyles.uss?fileID=7433441132597879392&amp;guid=f4ab979667f585740b79e32b521fb67f&amp;type=3#MainInterfaceStyles" />
     <concept:ResponsiveElement name="Main" picking-mode="Ignore" class="main" style="flex-grow: 1;">
-        <ui:VisualElement name="MainContent" style="flex-grow: 1; display: flex;">
+        <ui:VisualElement name="MainContent" picking-mode="Ignore" style="flex-grow: 1; display: flex;">
             <ui:VisualElement name="Background" class="background" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgb(255, 255, 255); display: flex;" />
             <concept:AspectElement name="Banner" class="banner" style="margin-top: 42px; justify-content: flex-end;">
                 <ui:VisualElement style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: flex-end; margin-right: 16px;">
@@ -26,7 +26,7 @@
                 </ui:ScrollView>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ProjectContent" style="flex-grow: 1; display: none;">
+        <ui:VisualElement name="ProjectContent" picking-mode="Ignore" style="flex-grow: 1; display: none;">
             <ui:VisualElement name="Background" class="background" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgb(255, 255, 255); display: flex;" />
             <concept:AspectElement name="Banner" class="banner" style="margin-top: 42px; justify-content: flex-end;">
                 <ui:VisualElement style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; align-self: flex-end; margin-right: 24px; max-height: 128px; justify-content: space-around; margin-bottom: 16px;">
@@ -46,12 +46,27 @@
         <ui:VisualElement name="Logo" class="logo">
             <ui:VisualElement name="LogoImage" class="logo-image" />
         </ui:VisualElement>
-        <ui:VisualElement name="Footer" class="footer" style="flex-direction: row; justify-content: space-between;">
-            <ui:Button text="&#x9;" name="ButtonHome" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/HomeIcon.png?fileID=2800000&amp;guid=97676ee0d4dc8d748bb85febc0830a2e&amp;type=3#HomeIcon&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 56px 56px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
-            <ui:Button text="&#x9;" name="ButtonEnter" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/UI_Sheet.png?fileID=-1364167185&amp;guid=a2daaca17c893be489c7816c9a39a4cd&amp;type=3#ICO_Immersion&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 68px 68px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+        <ui:VisualElement name="Footer" picking-mode="Ignore" class="footer">
+            <ui:VisualElement name="LeftPanel" picking-mode="Ignore" style="flex-grow: 1; align-items: flex-start; display: flex;">
+                <ui:VisualElement name="PanelButtons" picking-mode="Ignore" class="panel-buttons">
+                    <ui:Button text="&#x9;" name="ButtonHome" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/HomeIcon.png?fileID=2800000&amp;guid=97676ee0d4dc8d748bb85febc0830a2e&amp;type=3#HomeIcon&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 56px 56px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="CenterPanel" picking-mode="Ignore" style="flex-grow: 1; display: flex;">
+                <ui:VisualElement name="PanelButtons" picking-mode="Ignore" class="panel-buttons" style="flex-grow: 1; align-self: center; display: none;">
+                    <ui:Button text="&#x9;" name="ButtonTest" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/HomeIcon.png?fileID=2800000&amp;guid=97676ee0d4dc8d748bb85febc0830a2e&amp;type=3#HomeIcon&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 56px 56px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                    <ui:Button text="&#x9;" name="ButtonTest" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/HomeIcon.png?fileID=2800000&amp;guid=97676ee0d4dc8d748bb85febc0830a2e&amp;type=3#HomeIcon&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 56px 56px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="RightPanel" picking-mode="Ignore" style="flex-grow: 1; align-items: flex-end;">
+                <ui:VisualElement name="PanelButtons" picking-mode="Ignore" class="panel-buttons" style="flex-grow: 1; align-self: flex-end;">
+                    <ui:Button text="&#x9;" name="ButtonEnter" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/Ion_Building.png?fileID=2800000&amp;guid=b969cc91f097f8748ac779b1e60ecc9f&amp;type=3#Ion_Building&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 74px 74px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                    <ui:Button text="&#x9;" name="ButtonImersive" style="width: 96px; height: 96px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-image: url(&quot;project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/UI_Sheet.png?fileID=-1364167185&amp;guid=a2daaca17c893be489c7816c9a39a4cd&amp;type=3#ICO_Immersion&quot;); -unity-background-image-tint-color: rgb(124, 255, 26); background-size: 68px 68px; background-color: rgb(31, 31, 31); border-left-color: rgb(49, 115, 0); border-right-color: rgb(49, 115, 0); border-top-color: rgb(49, 115, 0); border-bottom-color: rgb(49, 115, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; display: none;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="RightMenu" picking-mode="Ignore" style="flex-grow: 1; position: absolute; right: 0; align-self: stretch; justify-content: space-around; top: 0; bottom: 0; display: none;">
+            <ui:Slider value="42" high-value="4.5" direction="Vertical" inverted="false" name="CutoffSlider" class="custom-slider" />
         </ui:VisualElement>
     </concept:ResponsiveElement>
-    <ui:VisualElement name="RightMenu" picking-mode="Ignore" style="flex-grow: 1; position: absolute; right: 0; align-self: stretch; justify-content: space-around; top: 0; bottom: 0; display: none;">
-        <ui:Slider value="42" high-value="4.5" direction="Vertical" inverted="false" name="CutoffSlider" class="custom-slider" />
-    </ui:VisualElement>
 </ui:UXML>

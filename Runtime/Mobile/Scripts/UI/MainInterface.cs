@@ -46,8 +46,12 @@ namespace Twinny.UI
                 m_footer.EnableInClassList("expanded", value);
             }
         }
+        //FOOTER - LeftPanel
+
         private Button m_homeButton;
+        //FOOTER - RightPanel
         private Button m_enterButton;
+        private Button m_imersiveButton;
 
         private VisualElement m_mainContent;
         private VisualElement m_mainCardsContainer;
@@ -78,7 +82,8 @@ namespace Twinny.UI
             m_homeButton.clicked += BackToHome;
             m_enterButton = m_footer.Q<Button>("ButtonEnter");
             m_enterButton.clicked += StartExperience;
-
+            m_imersiveButton = m_footer.Q<Button>("ButtonImersive");
+            m_imersiveButton.clicked += SetFPS;
             m_mainContent = m_root?.Q<VisualElement>("MainContent");
             m_mainCardsContainer = m_mainContent?.Q<VisualElement>("ProjectCardsContainer");
             
@@ -118,8 +123,14 @@ namespace Twinny.UI
 
         private async void Start()
         {
-            var init = await UnityEngine.AddressableAssets.Addressables.InitializeAsync().Task;
-            Debug.Log("[Addressables] Catálogos carregados:");
+           bool initialized = await AddressablesManager.InitializeAsync();
+            if (!initialized)
+            {
+            Debug.LogWarning("[MainInterface][AddressablesManager] Não foi possível carregar os catálogos!");
+
+            }
+
+            Debug.Log("[MainInterface][AddressablesManager] Catálogos carregados:");
 
             ProjectList originalList = await AddressablesManager.LoadSeparateAssetAsync<ProjectList>("project_list");
             if(originalList!=null) m_projectList = ScriptableObject.Instantiate(originalList);
@@ -327,13 +338,23 @@ namespace Twinny.UI
 
         }
 
-        private void StartExperience()
+        private async void StartExperience()
         {
             Shader.SetGlobalFloat("_CutoffHeight", 4.5f);
+            m_enterButton.style.display = DisplayStyle.None;
 
-            _ = MobileLevelManager.Instance.ChangeScene("MobileMockupScene", 0);
+            await MobileLevelManager.Instance.ChangeScene("MobileMockupScene", 0);
+            m_imersiveButton.style.display = DisplayStyle.Flex;
         }
 
+
+        private async void SetFPS()
+        {
+            m_imersiveButton.style.display = DisplayStyle.None;
+            await MobileLevelManager.GetInstance()?.SetFPSAsync();
+            m_enterButton.style.display = DisplayStyle.Flex;
+
+        }
 
 
         #endregion

@@ -269,13 +269,13 @@ namespace Twinny.System
                     float deltaX = mousePos.x - _touchStartPos.x;
                     float deltaY = mousePos.y - _touchStartPos.y;
 
-                    if (Mathf.Abs(deltaX) > 1.5f)
+                    if (Mathf.Abs(deltaX) > 5f)
                     {
                         _isDragging = true;
                         CallbackHub.CallAction<IInputCallBacks>(cb => cb.OnDraggingHorizontal(deltaX));
                     }
 
-                    if (Mathf.Abs(deltaY) > 1.5f)
+                    if (Mathf.Abs(deltaY) > 5f)
                     {
                         _isDragging = true;
                         CallbackHub.CallAction<IInputCallBacks>(cb => cb.OnDraggingVertical(deltaY));

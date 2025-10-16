@@ -160,8 +160,19 @@ namespace Twinny.System
 
         }
 
-        public async void SetFPS()
+        public static MobileLevelManager GetInstance()
         {
+            return Instance as MobileLevelManager;
+        }
+
+        public void SetFPS()
+        {
+            _ = SetFPSAsync();
+        }
+
+        public async Task SetFPSAsync()
+        {
+            Debug.LogWarning("SET FPS");
             await CanvasTransition.FadeScreen(true, m_config.fadeTime);
 
             if (FirstPersonAgent.isActive)

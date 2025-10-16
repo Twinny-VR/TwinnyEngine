@@ -1,0 +1,17 @@
+{
+    "name": "Twinny.Addressables.Editor",
+    "rootNamespace": "Twinny.Addressables.Editor",
+    "references": [
+        "GUID:69448af7b92c7f342b298e06a37122aa",
+        "GUID:6ff0f9e9877b1d24ea85256dc6c42011"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
