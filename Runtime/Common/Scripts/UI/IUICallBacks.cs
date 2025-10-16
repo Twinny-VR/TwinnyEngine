@@ -35,8 +35,6 @@ namespace Twinny.UI
         void OnCameraLocked(Transform target);
         #endregion
 
-
-
     }
 
     [Serializable] public class OnCameraChangedEvent : UnityEvent { }
@@ -125,6 +123,5 @@ namespace Twinny.UI
         {
         }
 
-  
     }
 }

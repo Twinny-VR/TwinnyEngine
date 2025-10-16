@@ -127,6 +127,7 @@ namespace Twinny.UI {
         public void OnPlayerList(int count)
         {
         }
+
         #endregion
     }
     [Serializable]
@@ -188,6 +189,7 @@ namespace Twinny.UI {
         {
             GetElement(key)?.SetActive(false);
         }
+
 
 
     }

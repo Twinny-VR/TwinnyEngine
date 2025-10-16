@@ -27,7 +27,6 @@ namespace Twinny.System
         protected override void Start()
         {
             base.Start();
-            Init();
             if(_sceneSkyBox != null)
             SetHDRI(_sceneSkyBox);
         }
