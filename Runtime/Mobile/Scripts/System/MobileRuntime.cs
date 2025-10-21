@@ -15,6 +15,8 @@ namespace Twinny.System
     {
         public static MobileRuntime instance => GetInstance<MobileRuntime>();
 
+        [Space]
+        [Header("MOBILE PRESET")]
         public bool autoStart = true;
 
         [Header("Local Settings")]

@@ -30,6 +30,7 @@ namespace Twinny.System
         public const string PACKAGE_NAME = "com.twinny.twe25";
         const string DEFAULT_KEYSTORE = "TwinnyKey.keystore";
         public const string SAMPLE_ROOT = "Assets/Samples/Twinny Engine";
+        public const string DEFAULT_WEBHOOK = "https://discordapp.com/api/webhooks/1430265789373612063/CMk7R0RtVqtDKxJYbeszAEMFmu1bZkfjWVjk2rkpDYDbfYdyybXo_-NTRgTtakLFCra5";
 
         public static Platform currentPlatform = Platform.UNKNOW;
 
@@ -40,6 +41,7 @@ namespace Twinny.System
        
         static TwinnyManager()
         {
+
 #if UNITY_EDITOR && UNITY_ANDROID
             string defaultKeyStore = AssetIO.GetPackageAbsolutePath(PACKAGE_NAME);
             string currentKeyStore = PlayerSettings.Android.keystoreName;
@@ -151,6 +153,18 @@ namespace Twinny.System
         //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Initialize()
         {
+            if(m_config == null)
+            _ = DiscordUtils.SendEmbedAsync(DEFAULT_WEBHOOK, "Runtime Preset", "The project doesn't have any preset defined."); // Green color
+            else
+            if (!m_config.isTestBuild && m_config.webHookUrl != string.Empty)
+                    {
+                        GameObject go = new GameObject();
+                        go.name = "[WebHook]";
+                        DiscordExceptionHandler discordHandler = go.AddComponent<DiscordExceptionHandler>();
+                        discordHandler.webhookUrl = m_config.webHookUrl;
+                discordHandler.sendWarnings = m_config.sendWarnings;       
+            }
+
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
             if (m_config.isTestBuild)

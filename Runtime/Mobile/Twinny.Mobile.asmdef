@@ -19,20 +19,8 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "TWINNY_MOBILE",
-        "AI_NAVIGATION"
+        "TWINNY_MOBILE"
     ],
-    "versionDefines": [
-        {
-            "name": "com.unity.cinemachine",
-            "expression": "3.1.3",
-            "define": "TWINNY_MOBILE"
-        },
-        {
-            "name": "com.unity.ai.navigation",
-            "expression": "2.0.9",
-            "define": "AI_NAVIGATION"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

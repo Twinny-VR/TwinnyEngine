@@ -21,6 +21,13 @@ namespace Twinny.System
         public int targetFrameRate = 90;
 
 
+        [Header("WEB HOOK")]
+        [Tooltip("This system is only for realeses build version.")]
+        public string webHookUrl;
+        [Tooltip("Not Recommended!")]
+        public bool sendWarnings;
+
+
         private static TwinnyRuntime LoadRuntimeProfile<T>(string fileName = "") where T : TwinnyRuntime
         {
 
