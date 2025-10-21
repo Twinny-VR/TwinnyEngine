@@ -9,7 +9,6 @@ using Twinny.Addressables;
 using Twinny.System;
 using UnityEngine;
 using UnityEngine.UIElements;
-using WebSocketSharp;
 
 namespace Twinny.UI
 {
