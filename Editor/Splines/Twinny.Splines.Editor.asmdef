@@ -1,0 +1,25 @@
+{
+    "name": "Twinny.Splines.Editor",
+    "rootNamespace": "Twinny.Editor",
+    "references": [
+        "GUID:21d1eb854b91ade49bc69a263d12bee2",
+        "GUID:925b670f713d41f478ec76397a0ef334"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "SPLINES"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.splines",
+            "expression": "2.7.2",
+            "define": "SPLINES"
+        }
+    ],
+    "noEngineReferences": false
+}
