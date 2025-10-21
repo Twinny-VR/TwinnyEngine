@@ -24,7 +24,15 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
+    "defineConstraints": [
+        "CONCEPT_CORE"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.conceptfactory.core",
+            "expression": "1.0.0",
+            "define": "CONCEPT_CORE"
+        }
+    ],
     "noEngineReferences": false
 }

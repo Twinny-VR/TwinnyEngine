@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if OBSOLETE
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;

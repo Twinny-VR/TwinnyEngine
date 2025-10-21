@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if OBSOLETE
 using UnityEditor;
 using UnityEngine;
 using Twinny.System;

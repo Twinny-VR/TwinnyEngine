@@ -1,5 +1,5 @@
 
-#if UNITY_EDITOR
+#if OBSOLETE
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
