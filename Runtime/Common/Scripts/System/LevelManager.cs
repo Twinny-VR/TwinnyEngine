@@ -104,7 +104,16 @@ namespace Twinny.System
                 await LoadAdditiveSceneAsync(scene);
 
             }
-            /*
+            
+            await Task.Delay(1500);
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+            await CanvasTransition.FadeScreen(false, m_config.fadeTime);
+
+        }
+
+
+
+        /*
             SceneFeature feature = SceneFeature.Instance as SceneFeature;
 
             if (feature)
@@ -133,12 +142,6 @@ namespace Twinny.System
 
             }
             */
-            await Task.Delay(1500);
-            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
-            await CanvasTransition.FadeScreen(false, m_config.fadeTime);
-
-        }
-
 
         /// <summary>
         /// Async function to load an additive scene

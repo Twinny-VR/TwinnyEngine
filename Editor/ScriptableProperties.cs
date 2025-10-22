@@ -13,63 +13,98 @@ namespace Twinny.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            // Se o campo for uma referência de objeto
-            if (property.objectReferenceValue != null)
+            EditorGUI.BeginProperty(position, label, property);
+
+            // Linha principal — campo de referência do ScriptableObject
+            Rect fieldRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+
+            EditorGUI.PropertyField(fieldRect, property, label, true);
+
+            // Se ainda não há ScriptableObject atribuído
+            if (property.objectReferenceValue == null)
             {
-                // Desenha o campo de referência do ScriptableObject (como uma referência normal)
-                EditorGUI.PropertyField(position, property, label, true);
+                // Cria botão pra criar um novo ScriptableObject
+                Rect buttonRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
 
-                // Criando um "foldout" para controlar a expansão/colapso
-                Rect foldoutRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
-                isFoldedOut = EditorGUI.Foldout(foldoutRect, isFoldedOut, "Properties", true);
-
-                if (isFoldedOut)
+                if (GUI.Button(buttonRect, $"Criar novo {fieldInfo.FieldType.Name}"))
                 {
-                    // Cria um SerializedObject para o ScriptableObject
-                    SerializedObject serializedObject = new SerializedObject(property.objectReferenceValue);
+                    var asset = ScriptableObject.CreateInstance(fieldInfo.FieldType);
+                    string path = "Assets/New " + fieldInfo.FieldType.Name + ".asset";
+                    path = AssetDatabase.GenerateUniqueAssetPath(path);
 
-                    // Itera sobre as propriedades do ScriptableObject e as desenha no Inspector
-                    SerializedProperty iterator = serializedObject.GetIterator();
-                    float yOffset = foldoutRect.y + EditorGUIUtility.singleLineHeight + 2; // Move para a próxima linha
+                    AssetDatabase.CreateAsset(asset, path);
+                    AssetDatabase.SaveAssets();
 
-                    // Desenha as propriedades visíveis do ScriptableObject
-                    while (iterator.NextVisible(true))
-                    {
-                        Rect fieldRect = new Rect(position.x, yOffset, position.width, EditorGUI.GetPropertyHeight(iterator, true));
-                        EditorGUI.PropertyField(fieldRect, iterator, true);
-                        yOffset += EditorGUI.GetPropertyHeight(iterator, true) + 2; // Adiciona espaçamento entre as propriedades
-                    }
+                    property.objectReferenceValue = asset;
+                    property.serializedObject.ApplyModifiedProperties();
                 }
+
+                EditorGUI.EndProperty();
+                return;
             }
-            else
+
+            // Se tem ScriptableObject, mostra o foldout
+            Rect foldoutRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 4, position.width, EditorGUIUtility.singleLineHeight);
+            isFoldedOut = EditorGUI.Foldout(foldoutRect, isFoldedOut, "Properties", true);
+
+            if (isFoldedOut)
             {
-                // Se não houver ScriptableObject, mostra uma mensagem
-                EditorGUI.LabelField(position, "No ScriptableObject assigned.");
+                SerializedObject serializedObject = new SerializedObject(property.objectReferenceValue);
+                SerializedProperty iterator = serializedObject.GetIterator();
+
+                float yOffset = foldoutRect.y + EditorGUIUtility.singleLineHeight + 2;
+
+                iterator.NextVisible(true); // pula o campo script
+                while (iterator.NextVisible(false))
+                {
+                    Rect propRect = new Rect(position.x + 15, yOffset, position.width - 15, EditorGUI.GetPropertyHeight(iterator, true));
+                    EditorGUI.PropertyField(propRect, iterator, true);
+                    yOffset += EditorGUI.GetPropertyHeight(iterator, true) + 2;
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
+
+            EditorGUI.EndProperty();
         }
+
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            // Se o campo for uma referência a um ScriptableObject, calcula a altura
             if (property.objectReferenceValue != null)
             {
-                float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.singleLineHeight; // Uma linha para a referência + uma linha para o foldout
+                float height = EditorGUIUtility.singleLineHeight * 2f; // campo + foldout
                 if (isFoldedOut)
                 {
                     SerializedObject serializedObject = new SerializedObject(property.objectReferenceValue);
                     SerializedProperty iterator = serializedObject.GetIterator();
+
                     while (iterator.NextVisible(true))
                     {
-                        height += EditorGUI.GetPropertyHeight(iterator, true) + 2; // Altura das propriedades do ScriptableObject
+                        height += EditorGUI.GetPropertyHeight(iterator, true) + 2f;
                     }
+
+                    height += 8f; // espaço extra no final
                 }
+
                 return height;
             }
-            return EditorGUIUtility.singleLineHeight; // Caso não haja ScriptableObject, apenas a altura do campo de referência
+            else
+            {
+                // Campo em branco + botão + espaçamento extra
+                return EditorGUIUtility.singleLineHeight * 2f + 8f; // 1 linha do campo + 1 do botão + padding
+            }
         }
 
 
+
+
     }
+
+
+}
+#endif
+
 
 
     /*
@@ -127,5 +162,3 @@ namespace Twinny.Editor
 
     }
     */
-}
-#endif

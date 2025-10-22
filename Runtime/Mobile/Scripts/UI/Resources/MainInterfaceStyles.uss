@@ -1,17 +1,31 @@
 :root {
+    /* Cores base */
     --primary-color: rgb(27, 28, 29);
-    --secondary-color: rgb(37, 42, 69);
+    --secondary-color: rgba(0, 0, 0, 0.25); /* Preto transparente */
+
+    /* Texto */
     --text-primary: rgb(255, 255, 255);
     --text-secondary: rgb(123, 123, 123);
-    --border-color: rgb(37, 42, 69);
+
+    /* Bordas */
+    --border-color: rgba(0, 0, 0, 0.25);
+    --border-green: rgb(49, 115, 0);
+
+    /* Extras */
+    --gray-light: rgb(116, 116, 116);
+    --gray-medium: rgb(68, 68, 68);
+    --gray-dark: rgb(102, 102, 102);
+    --green: rgb(134, 218, 0);
 }
+
+/* ===================== */
+/* LAYOUT PRINCIPAL */
+/* ===================== */
 
 .banner {
     background-image: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/Banner2.png?fileID=2800000&guid=e0b8b211832856243a66997f64a3ff3b&type=3#Banner2");
-    background-color: rgba(0, 0, 0, 0);
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 0;
+    background-color: transparent;
+    margin: 0;
     margin-top: 42px;
     max-height: none;
     min-height: 30%;
@@ -22,7 +36,7 @@
 }
 
 .logo {
-    background-color: rgb(0, 0, 0);
+    background-color: var(--primary-color);
     border-bottom-right-radius: 32px;
     position: absolute;
     background-size: 90% 90%;
@@ -33,18 +47,12 @@
     align-items: flex-start;
     height: 80px;
     width: 300px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-bottom: 8px;
-    padding-left: 8px;
+    padding: 8px;
 }
 
 .logo.expanded {
     width: 100%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    border-radius: 0;
     height: 80px;
 }
 
@@ -64,10 +72,7 @@
 .container {
     flex-grow: 1;
     flex-direction: row;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
+    padding: 0;
 }
 
 .portrait .container {
@@ -77,10 +82,7 @@
 .footer {
     position: absolute;
     width: 100%;
-    padding-top: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
+    padding: 16px;
     transition-property: bottom;
     transition-duration: 1s;
     transition-timing-function: ease-in-out;
@@ -97,14 +99,11 @@
 .info {
     width: 30%;
     min-width: 640px;
-    padding-top: 32px;
-    padding-right: 32px;
-    padding-bottom: 32px;
-    padding-left: 32px;
+    padding: 32px;
     align-self: stretch;
     flex-grow: 1;
     height: auto;
-    background-color: rgba(116, 116, 116, 0);
+    background-color: transparent;
 }
 
 .info .unity-label {
@@ -113,17 +112,17 @@
     width: 100%;
     -unity-font-definition: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Fonts/src/DINNextLTPro-Condensed.otf?fileID=12800000&guid=afcd4a1369e8f414fbeb0398ef9268ff&type=3#DINNextLTPro-Condensed");
     font-size: 32px;
-    color: rgb(102, 102, 102);
+    color: var(--gray-dark);
 }
 
 .portrait .info .unity-label {
-    color: white;
+    color: var(--text-primary);
 }
 
 .portrait .info {
     width: auto;
     flex-grow: 0;
-    background-color: rgb(116, 116, 116);
+    background-color: var(--gray-light);
     height: auto;
 }
 
@@ -132,14 +131,11 @@
 }
 
 .foldout-info {
-    background-color: rgba(116, 116, 116, 0);
+    background-color: transparent;
     width: 30%;
     font-size: 32px;
     -unity-font-definition: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Fonts/src/DINNextLTPro-Condensed.otf?fileID=12800000&guid=afcd4a1369e8f414fbeb0398ef9268ff&type=3#DINNextLTPro-Condensed");
-    padding-top: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
+    padding: 16px;
     min-width: auto;
 }
 
@@ -157,22 +153,22 @@
     right: 0;
     width: 32px;
     height: 32px;
-    -unity-background-image-tint-color: white;
+    -unity-background-image-tint-color: var(--text-primary);
 }
 
 .portrait .foldout-info {
     opacity: 1;
-    background-color: rgb(116, 116, 116);
-    padding-top: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
-    -unity-font-definition: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Fonts/src/DINNextLTPro-Condensed.otf?fileID=12800000&guid=afcd4a1369e8f414fbeb0398ef9268ff&type=3#DINNextLTPro-Condensed");
+    background-color: var(--gray-light);
+    padding: 16px;
     font-size: 32px;
-    color: rgb(255, 255, 255);
+    color: var(--text-primary);
     flex-wrap: wrap;
     width: auto;
 }
+
+/* ===================== */
+/* SLIDER PERSONALIZADO */
+/* ===================== */
 
 .custom-slider {
     width: 40px;
@@ -182,7 +178,7 @@
 
 .custom-slider.unity-base-slider--vertical .unity-base-slider__tracker {
     width: 8px;
-    background-color: rgb(68, 68, 68);
+    background-color: var(--gray-medium);
     border-radius: 4px;
     margin-left: auto;
     margin-right: auto;
@@ -198,37 +194,114 @@
 .custom-slider.unity-base-slider--vertical .unity-base-slider__dragger {
     width: 20px;
     height: 20px;
-    background-color: rgb(68, 68, 68);
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    border-left-color: rgb(49, 115, 0);
-    border-right-color: rgb(49, 115, 0);
-    border-top-color: rgb(49, 115, 0);
-    border-bottom-color: rgb(49, 115, 0);
+    background-color: var(--gray-medium);
+    border-width: 2px;
+    border-color: var(--border-green);
     border-radius: 50%;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
     position: relative;
     align-self: center;
-    left: 5;
+    left: 5px;
 }
 
 .custom-slider.unity-base-slider--vertical .unity-base-slider__dragger-border {
     background-color: transparent;
 }
 
+/* ===================== */
+/* PAINÉIS E CABEÇALHO */
+/* ===================== */
+
 .panel-buttons {
     align-self: flex-start;
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    background-color: rgba(0, 0, 0, 0.39);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
     flex-direction: row;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    height: 64px;
+    width: 100%;
+    flex-direction: row-reverse;
+    padding: 16px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+/* ===================== */
+/* DROPDOWN AJUSTADO */
+/* ===================== */
+
+.custom-dropdown {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--border-green);
+    color: var(--green);
+    -unity-font-definition: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Fonts/src/DINNextLTPro-Condensed.otf?fileID=12800000&guid=afcd4a1369e8f414fbeb0398ef9268ff&type=3#DINNextLTPro-Condensed");
+    font-size: 22px;
+    height: 42px;
+    margin: 4px 0;
+    min-width: 320px; /* mais largo */
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 8px;
+}
+
+/* Label mais próxima e com largura controlada */
+.custom-dropdown > .unity-base-field__label {
+    min-width: 70px; /* menor pra chegar mais perto */
+    max-width: 100px;
+    margin-right: 4px; /* mais colado */
+    color: var(--text-primary);
+    font-size: 20px;
+    align-self: center;
+}
+
+/* Área do campo (dropdown real) */
+.custom-dropdown > .unity-base-field__input {
+    flex-grow: 1;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    padding-left: 10px;
+    padding-right: 28px;
+    height: 100%;
+    align-items: center;
+}
+
+/* Ícone da seta */
+.custom-dropdown .unity-base-popup-field__arrow {
+    position: absolute;
+    right: 8px;
+    -unity-background-image-tint-color: var(--border-green);
+}
+
+
+.custom-dropdown:hover,
+.custom-dropdown:active {
+    border-color: var(--border-green);
+}
+
+.unity-popup-field__menu {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--border-green);
+    min-width: 260px;
+}
+
+.unity-popup-field__menu .unity-popup-field__menu-item {
+    color: var(--text-primary);
+    background-color: transparent;
+    padding: 6px 10px;
+}
+
+.unity-popup-field__menu .unity-popup-field__menu-item:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
 }
