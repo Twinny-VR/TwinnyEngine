@@ -154,8 +154,17 @@ namespace Twinny.UI
             }     
             
             Debug.LogWarning("PROJECTS TOTAL: "+m_projectInfos.Count);
+            string host = m_projectInfos[0].addressableUrl;
+            if (host.ToLowerInvariant() == "[default]") host = TwinnyRuntime.GetInstance<MobileRuntime>().hostDirectory;
+            string folder = m_projectInfos[0].addressableKey;
+            if (folder.ToLowerInvariant() == "[ProjectName]") folder = m_projectInfos[0].name;
+        string moduleCatalogUrl = $"{host}/{folder}/{AddressablesManager.GetPlatformFolder()}/catalog.json";
 
-            _=FillCardsContainer();
+        //    bool teste = await AddressablesManager.LoadContentCatalogAsync(moduleCatalogUrl);
+           
+
+
+            _ =FillCardsContainer();
             
 
             _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);

@@ -8,7 +8,8 @@ namespace Twinny.Addressables
     public class ProjectInfo : ScriptableObject
     {
         public string version;
-        public string addressableKey;
+        public string addressableUrl = "[Default]";
+        public string addressableKey = "[ProjectName]";
         public string projectName;
         public string authorName;
         public string description;

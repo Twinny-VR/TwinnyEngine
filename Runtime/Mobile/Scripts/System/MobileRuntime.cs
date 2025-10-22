@@ -22,8 +22,8 @@ namespace Twinny.System
         [Header("Local Settings")]
         public string localProjectListTempDirectory = "../Temp/ProjectListUpload";
 
-        [Header("Remote Settings")]
-        public string hostDirectory = "https://twinnyvr.co/";
+        [Header("ADDRESSABLES Remote Settings")]
+        public string hostDirectory = "https://twinnyvr.co/apps/twinny/projects/";
         public string remoteProjectListDirectory = "project_list";
         [Tooltip("The host json file name will not be the same of the 'ProjectList' asset unless you set it.")]
         public string projectListFileName = "projectlist";
