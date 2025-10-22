@@ -88,6 +88,36 @@ public class ProjectListEditor : Editor
         EditorUtility.SetDirty(projectList);
         AssetDatabase.SaveAssets();
 
+        // Adiciona o próprio ProjectList como Addressable
+        string listGuid = AssetDatabase.AssetPathToGUID(listPath);
+        string listFileName = Path.GetFileNameWithoutExtension(listPath);
+
+        // Cria grupo se não existir
+        AddressableAssetGroup listGroup = settings.groups.FirstOrDefault(g => g.Name == listFileName);
+        if (listGroup == null)
+        {
+            listGroup = settings.CreateGroup(listFileName, false, false, false, null, typeof(BundledAssetGroupSchema));
+            Debug.Log($"Criado grupo Addressable: {listFileName}");
+        }
+
+        // Adiciona ou move o scriptable para o grupo
+        AddressableAssetEntry listEntry = settings.FindAssetEntry(listGuid);
+        if (listEntry == null)
+        {
+            listEntry = settings.CreateOrMoveEntry(listGuid, listGroup);
+            Debug.Log($"Adicionado ProjectList '{listFileName}' como Addressable.");
+        }
+        else if (listEntry.parentGroup != listGroup)
+        {
+            settings.MoveEntry(listEntry, listGroup);
+            Debug.Log($"Movido ProjectList '{listFileName}' para o grupo correto.");
+        }
+
+        listEntry.address = listFileName;
+        settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryModified, listEntry, true);
+        AssetDatabase.SaveAssets();
+
+
         Debug.Log($"ProjectList atualizado com {addresses.Length} projetos!");
     }
 }
