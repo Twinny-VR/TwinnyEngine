@@ -23,7 +23,7 @@ public class ProjectInfoEditor : Editor
         }
     }
 
-    private void SetupProjectInfoAddressables(ProjectInfo projectInfo)
+    public static void SetupProjectInfoAddressables(ProjectInfo projectInfo)
     {
         string assetPath = AssetDatabase.GetAssetPath(projectInfo);
         if (string.IsNullOrEmpty(assetPath))

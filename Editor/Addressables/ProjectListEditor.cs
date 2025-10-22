@@ -6,6 +6,7 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using System.IO;
 using System.Linq;
+using Twinny.Addressables;
 
 [CustomEditor(typeof(Twinny.Addressables.ProjectList))]
 public class ProjectListEditor : Editor
@@ -81,6 +82,17 @@ public class ProjectListEditor : Editor
 
             addresses[i] = entry.address;
             Debug.Log($"ProjectInfo configurado: {entry.address}");
+
+            ProjectInfo projectInfo = AssetDatabase.LoadAssetAtPath<ProjectInfo>(path);
+            if (projectInfo != null)
+            {
+                ProjectInfoEditor.SetupProjectInfoAddressables(projectInfo);
+            }
+            else
+            {
+                Debug.LogWarning($"Não foi possível carregar o ProjectInfo em {path}");
+            }
+
         }
 
         // Atualiza o ProjectList
