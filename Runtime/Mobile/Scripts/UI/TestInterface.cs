@@ -16,7 +16,6 @@ namespace Twinny.UI
     public class TestInterface : MonoBehaviour
     {
         private static MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
-        public static event Action<float> OnCutoffChangedEvent;
 
 
         public UIDocument document { get; private set; }
@@ -84,15 +83,15 @@ namespace Twinny.UI
             //Right Menu
             m_rightMenu = m_root.Q<VisualElement>("RightMenu");
             m_cutoffSlider = m_root.Q<Slider>("CutoffSlider");
-            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => OnCutoffChangedEvent?.Invoke(evt.newValue));
+            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => MainInterface.OnCutoffChanged?.Invoke(evt.newValue));
 
-            OnCutoffChangedEvent += OnCutoffChanged;
+            MainInterface.OnCutoffChanged += OnCutoffChanged;
 
         }
 
         private void OnDisable()
         {
-            OnCutoffChangedEvent -= OnCutoffChanged;
+            MainInterface.OnCutoffChanged -= OnCutoffChanged;
 
         }
 
