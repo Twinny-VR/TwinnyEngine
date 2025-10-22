@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Concept.UI;
 using Twinny.Addressables;
 using Twinny.System;
 using UnityEngine;
@@ -14,6 +16,8 @@ namespace Twinny.UI
     public class TestInterface : MonoBehaviour
     {
         private static MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
+        public static event Action<float> OnCutoffChangedEvent;
+
 
         public UIDocument document { get; private set; }
         private VisualElement m_root;
@@ -22,6 +26,12 @@ namespace Twinny.UI
         private DropdownField m_scenesDropdown;
 
 
+        //Right Menu
+        private VisualElement m_rightMenu;
+        private Slider m_cutoffSlider;
+
+
+        //Footer
         private VisualElement m_footer;
         private bool m_footerExpanded;
         public bool footerExpanded
@@ -71,6 +81,19 @@ namespace Twinny.UI
             }).StartingIn(1);
 
 
+            //Right Menu
+            m_rightMenu = m_root.Q<VisualElement>("RightMenu");
+            m_cutoffSlider = m_root.Q<Slider>("CutoffSlider");
+            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => OnCutoffChangedEvent?.Invoke(evt.newValue));
+
+            OnCutoffChangedEvent += OnCutoffChanged;
+
+        }
+
+        private void OnDisable()
+        {
+            OnCutoffChangedEvent -= OnCutoffChanged;
+
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -105,6 +128,14 @@ namespace Twinny.UI
             m_enterButton.style.display = DisplayStyle.Flex;
 
         }
+
+
+        private void OnCutoffChanged(float value)
+        {
+            Shader.SetGlobalFloat("_CutoffHeight", value);
+
+        }
+
 
     }
 
