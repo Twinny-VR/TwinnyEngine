@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 308773644}
   m_Layer: 31
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 415318478}
   m_Layer: 31
   m_Name: Decor6
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 472190601}
   m_Layer: 31
   m_Name: SidingGlass
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 496604845}
   m_Layer: 31
   m_Name: Frame
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 583448055}
   m_Layer: 31
   m_Name: Decor5
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 619656532}
   m_Layer: 31
   m_Name: Frame2
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -748,7 +748,7 @@ GameObject:
   - component: {fileID: 840798290}
   m_Layer: 31
   m_Name: Bed
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 906272598}
   m_Layer: 31
   m_Name: Decor9
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -814,7 +814,7 @@ GameObject:
   - component: {fileID: 909627241}
   m_Layer: 31
   m_Name: Decor8
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 915465168}
   m_Layer: 31
   m_Name: Decor7
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -912,7 +912,7 @@ GameObject:
   - component: {fileID: 1113889350}
   m_Layer: 31
   m_Name: Table
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -944,7 +944,7 @@ GameObject:
   - component: {fileID: 1116516973}
   m_Layer: 31
   m_Name: Frame3
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -976,7 +976,7 @@ GameObject:
   - component: {fileID: 1204350445}
   m_Layer: 31
   m_Name: Lights2ndFloor
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1011,7 +1011,7 @@ GameObject:
   - component: {fileID: 1306058090}
   m_Layer: 31
   m_Name: Wardrobe
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 1349697167}
   m_Layer: 31
   m_Name: BathCabinet
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1076,7 +1076,7 @@ GameObject:
   - component: {fileID: 1356753449}
   m_Layer: 31
   m_Name: Chair
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 1494799740}
   m_Layer: 31
   m_Name: Frame4
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1262,7 +1262,7 @@ GameObject:
   - component: {fileID: 1605088245}
   m_Layer: 31
   m_Name: Decor1
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 1759959474}
   m_Layer: 31
   m_Name: LightsFstFloor
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1368,7 +1368,7 @@ GameObject:
   - component: {fileID: 1853126054}
   m_Layer: 31
   m_Name: Espelho
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1400,7 +1400,7 @@ GameObject:
   - component: {fileID: 1887848030}
   m_Layer: 31
   m_Name: Bench
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1479,7 +1479,7 @@ GameObject:
   - component: {fileID: 2009753919}
   m_Layer: 31
   m_Name: Overhead1
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2934,7 +2934,7 @@ GameObject:
   - component: {fileID: 8338009893351870604}
   m_Layer: 31
   m_Name: GObject001LooseMesh
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3969,7 +3969,7 @@ GameObject:
   - component: {fileID: 7857304330607621101}
   m_Layer: 31
   m_Name: Decor3
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5677,7 +5677,7 @@ GameObject:
   - component: {fileID: 154574987171243908}
   m_Layer: 31
   m_Name: GObject131
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7906,7 +7906,7 @@ GameObject:
   - component: {fileID: 5666502177830016886}
   m_Layer: 31
   m_Name: Television
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8277,7 +8277,7 @@ GameObject:
   - component: {fileID: 8390859732842587088}
   m_Layer: 31
   m_Name: Lamp
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8935,7 +8935,7 @@ GameObject:
   - component: {fileID: 7048158279954728074}
   m_Layer: 31
   m_Name: GObject155
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11225,7 +11225,7 @@ GameObject:
   - component: {fileID: 5578434399286675492}
   m_Layer: 31
   m_Name: GObject137
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12315,7 +12315,7 @@ GameObject:
   - component: {fileID: 5538275003240002894}
   m_Layer: 31
   m_Name: GObject132
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12978,7 +12978,7 @@ GameObject:
   - component: {fileID: 1965709314365188180}
   m_Layer: 31
   m_Name: Decor2
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13473,7 +13473,7 @@ GameObject:
   - component: {fileID: 2491741144228316401}
   m_Layer: 31
   m_Name: Arandela
-  m_TagString: Untagged
+  m_TagString: CutoffOccludee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

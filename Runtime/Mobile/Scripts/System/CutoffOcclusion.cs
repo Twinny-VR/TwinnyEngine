@@ -10,41 +10,35 @@ namespace Twinny.System
 
     public class CutoffOcclusion : MonoBehaviour
     {
-        private const string LAYER_NAME = "CutoffOccludee";
+        private const string TAG_NAME = "CutoffOccludee";
 
         private List<Transform> m_childs;
         private void Start()
         {
-
-            int layer = 31;// LayerMask.NameToLayer(LAYER_NAME);
-
-
             m_childs = new List<Transform>();
-
-            // pega todos os filhos, ativos e inativos
+            
             Transform[] allChildren = transform.GetComponentsInChildren<Transform>(true);
 
             foreach (var child in allChildren)
             {
-                if (child.gameObject.layer == layer)
+                if (child.CompareTag(TAG_NAME))
                 {
                     m_childs.Add(child);
                 }
             }
-
-
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
+/*
             int layer = LayerMask.NameToLayer(LAYER_NAME);
             if (layer == -1)
             {
                 Debug.LogWarning($"Layer '{LAYER_NAME}' não existe!");
                 RegisterLayer(LAYER_NAME,31);
             }
-
+*/
         }
 
 #endif
@@ -74,7 +68,7 @@ namespace Twinny.System
 
 
 
-
+        /*
         private void RegisterLayer(string layerName, int layerIndex = -1)
         {
             if (string.IsNullOrEmpty(layerName))
@@ -123,7 +117,7 @@ namespace Twinny.System
                 return;
             }
         }
-
+        */
     }
 
 }
