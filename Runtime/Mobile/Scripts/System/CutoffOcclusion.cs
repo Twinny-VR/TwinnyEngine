@@ -16,21 +16,21 @@ namespace Twinny.System
         private void Start()
         {
 
-            int layer = LayerMask.NameToLayer(LAYER_NAME);
+            int layer = 31;// LayerMask.NameToLayer(LAYER_NAME);
 
 
-                m_childs = new List<Transform>();
+            m_childs = new List<Transform>();
 
-                // pega todos os filhos, ativos e inativos
-                Transform[] allChildren = transform.GetComponentsInChildren<Transform>(true);
+            // pega todos os filhos, ativos e inativos
+            Transform[] allChildren = transform.GetComponentsInChildren<Transform>(true);
 
-                foreach (var child in allChildren)
+            foreach (var child in allChildren)
+            {
+                if (child.gameObject.layer == layer)
                 {
-                    if (child.gameObject.layer == layer)
-                    {
-                        m_childs.Add(child);
-                    }
+                    m_childs.Add(child);
                 }
+            }
 
 
         }
@@ -42,7 +42,7 @@ namespace Twinny.System
             if (layer == -1)
             {
                 Debug.LogWarning($"Layer '{LAYER_NAME}' não existe!");
-                RegisterLayer(LAYER_NAME);
+                RegisterLayer(LAYER_NAME,31);
             }
 
         }
@@ -75,7 +75,7 @@ namespace Twinny.System
 
 
 
-        private void RegisterLayer(string layerName)
+        private void RegisterLayer(string layerName, int layerIndex = -1)
         {
             if (string.IsNullOrEmpty(layerName))
             {
@@ -86,31 +86,41 @@ namespace Twinny.System
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty layersProp = tagManager.FindProperty("layers");
 
-            // Checa se a layer já existe
-            for (int i = 0; i < layersProp.arraySize; i++)
+            if (layerIndex <= 8)
             {
-                SerializedProperty sp = layersProp.GetArrayElementAtIndex(i);
-                if (sp.stringValue == layerName)
+                // Checa se a layer já existe
+                for (int i = 0; i < layersProp.arraySize; i++)
                 {
-                    Debug.Log($"Layer '{layerName}' já existe no índice {i}.");
-                    return; // Sai do método, sem duplicar
+                    SerializedProperty sp = layersProp.GetArrayElementAtIndex(i);
+                    if (sp.stringValue == layerName)
+                    {
+                        Debug.Log($"Layer '{layerName}' já existe no índice {i}.");
+                        return; // Sai do método, sem duplicar
+                    }
                 }
-            }
 
-            // Procura a primeira posição vazia a partir do índice 8
-            for (int i = 8; i < layersProp.arraySize; i++)
+                // Procura a primeira posição vazia a partir do índice 8
+                for (int i = 8; i < layersProp.arraySize; i++)
+                {
+                    SerializedProperty sp = layersProp.GetArrayElementAtIndex(i);
+                    if (string.IsNullOrEmpty(sp.stringValue))
+                    {
+                        sp.stringValue = layerName;
+                        tagManager.ApplyModifiedProperties();
+                        Debug.Log($"Layer '{layerName}' criada no índice {i}.");
+                        return;
+                    }
+                }
+
+                Debug.LogWarning("Não foi possível criar a layer. Não há slots vazios disponíveis.");
+            }
+            else
             {
-                SerializedProperty sp = layersProp.GetArrayElementAtIndex(i);
-                if (string.IsNullOrEmpty(sp.stringValue))
-                {
-                    sp.stringValue = layerName;
-                    tagManager.ApplyModifiedProperties();
-                    Debug.Log($"Layer '{layerName}' criada no índice {i}.");
-                    return;
-                }
+                SerializedProperty sp = layersProp.GetArrayElementAtIndex(layerIndex);
+                tagManager.ApplyModifiedProperties();
+                Debug.Log($"Layer '{layerName}' criada no índice {layerIndex}.");
+                return;
             }
-
-            Debug.LogWarning("Não foi possível criar a layer. Não há slots vazios disponíveis.");
         }
 
     }

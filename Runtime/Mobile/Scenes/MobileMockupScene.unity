@@ -214,7 +214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 308773644}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 415318478}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 472190601}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: SidingGlass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 496604845}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 583448055}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 619656532}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Frame2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -746,7 +746,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 840798290}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -780,7 +780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 906272598}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 909627241}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -844,7 +844,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 915465168}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,7 +910,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1113889350}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -942,7 +942,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1116516973}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Frame3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -974,7 +974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1204350445}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Lights2ndFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1009,7 +1009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1306058090}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Wardrobe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,7 +1041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1349697167}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: BathCabinet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1356753449}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1228,7 +1228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494799740}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Frame4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1260,7 +1260,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1605088245}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1292,7 +1292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1759959474}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: LightsFstFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1366,7 +1366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1853126054}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Espelho
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1398,7 +1398,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1887848030}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1477,7 +1477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009753919}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Overhead1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2932,7 +2932,7 @@ GameObject:
   - component: {fileID: 6019715802301229176}
   - component: {fileID: 5436240045300299330}
   - component: {fileID: 8338009893351870604}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: GObject001LooseMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3967,7 +3967,7 @@ GameObject:
   - component: {fileID: 7324635969558821310}
   - component: {fileID: 6335961093066750262}
   - component: {fileID: 7857304330607621101}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5675,7 +5675,7 @@ GameObject:
   - component: {fileID: 4429389238287331070}
   - component: {fileID: 2682015377770885499}
   - component: {fileID: 154574987171243908}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: GObject131
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7904,7 +7904,7 @@ GameObject:
   - component: {fileID: 7740825906463937083}
   - component: {fileID: 4894147285565988008}
   - component: {fileID: 5666502177830016886}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Television
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8275,7 +8275,7 @@ GameObject:
   - component: {fileID: 6680314323684297754}
   - component: {fileID: 6091259545120114975}
   - component: {fileID: 8390859732842587088}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8933,7 +8933,7 @@ GameObject:
   - component: {fileID: 2624729319239921141}
   - component: {fileID: 4580423678374934498}
   - component: {fileID: 7048158279954728074}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: GObject155
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11223,7 +11223,7 @@ GameObject:
   - component: {fileID: 2776692769586451528}
   - component: {fileID: 6792006845578715951}
   - component: {fileID: 5578434399286675492}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: GObject137
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12313,7 +12313,7 @@ GameObject:
   - component: {fileID: 7083308317369163744}
   - component: {fileID: 4844169959341890751}
   - component: {fileID: 5538275003240002894}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: GObject132
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12976,7 +12976,7 @@ GameObject:
   - component: {fileID: 7502654086051608447}
   - component: {fileID: 483876926076782019}
   - component: {fileID: 1965709314365188180}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Decor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13471,7 +13471,7 @@ GameObject:
   - component: {fileID: 2794225005755353783}
   - component: {fileID: 6686911263723440634}
   - component: {fileID: 2491741144228316401}
-  m_Layer: 9
+  m_Layer: 31
   m_Name: Arandela
   m_TagString: Untagged
   m_Icon: {fileID: 0}
