@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,8 +22,17 @@ namespace Twinny.System
 
         protected static new MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
 
+        public static event Action<float> OnCutoffChangedEvent;
+
 
         public static InterestItem currentInterest;
+        [SerializeField]
+        private float m_cutoffHeight = 4.5f;
+        public static float cutoffHeight => GetInstance().m_cutoffHeight;
+
+        protected EventSystem m_eventSystem = EventSystem.current;
+
+        #region MonoBehaviour Methods
 
 #if UNITY_EDITOR
 
@@ -50,6 +60,13 @@ namespace Twinny.System
         }
 #endif
 
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+        }
         protected override void Awake()
         {
             base.Awake();
@@ -62,24 +79,43 @@ namespace Twinny.System
             base.Start();
             ActionManager.RegisterAction("SetFPS", SetFPS);
         }
+        #endregion
+
+
+        public static void ResetCutoff()
+        {
+            float cutoffHeight = MobileLevelManager.cutoffHeight;
+            Shader.SetGlobalFloat("_CutoffHeight", cutoffHeight);
+        }
+
+        public static void OnCutoffChanged(float value)
+        {
+            float height = cutoffHeight * value;
+            Shader.SetGlobalFloat("_CutoffHeight", height);
+            OnCutoffChangedEvent?.Invoke(value);
+
+        }
+
+
+
 
         /// <summary>
         /// This Async Method changes the actual scene.
         /// </summary>
         /// <param name="scene">Scene Name</param>
         /// <param name="landMarkIndex">First LandMark to teleport.</param>
-
         public override async Task ChangeScene(object scene, int landMarkIndex)
         {
             if (IsSceneLoaded(scene)) {
                 CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());               
                 return; 
             }
-
-            var envenSystem = EventSystem.current;
-            envenSystem.enabled = false;
+            if(m_eventSystem == null)
+                m_eventSystem = EventSystem.current;
+            m_eventSystem.enabled = false;
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
             await CanvasTransition.FadeScreen(true, m_config.fadeTime);
+            ResetCutoff();
 
 
 
@@ -113,10 +149,10 @@ namespace Twinny.System
 
             }
 
-            await Task.Delay(1500);
+            await Task.Delay(500);
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
             await CanvasTransition.FadeScreen(false, m_config.fadeTime);
-            envenSystem.enabled = true;
+            m_eventSystem.enabled = true;
 
 
         }
@@ -172,8 +208,10 @@ namespace Twinny.System
 
         public async Task SetFPSAsync()
         {
-            Debug.LogWarning("SET FPS");
             await CanvasTransition.FadeScreen(true, m_config.fadeTime);
+
+            ResetCutoff();
+
 
             if (FirstPersonAgent.isActive)
                 CallbackHub.CallAction<ICameraCallBacks>(callback => callback.OnChangeCamera(currentInterest.virtualCamera));

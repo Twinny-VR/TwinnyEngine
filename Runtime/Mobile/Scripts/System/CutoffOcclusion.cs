@@ -51,20 +51,22 @@ namespace Twinny.System
 
         private void OnEnable()
         {
-            MainInterface.OnCutoffChanged += OnCutoffChanged;
+            MobileLevelManager.OnCutoffChangedEvent += OnCutoffChanged;
         }
 
         private void OnDisable()
         {
-            MainInterface.OnCutoffChanged -= OnCutoffChanged;
+            MobileLevelManager.OnCutoffChangedEvent -= OnCutoffChanged;
         }
 
         private void OnCutoffChanged(float value)
         {
+            var height = MobileLevelManager.cutoffHeight * value;
+
             foreach (var item in m_childs)
             {
                 if (item == transform) continue;
-                bool active = item.position.y < value;
+                bool active = item.position.y < height;
                 item.gameObject.SetActive(active);
             }
 

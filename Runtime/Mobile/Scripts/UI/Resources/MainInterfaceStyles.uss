@@ -1,26 +1,15 @@
 :root {
-    /* Cores base */
     --primary-color: rgb(27, 28, 29);
-    --secondary-color: rgba(0, 0, 0, 0.25); /* Preto transparente */
-
-    /* Texto */
+    --secondary-color: rgba(0, 0, 0, 0.25);
     --text-primary: rgb(255, 255, 255);
     --text-secondary: rgb(123, 123, 123);
-
-    /* Bordas */
     --border-color: rgba(0, 0, 0, 0.25);
     --border-green: rgb(49, 115, 0);
-
-    /* Extras */
     --gray-light: rgb(116, 116, 116);
     --gray-medium: rgb(68, 68, 68);
     --gray-dark: rgb(102, 102, 102);
     --green: rgb(134, 218, 0);
 }
-
-/* ===================== */
-/* LAYOUT PRINCIPAL */
-/* ===================== */
 
 .banner {
     background-image: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/Banner2.png?fileID=2800000&guid=e0b8b211832856243a66997f64a3ff3b&type=3#Banner2");
@@ -166,10 +155,6 @@
     width: auto;
 }
 
-/* ===================== */
-/* SLIDER PERSONALIZADO */
-/* ===================== */
-
 .custom-slider {
     width: 40px;
     height: 400px;
@@ -208,10 +193,6 @@
     background-color: transparent;
 }
 
-/* ===================== */
-/* PAINÉIS E CABEÇALHO */
-/* ===================== */
-
 .panel-buttons {
     align-self: flex-start;
     padding: 10px;
@@ -231,11 +212,6 @@
     justify-content: flex-start;
 }
 
-
-/* ===================== */
-/* DROPDOWN AJUSTADO */
-/* ===================== */
-
 .custom-dropdown {
     background-color: var(--secondary-color);
     border-radius: 8px;
@@ -246,24 +222,22 @@
     font-size: 22px;
     height: 42px;
     margin: 4px 0;
-    min-width: 320px; /* mais largo */
+    min-width: 320px;
     width: 100%;
     justify-content: flex-start;
     align-items: center;
     padding-left: 8px;
 }
 
-/* Label mais próxima e com largura controlada */
 .custom-dropdown > .unity-base-field__label {
-    min-width: 70px; /* menor pra chegar mais perto */
+    min-width: 70px;
     max-width: 100px;
-    margin-right: 4px; /* mais colado */
+    margin-right: 4px;
     color: var(--text-primary);
     font-size: 20px;
     align-self: center;
 }
 
-/* Área do campo (dropdown real) */
 .custom-dropdown > .unity-base-field__input {
     flex-grow: 1;
     background-color: var(--primary-color);
@@ -274,15 +248,16 @@
     align-items: center;
 }
 
-/* Ícone da seta */
 .custom-dropdown .unity-base-popup-field__arrow {
     position: absolute;
     right: 8px;
     -unity-background-image-tint-color: var(--border-green);
 }
 
+.custom-dropdown:hover {
+    border-color: var(--border-green);
+}
 
-.custom-dropdown:hover,
 .custom-dropdown:active {
     border-color: var(--border-green);
 }
@@ -304,4 +279,34 @@
 .unity-popup-field__menu .unity-popup-field__menu-item:hover {
     background-color: var(--primary-color);
     color: var(--text-primary);
+}
+
+.button-imersive {
+    width: 96px;
+    height: 96px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-image: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/UI_Sheet.png?fileID=-1364167185&guid=a2daaca17c893be489c7816c9a39a4cd&type=3#ICO_Immersion");
+    -unity-background-image-tint-color: rgb(124, 255, 26);
+    background-size: 68px 68px;
+    background-color: rgb(31, 31, 31);
+    border-left-color: rgb(49, 115, 0);
+    border-right-color: rgb(49, 115, 0);
+    border-top-color: rgb(49, 115, 0);
+    border-bottom-color: rgb(49, 115, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    display: flex;
+}
+
+.button-imersive.selected {
+    background-image: url("project://database/Packages/com.twinny.twe25/Runtime/Common/Sprites/Ion_Building.png?fileID=2800000&guid=b969cc91f097f8748ac779b1e60ecc9f&type=3#Ion_Building");
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using Concept.UI;
 using Twinny.Addressables;
 using Twinny.System;
+using Twinny.System.Cameras;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -44,7 +45,6 @@ namespace Twinny.UI
         }
 
 
-        private Button m_enterButton;
         private Button m_imersiveButton;
 
 
@@ -66,8 +66,6 @@ namespace Twinny.UI
 
 
             m_footer = m_root.Q<VisualElement>("Footer");
-            m_enterButton = m_footer.Q<Button>("ButtonEnter");
-           // m_enterButton.clicked += StartExperience;
             m_imersiveButton = m_footer.Q<Button>("ButtonImersive");
             m_imersiveButton.clicked += SetFPS;
 
@@ -83,15 +81,13 @@ namespace Twinny.UI
             //Right Menu
             m_rightMenu = m_root.Q<VisualElement>("RightMenu");
             m_cutoffSlider = m_root.Q<Slider>("CutoffSlider");
-            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => MainInterface.OnCutoffChanged?.Invoke(evt.newValue));
+            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => MobileLevelManager.OnCutoffChanged(evt.newValue));
 
-            MainInterface.OnCutoffChanged += OnCutoffChanged;
 
         }
 
         private void OnDisable()
         {
-            MainInterface.OnCutoffChanged -= OnCutoffChanged;
 
         }
 
@@ -99,7 +95,6 @@ namespace Twinny.UI
         void Start()
         {
             _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
-
         }
 
         private void FillSceneList()
@@ -113,27 +108,23 @@ namespace Twinny.UI
 
         private async void OnSceneSelected(string sceneName)
         {
-            Shader.SetGlobalFloat("_CutoffHeight", 4.5f);
-            m_enterButton.style.display = DisplayStyle.None;
-
+            
             await MobileLevelManager.Instance.ChangeScene(sceneName, 0);
-            m_imersiveButton.style.display = DisplayStyle.Flex;
+
+            m_cutoffSlider.highValue = m_cutoffSlider.value = 1;
+            m_imersiveButton.EnableInClassList("selected",false);
         }
 
         private async void SetFPS()
         {
-            m_imersiveButton.style.display = DisplayStyle.None;
+            m_imersiveButton.EnableInClassList("selected",!FirstPersonAgent.isActive);
+            m_cutoffSlider.style.display = FirstPersonAgent.isActive ? DisplayStyle.Flex : DisplayStyle.None;
             await MobileLevelManager.GetInstance()?.SetFPSAsync();
-            m_enterButton.style.display = DisplayStyle.Flex;
-
+            m_cutoffSlider.highValue = m_cutoffSlider.value = 1;
         }
 
 
-        private void OnCutoffChanged(float value)
-        {
-            Shader.SetGlobalFloat("_CutoffHeight", value);
 
-        }
 
 
     }

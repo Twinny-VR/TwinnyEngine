@@ -20,13 +20,11 @@ namespace Twinny.System
         private void OnEnable()
         {
             FirstPersonAgent.OnFpsMode += OnFpsMode;
-            MainInterface.OnCutoffChanged += OnCutoffChanged;
         }
 
         private void OnDisable()
         {
             FirstPersonAgent.OnFpsMode -= OnFpsMode;
-            MainInterface.OnCutoffChanged -= OnCutoffChanged;
 
         }
 
@@ -58,11 +56,6 @@ namespace Twinny.System
 
         #endregion
 
-        private void OnCutoffChanged(float value)
-        {
-            Shader.SetGlobalFloat("_CutoffHeight", value);
-
-        }
 
         private void OnFpsMode(bool status)
         {

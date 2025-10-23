@@ -17,7 +17,6 @@ namespace Twinny.UI
     {
         private static MobileRuntime m_config => TwinnyRuntime.GetInstance<MobileRuntime>();
 
-        public static Action<float> OnCutoffChanged;
 
         public UIDocument document { get; private set; }
         private VisualElement m_root;
@@ -100,7 +99,7 @@ namespace Twinny.UI
             //Right Menu
             m_rightMenu = m_root.Q<VisualElement>("RightMenu");
             m_cutoffSlider = m_root.Q<Slider>("CutoffSlider");
-            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => OnCutoffChanged?.Invoke(evt.newValue));
+            m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => MobileLevelManager.OnCutoffChanged(evt.newValue));
 
             ResponsiveElement nearestDeepResponsive = m_descriptionFoldout.GetFirstAncestorOfType<ResponsiveElement>();
             if (nearestDeepResponsive != null) nearestDeepResponsive.OnResize += (isLandscape) => {

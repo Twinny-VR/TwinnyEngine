@@ -88,7 +88,6 @@ namespace Twinny.System.Cameras
             if (_isMoving && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance <= .25f && !_navMeshAgent.pathPending)
             {
                 OnArrived?.Invoke(transform.position);
-                Debug.LogWarning("CHEGOU!");
             }
 
             //if(_navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh && _navMeshAgent.remainingDistance < .25f) Debug.LogWarning("CHEGANDO!");
@@ -145,10 +144,6 @@ namespace Twinny.System.Cameras
             var brain = Camera.main.GetComponent<CinemachineBrain>();
 
             if (brain.IsBlending) return;
-
-
-            Debug.LogWarning($"SELECTED: {hit.collider.gameObject}.");
-
 
             NavMeshHit navMeshHit;
             if (NavMesh.SamplePosition(hit.point, out navMeshHit, 1.0f, NavMesh.AllAreas))
