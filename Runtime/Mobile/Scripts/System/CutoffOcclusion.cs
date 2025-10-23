@@ -117,6 +117,7 @@ namespace Twinny.System
             else
             {
                 SerializedProperty sp = layersProp.GetArrayElementAtIndex(layerIndex);
+                sp.stringValue = layerName;
                 tagManager.ApplyModifiedProperties();
                 Debug.Log($"Layer '{layerName}' criada no índice {layerIndex}.");
                 return;
