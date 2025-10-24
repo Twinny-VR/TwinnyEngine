@@ -1,3 +1,4 @@
+#if OBSOLETE
 using System;
 using UnityEngine;
 
@@ -29,3 +30,5 @@ namespace Twinny.Localization
     }
 
 }
+
+#endif

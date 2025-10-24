@@ -73,10 +73,10 @@ namespace Twinny.System
 #if TWINNY_OPENXR
                 currentPlatform = Platform.XR;
                 Debug.LogWarning("[TwinnyManager] XR Platform initialized.");
-#endif
-
+#else
                 currentPlatform = Platform.MOBILE;
-                    Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
+                Debug.LogWarning("[TwinnyManager] Android Platform initialized.");
+#endif
             }
             else
                 if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)

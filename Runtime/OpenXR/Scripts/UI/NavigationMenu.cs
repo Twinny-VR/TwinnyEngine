@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Concept.Helpers;
-using Twinny.Localization;
 using Twinny.System;
 using Twinny.XR;
 using UnityEngine;
@@ -98,9 +97,9 @@ namespace Twinny.UI
             if (!SceneFeatureXR.Instance) { Debug.LogWarning($"[NavigationMenu] Must be in a navegable SceneFeature."); return; }
             if (!_activeNode) { Debug.LogWarning($"[NavigationMenu] Navigation nodes are not configured."); return; }
 
-            if (!LevelManagerXR.Config.allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea))//TODO Globalizar isso sem anchor
+            if (!TwinnyRuntime.GetInstance<RuntimeXR>().allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea))//TODO Globalizar isso sem anchor
             {
-                AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%BACK_TO_SAFE_AREA"), AlertViewHUD.MessageType.Warning, 5f);
+                AlertViewHUD.PostMessage("%BACK_TO_SAFE_AREA", AlertViewHUD.MessageType.Warning, 5f);
                 return;
             }
 

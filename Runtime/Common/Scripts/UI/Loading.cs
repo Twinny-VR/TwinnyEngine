@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Twinny.Localization;
 using UnityEngine;
 
 namespace Twinny.UI
@@ -22,7 +20,7 @@ namespace Twinny.UI
 
         IEnumerator TextAnimate()
         {
-            string text = LocalizationProvider.GetTranslated(TMP_Loading.text);
+            string text = TMP_Loading.text;
 
             while (true) {
                 TMP_Loading.text = text;

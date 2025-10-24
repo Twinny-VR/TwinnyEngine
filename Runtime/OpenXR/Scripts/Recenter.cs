@@ -3,7 +3,6 @@ using System.Collections;
 using Concept.Helpers;
 using Fusion;
 using Meta.XR.MultiplayerBlocks.Fusion;
-using Twinny.Localization;
 using Twinny.System;
 using Twinny.System.Network;
 using Twinny.XR;
@@ -79,7 +78,7 @@ namespace Twinny
 
                     _ = LevelManagerXR.instance.ResetExperience();
 
-                }, (int)(LevelManagerXR.Config.resetExperienceDelay * 1000));
+                }, (int)(TwinnyRuntime.GetInstance<RuntimeXR>().resetExperienceDelay * 1000));
             }
         }
 
@@ -106,7 +105,7 @@ namespace Twinny
                         _restarting = true;
                     //Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
 
-                    Debug.LogWarning(LocalizationProvider.GetTranslated("%DISCONECTED_MESSAGE"));
+                    Debug.LogWarning("%DISCONECTED_MESSAGE");
                        _ = LevelManagerXR.instance.ResetExperience();
                       
                     return;

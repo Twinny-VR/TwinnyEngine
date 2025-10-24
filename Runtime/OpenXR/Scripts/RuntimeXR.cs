@@ -9,7 +9,9 @@ using UnityEngine;
 namespace Twinny.XR {
 
     [Serializable]
-public class RuntimeXR : NetworkRuntime
+    [CreateAssetMenu(fileName = "RuntimeXRPreset", menuName = "Twinny/System/RuntimeXR Preset", order = 1)]
+
+    public class RuntimeXR : NetworkRuntime
     {
         [SerializeField]
         public bool allowClickSafeAreaOutside = false;

@@ -47,6 +47,7 @@ namespace Twinny.System
             return config;
         }
 
+        public static TwinnyRuntime GetInstance() => GetInstance<TwinnyRuntime>();
         public static T GetInstance<T>() where T : TwinnyRuntime
         {
             if( m_instance == null ) m_instance = LoadRuntimeProfile<T>();

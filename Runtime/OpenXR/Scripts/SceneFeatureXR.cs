@@ -77,7 +77,7 @@ namespace Twinny.XR
             if (fadeOnAwake)
             {
                 NetworkedLevelManager.Instance.RPC_FadingStatus(0);
-                _ = CanvasTransition.FadeScreen(false, TwinnyManager.config.fadeTime);
+                _ = CanvasTransition.FadeScreen(false, TwinnyRuntime.GetInstance<RuntimeXR>().fadeTime);
             }
 
 

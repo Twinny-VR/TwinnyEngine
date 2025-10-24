@@ -1,10 +1,10 @@
 using Concept.Core;
+using Concept.Helpers;
 using Fusion;
 using System.Threading.Tasks;
-using Twinny.Helpers;
-using Twinny.Localization;
 using Twinny.System.Network;
 using Twinny.UI;
+using Twinny.XR;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,6 +47,7 @@ namespace Twinny.System
         #endregion
 
         public static bool isRunning = false;
+        RuntimeXR config => TwinnyRuntime.GetInstance<RuntimeXR>();
 
         #region MonoBehaviour Methods
 
@@ -120,6 +121,16 @@ namespace Twinny.System
 
 
         #region Public Methods
+
+        protected virtual async Task InitializePlatform()
+        {
+            AsyncOperation loadScene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+            await AsyncOperationExtensions.WaitForSceneLoadAsync(loadScene);
+            Initialize();
+
+        }
+
+        public virtual async Task ConnectToServer() { await Task.Yield();  }
 
         protected virtual void SetMaster()
         {
@@ -198,7 +209,7 @@ namespace Twinny.System
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
             RPC_FadingStatus(1);
-            RPC_Message(Runner.LocalPlayer, PlayerRef.None, LocalizationProvider.GetTranslated("%LOADING_SCENE"), time: 90f);
+            RPC_Message(Runner.LocalPlayer, PlayerRef.None, "%LOADING_SCENE", time: 90f);
 
             await CanvasTransition.FadeScreen(true, config.fadeTime);
 

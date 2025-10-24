@@ -18,7 +18,6 @@ namespace Twinny.XR
     {
         public static LevelManagerXR instance { get => Instance as LevelManagerXR; }
 
-        public static RuntimeXR Config { get => config as RuntimeXR; }
 
         [SerializeField] private Transform m_cameraRigTransform;
 
@@ -28,20 +27,23 @@ namespace Twinny.XR
         [SerializeField] private FusionBootstrap _bootstrap;
         [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
 
+        RuntimeXR config => TwinnyRuntime.GetInstance<RuntimeXR>();
+
+
         #region Delegates
         public delegate void onSetPassthrough(bool status);
         public static onSetPassthrough OnSetPassthrough;
         #endregion
 
+        #region MonoBehaviour Methods
+
         private void OnValidate()
         {
-            LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
         }
 
         protected override void Awake()
         {
             base.Awake();
-            LoadRuntimeProfile<RuntimeXR>("RuntimeXRPreset");
 
         }
 
@@ -50,51 +52,43 @@ namespace Twinny.XR
         {
             base.Start();
             if (_sharedAnchorManager == null) _sharedAnchorManager = FindAnyObjectByType<SharedSpatialAnchorManager>();
-            OnPlatformInitialize += OnPlatformInitialized;
 
         }
 
         private void OnDestroy()
         {
-            OnPlatformInitialize -= OnPlatformInitialized;
 
         }
 
-        private void OnPlatformInitialized(Twinny.System.Platform platform)
+        #endregion
+
+
+        protected override async Task InitializePlatform()
         {
-
-            /* TODO Ver melhor como isso funciona
-            if (!Core.IsInitialized()) Core.Initialize();
-            Users.GetLoggedInUser().OnComplete(OnLoggedInUser);
-            */
-
-
-
-
-            //Initialize as XR Platform
-            if (platform == Twinny.System.Platform.XR)
+            await  base.InitializePlatform();
+            Debug.LogWarning("KISSO: " + currentPlatform);
+            if (currentPlatform == Platform.XR)
             {
 
-                ConnectToServer();
+                await ConnectToServer();
             }
             else
             {
-                UnityEngine.Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
+                Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
 
-            _ = CanvasTransition.FadeScreen(false,config.fadeTime);
-
+            _ = CanvasTransition.FadeScreen(false, TwinnyRuntime.GetInstance().fadeTime);
 
         }
 
-        public async void ConnectToServer()
+        public override async Task ConnectToServer()
         {
             bool isWifiConnected = NetworkUtils.IsWiFiConnected();
 
 
-            if (isWifiConnected && !Config.startSinglePlayer)
+            if (isWifiConnected && !config.startSinglePlayer)
             {
-                if (Config.allowNetworkConnections)
+                if (config.allowNetworkConnections)
                 {
                     string ip = await NetworkHelper.GetPublicIP();
                     _bootstrap.DefaultRoomName = ip;
@@ -104,7 +98,7 @@ namespace Twinny.XR
                     _bootstrap.StartSharedClient();
 
                     // Wait for connection or timeout
-                    bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
+                    bool connected = await WaitForConnectionOrTimeout(config.connectionTimeout);
                     if (connected) return;
                 }
                 catch (Exception e)
@@ -124,7 +118,7 @@ namespace Twinny.XR
 
                 _bootstrap.StartSinglePlayer();
 
-                bool connected = await WaitForConnectionOrTimeout(Config.connectionTimeout);
+                bool connected = await WaitForConnectionOrTimeout(config.connectionTimeout);
                 if (connected)
                 {
                     CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnConnected(GameMode.Single));
@@ -218,6 +212,7 @@ namespace Twinny.XR
 
 #endif
 
+
         public override async Task QuitExperience()
         {
             await base.QuitExperience();
@@ -228,7 +223,7 @@ namespace Twinny.XR
         public override async Task ResetExperience()
         {
             await base.ResetExperience();
-            await Task.Delay((int)(LevelManagerXR.Config.resetExperienceDelay * 1000));
+            await Task.Delay((int)(config.resetExperienceDelay * 1000));
             await NetworkRunnerHandler.runner.Shutdown(true);
             ResetApplication();
         }

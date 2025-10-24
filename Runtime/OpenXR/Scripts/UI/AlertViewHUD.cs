@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Twinny.Localization;
 using Concept.Helpers;
 
 
@@ -85,15 +84,15 @@ namespace Twinny.UI
             {
                 case MessageType.Info:
                     _messageTypeIconField.sprite = _infoIcon;
-                    _messageTypeTextField.text = LocalizationProvider.GetTranslated("Info");
+                    _messageTypeTextField.text = "%Info";
                     break;
                 case MessageType.Warning:
                     _messageTypeIconField.sprite = _warningIcon;
-                    _messageTypeTextField.text = LocalizationProvider.GetTranslated("Warning");
+                    _messageTypeTextField.text = "%Warning";
                     break;
                 case MessageType.Error:
                     _messageTypeIconField.sprite = _errorIcon;
-                    _messageTypeTextField.text = LocalizationProvider.GetTranslated("Error");
+                    _messageTypeTextField.text = "%Error";
                     break;
             }
             _messageTextField.text = message + "\n";

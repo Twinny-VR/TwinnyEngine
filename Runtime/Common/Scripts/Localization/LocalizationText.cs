@@ -1,3 +1,4 @@
+#if OBSOLETE
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -73,3 +74,5 @@ namespace Twinny.Helpers
     }
 
 }
+
+#endif

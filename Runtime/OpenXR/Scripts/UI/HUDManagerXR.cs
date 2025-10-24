@@ -2,7 +2,6 @@ using Fusion;
 using Twinny.System.Network;
 using System;
 using System.Collections;
-using Twinny.Localization;
 using Twinny.System;
 using UnityEngine;
 using Twinny.XR;

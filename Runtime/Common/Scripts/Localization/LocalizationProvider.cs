@@ -1,3 +1,4 @@
+#if OBSOLETE
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -95,3 +96,5 @@ namespace Twinny.Localization
 
 
 }
+
+#endif

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using Twinny.System;
+using Twinny.XR;
 using UnityEngine;
 
 namespace Twinny.UI
@@ -14,7 +15,7 @@ namespace Twinny.UI
         public string displayText { get => _displayText; set => _displayText = value;  }
 
         [SerializeField] private bool _showInfo = false;
-        public bool showInfo { get => _showInfo; set { if (!TwinnyManager.config.isTestBuild) return;  _showInfo = value; _debugInfo.SetActive(value); }
+        public bool showInfo { get => _showInfo; set { if (! TwinnyRuntime.GetInstance<RuntimeXR>().isTestBuild) return;  _showInfo = value; _debugInfo.SetActive(value); }
         }
         [SerializeField] private GameObject _debugInfo;
         [SerializeField] private TextMeshProUGUI TMP_Info;
@@ -22,7 +23,7 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
-            _debugVisual.SetActive(TwinnyManager.config.isTestBuild);
+            _debugVisual.SetActive(TwinnyRuntime.GetInstance<RuntimeXR>().isTestBuild);
             _transform = transform;
             _debugInfo.SetActive(_showInfo);
             if(_showInfo )

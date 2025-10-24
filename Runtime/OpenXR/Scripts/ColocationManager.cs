@@ -1,9 +1,7 @@
 using Fusion;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Twinny.Localization;
 using Twinny.System.Network;
 using UnityEngine;
 
@@ -137,7 +135,7 @@ namespace Twinny.System.XR
                 if (AnchorManager.currentAnchor == null)
                 {
 
-                    Twinny.UI.AlertViewHUD.PostMessage(LocalizationProvider.GetTranslated("%NO_ANCHOR_MESSAGE"), Twinny.UI.AlertViewHUD.MessageType.Error);
+                    Twinny.UI.AlertViewHUD.PostMessage("%NO_ANCHOR_MESSAGE", Twinny.UI.AlertViewHUD.MessageType.Error);
 
                     while (AnchorManager.currentAnchor == null)
                     {

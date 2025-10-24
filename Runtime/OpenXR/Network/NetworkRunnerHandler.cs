@@ -7,7 +7,6 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Threading.Tasks;
-using Twinny.Localization;
 using Twinny.UI;
 using Twinny.XR;
 using Concept.Helpers;
@@ -188,9 +187,9 @@ namespace Twinny.System.Network
             CallbackHub.CallAction<IUIXRCallbacks>(callback => callback.OnDisconnected());
             Debug.LogError($"DISCONECTED: {reason}");
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
-            if (LevelManagerXR.Config.tryReconnect)
+            if (TwinnyRuntime.GetInstance<NetworkRuntime>().tryReconnect)
             {
-                Twinny.UI.AlertViewHUD.PostMessage($"{LocalizationProvider.GetTranslated("DISCONNECTED")}!", Twinny.UI.AlertViewHUD.MessageType.Error, 10f);
+                Twinny.UI.AlertViewHUD.PostMessage($"{"%DISCONNECTED"}!", Twinny.UI.AlertViewHUD.MessageType.Error, 10f);
                 TryReconnect();
             }
         }
