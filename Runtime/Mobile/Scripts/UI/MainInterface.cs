@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using Twinny.Addressables;
 using Twinny.System;
+using Twinny.System.Cameras;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -202,8 +203,10 @@ namespace Twinny.UI
             return tex;
         }
 
+        private ProjectInfo m_currentProject;
         private async Task selectProject(ProjectInfo info)
         {
+            m_currentProject = info;
             m_projContent.style.display = DisplayStyle.Flex;
             m_mainContent.style.display = DisplayStyle.None;
             logoExpanded = footerExpanded = true;
@@ -220,7 +223,7 @@ namespace Twinny.UI
 
 
             m_projBanner.SetBackgroundTexture(CreateRuntimeTexture(thumb));
-            
+
             //TODO Aprimorar
             /*
             VideoClip clip = await AddressablesManager.LoadSeparateAssetAsync<VideoClip>(info.videoRef);
@@ -237,10 +240,10 @@ namespace Twinny.UI
             }
             */
 
-            foreach (var key in info.galeryRef) { 
+            foreach (var key in info.galeryRef) {
                 Texture2D pic = await AddressablesManager.LoadSeparateAssetAsync<Texture2D>(key);
-                
-                if(pic != null)
+
+                if (pic != null)
                 {
                     CardElement card = new CardElement()
                     {
@@ -254,9 +257,6 @@ namespace Twinny.UI
                     Debug.LogError($"[MainInterface] Impossible to load '{key} texture resource.");
 
             }
-
-
-
         }
 
         private void MaximizeCard(CardElement card)
@@ -289,7 +289,9 @@ namespace Twinny.UI
                 StartExpandAnimation(clone, worldPos, size, rootWidth, rootHeight);
                 // clone.AddToClassList("expanded"); // anima para ocupar 32px de borda
             }).ExecuteLater(1);
+
         }
+
 
         private void StartExpandAnimation(VisualElement element, Vector2 startPos, Vector2 startSize, float rootWidth, float rootHeight)
         {
@@ -347,19 +349,30 @@ namespace Twinny.UI
 
         private async void StartExperience()
         {
-            Shader.SetGlobalFloat("_CutoffHeight", 4.5f);
+            if (m_currentProject == null) return;
+
             m_enterButton.style.display = DisplayStyle.None;
 
-            await MobileLevelManager.Instance.ChangeScene("MobileMockupScene", 0);
+
+            string url = m_currentProject.addressableUrl.ToLowerInvariant() == "[default]" ? MobileRuntime.GetRemotePath() : m_currentProject.addressableUrl;
+            string catalogUrl = $"{url.TrimEnd('/')}/{m_currentProject.addressableKey.TrimEnd('/')}/{AddressablesManager.GetPlatformFolder().TrimEnd('/')}/{m_currentProject.GetCatalogName()}";
+            var teste = await AddressablesManager.LoadContentCatalogAsync(catalogUrl);
+
+            ProjectScenes scenes = await AddressablesManager.LoadSeparateAssetAsync<ProjectScenes>(m_currentProject.addressableKey);
+
+            if (scenes.sceneInfos.Length > 0)
+                await MobileLevelManager.GetInstance().ChangeAddressableScene(scenes.sceneInfos[0].addressableKey);
+
             m_imersiveButton.style.display = DisplayStyle.Flex;
         }
 
 
         private async void SetFPS()
         {
-            m_imersiveButton.style.display = DisplayStyle.None;
+            m_imersiveButton.EnableInClassList("selected", !FirstPersonAgent.isActive);
+            m_cutoffSlider.style.display = FirstPersonAgent.isActive ? DisplayStyle.Flex : DisplayStyle.None;
             await MobileLevelManager.GetInstance()?.SetFPSAsync();
-            m_enterButton.style.display = DisplayStyle.Flex;
+            m_cutoffSlider.highValue = m_cutoffSlider.value = 1;
 
         }
 

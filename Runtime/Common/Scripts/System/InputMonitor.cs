@@ -42,9 +42,6 @@ namespace Twinny.System
 
         protected override void Update()
         {
-            if (!EventSystem.current || EventSystem.current.IsPointerOverGameObject())
-                return;
-
             /*
             if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
             {
@@ -139,6 +136,9 @@ namespace Twinny.System
                 return; // Se for touch, ignora mouse abaixo
             }
             */
+
+            // Para o primeiro toque
+            //if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
 
             if (Input.touchCount > 0)
             {

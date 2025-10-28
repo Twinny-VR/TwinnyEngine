@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Concept.Addressables;
 using Concept.Core;
 using Concept.Helpers;
 using Twinny.System.Cameras;
@@ -11,6 +12,8 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 
 namespace Twinny.System
 {
@@ -155,6 +158,68 @@ namespace Twinny.System
             m_eventSystem.enabled = true;
 
 
+        }
+
+
+        private Dictionary<string, SceneInstance> m_loadedAddressableScenes = new Dictionary<string, SceneInstance>();
+
+        public async Task ChangeAddressableScene(string sceneKey, int landMarkIndex = 0)
+        {
+            if (m_eventSystem == null)
+                m_eventSystem = EventSystem.current;
+            m_eventSystem.enabled = false;
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
+            await CanvasTransition.FadeScreen(true, m_config.fadeTime);
+            ResetCutoff();
+
+            await UnloadAddressableScenes();
+
+            await AddressablesManager.LoadAddressableScene(sceneKey, true);
+
+            _ = Resources.UnloadUnusedAssets();
+
+            MobileSceneFeature feature = SceneFeature.Instance as MobileSceneFeature;
+
+            if (feature)
+            {
+
+                //TODO Check this implementation
+                if (feature.interestPoints.Length > 0)
+                {
+                    InterestItem interest = feature.interestPoints[landMarkIndex];
+                    ChangeInterest(interest);
+                }
+                else
+                    Debug.LogError("[LevelManager] Scenes must at least on InterestItem set in SceneFeature!");
+
+            }
+
+            await Task.Delay(500);
+            CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadScene());
+            await CanvasTransition.FadeScreen(false, m_config.fadeTime);
+            m_eventSystem.enabled = true;
+
+
+        }
+
+        public async Task UnloadAddressableScenes()
+        {
+            await Task.Delay(500);
+
+
+            // Cria uma cópia da lista para evitar modificar durante iteração
+            var scenesToUnload = new List<KeyValuePair<string, SceneInstance>>(m_loadedAddressableScenes);
+            m_loadedAddressableScenes.Clear();
+
+            foreach (var scenePair in scenesToUnload)
+            {
+                string sceneKey = scenePair.Key;
+                SceneInstance sceneInstance = scenePair.Value;
+
+                await AddressablesManager.UnloadAddressableScene(sceneInstance, sceneKey);
+            }
+
+            Debug.Log("Descarregamento de cenas Addressables concluído");
         }
 
 

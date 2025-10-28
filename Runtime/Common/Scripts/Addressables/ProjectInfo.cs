@@ -9,6 +9,7 @@ namespace Twinny.Addressables
     {
         public string version;
         public string addressableUrl = "[Default]";
+        public string addressableCatalogName = "[DefaultCatalogName]";
         public string addressableKey = "[ProjectName]";
         public string projectName;
         public string authorName;
@@ -18,6 +19,19 @@ namespace Twinny.Addressables
         public string videoRef;
         public string[] galeryRef;
 
+
+        public string GetCatalogName()
+        {
+            if (addressableCatalogName.ToLowerInvariant() == "[defaultcatalogname]")
+                return $"catalog_{version}.json";
+            else
+            {
+                if (!addressableCatalogName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                    return addressableCatalogName + ".json";
+                else 
+                    return addressableCatalogName;
+            }
+        }
         //public AssetReferenceTexture2D thumbnail;
         //public AssetReferenceT<VideoClip> video;
         //public AssetReferenceTexture2D[] galery;
