@@ -137,8 +137,7 @@ namespace Twinny.System
             }
             */
 
-            // Para o primeiro toque
-            //if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
+            if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
 
             if (Input.touchCount > 0)
             {

@@ -62,6 +62,11 @@ namespace Twinny.System.Cameras
                 _navMeshAgent.angularSpeed = config.navigationangularSpeed;
                 _navMeshAgent.acceleration = config.navigationAcceleration;
             }
+
+#if UNITY_ANDROID || UNITY_IOS
+            Debug.Log("=== MOBILE NAVMESH TEST ===");
+            TestNavMeshAtPosition(transform.position);
+#endif
         }
 
 
@@ -121,7 +126,17 @@ namespace Twinny.System.Cameras
     */
         #endregion
 
+        void TestNavMeshAtPosition(Vector3 testPos)
+        {
+            NavMeshHit hit;
+            bool success = NavMesh.SamplePosition(testPos, out hit, 5f, NavMesh.AllAreas);
+            Debug.Log($"NavMesh Test: {success}, Position: {hit.position}, Distance: {hit.distance}");
 
+            if (!success)
+            {
+                Debug.LogError("NavMesh is not working on mobile! Check bake settings and build inclusion.");
+            }
+        }
 
 
         private void OnCameraStateChanged(State state)
@@ -144,6 +159,8 @@ namespace Twinny.System.Cameras
             var brain = Camera.main.GetComponent<CinemachineBrain>();
 
             if (brain.IsBlending) return;
+            
+            Debug.LogWarning("CLICOU EM: " +hit.collider.gameObject.name );
 
             NavMeshHit navMeshHit;
             if (NavMesh.SamplePosition(hit.point, out navMeshHit, 1.0f, NavMesh.AllAreas))
@@ -154,19 +171,28 @@ namespace Twinny.System.Cameras
 
 
                 float distance = Vector3.Distance(transform.position, navMeshPosition);
+                Debug.LogWarning("CAN NAVIGATE: " +(distance < config.navigationMaxDistance) );
 
                 if (distance < config.navigationMaxDistance)
                     NavigateTo(navMeshPosition);
 
 
             }
+                Debug.LogWarning("NAVMESH HIT: " +navMeshHit );
 
         }
 
         public static void TakeControl(Transform node = null)
         {
+            Debug.LogWarning("NAVIGATE TO: " + node);
             if(node) TeleportTo(node);
             TakeControl(true);
+
+#if UNITY_ANDROID || UNITY_IOS
+            Debug.Log("=== MOBILE NAVMESH TEST ===");
+           Instance.TestNavMeshAtPosition(Instance.transform.position);
+#endif
+
         }
         public static void TakeControl(bool status)
         {
@@ -193,6 +219,7 @@ namespace Twinny.System.Cameras
 
         private void NavigateTo(Vector3 position)
         {
+            Debug.LogWarning("NAVIGATE TO: " + position);
 
             if (_hitPoint) Destroy(_hitPoint);
             if (config.hitPointPrefab) 
