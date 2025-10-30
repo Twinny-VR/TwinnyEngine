@@ -371,12 +371,11 @@ namespace Twinny.UI
                 var downloadTask = await AddressablesManager.GetDownloadSize(scenes.sceneInfos[0].addressableKey);
 
                 Debug.LogWarning($"{scenes.sceneInfos[0].addressableKey}: {downloadTask.status} | ({downloadTask.length.GetBytes()})");
+                await MobileLevelManager.GetInstance().ChangeAddressableScene(scenes.sceneInfos[0].addressableKey);
+                m_imersiveButton.style.display = DisplayStyle.Flex;
             }
 
-            return;
-            await MobileLevelManager.GetInstance().ChangeAddressableScene(scenes.sceneInfos[0].addressableKey);
 
-            m_imersiveButton.style.display = DisplayStyle.Flex;
         }
 
 
