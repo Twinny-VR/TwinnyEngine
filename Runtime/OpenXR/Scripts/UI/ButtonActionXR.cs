@@ -49,7 +49,7 @@ namespace Twinny.UI
         public void OnRelease()
         {
             //TODO Criar um sistema de configurações
-            if (!(TwinnyRuntime.GetInstance<RuntimeXR>().allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea))
+            if (!TwinnyRuntime.GetInstance<RuntimeXR>().allowClickSafeAreaOutside && !AnchorManager.Instance.isInSafeArea)
             {
                 AlertViewHUD.PostMessage("%BACK_TO_SAFE_AREA", AlertViewHUD.MessageType.Warning, 5f);
                 return;
