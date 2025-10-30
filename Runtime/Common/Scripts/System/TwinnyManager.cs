@@ -43,7 +43,7 @@ namespace Twinny.System
         {
 
 #if UNITY_EDITOR && UNITY_ANDROID
-            string defaultKeyStore = AssetIO.GetPackageAbsolutePath(PACKAGE_NAME);
+            string defaultKeyStore = IOExtensions.GetPackageAbsolutePath(PACKAGE_NAME);
             string currentKeyStore = PlayerSettings.Android.keystoreName;
             string path = Path.Combine(Directory.GetParent(Application.dataPath).FullName, currentKeyStore);
 

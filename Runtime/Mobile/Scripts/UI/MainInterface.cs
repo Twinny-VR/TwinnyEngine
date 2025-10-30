@@ -1,5 +1,6 @@
 using Concept.Addressables;
 using Concept.Core;
+using Concept.Helpers;
 using Concept.UI;
 using System;
 using System.Collections.Generic;
@@ -85,7 +86,7 @@ namespace Twinny.UI
             m_imersiveButton.clicked += SetFPS;
             m_mainContent = m_root?.Q<VisualElement>("MainContent");
             m_mainCardsContainer = m_mainContent?.Q<VisualElement>("ProjectCardsContainer");
-            
+
             //Projects Guide
             m_projContent = m_root?.Q<VisualElement>("ProjectContent");
             m_projBanner = m_projContent.Q<AspectElement>("Banner");
@@ -103,7 +104,8 @@ namespace Twinny.UI
             m_cutoffSlider.RegisterCallback<ChangeEvent<float>>(evt => MobileLevelManager.OnCutoffChanged(evt.newValue));
 
             ResponsiveElement nearestDeepResponsive = m_descriptionFoldout.GetFirstAncestorOfType<ResponsiveElement>();
-            if (nearestDeepResponsive != null) nearestDeepResponsive.OnResize += (isLandscape) => {
+            if (nearestDeepResponsive != null) nearestDeepResponsive.OnResize += (isLandscape) =>
+            {
 
                 m_descriptionFoldout.value = isLandscape;
                 m_descriptionFoldout.SetEnabled(!isLandscape);
@@ -118,54 +120,54 @@ namespace Twinny.UI
         }
 
         private ProjectList m_projectList;
-           private List<ProjectInfo> m_projectInfos = new List<ProjectInfo>(); 
+        private List<ProjectInfo> m_projectInfos = new List<ProjectInfo>();
 
         private async void Start()
         {
-           bool initialized = await AddressablesManager.InitializeAsync();
+            bool initialized = await AddressablesManager.InitializeAsync();
             if (!initialized)
             {
-            Debug.LogWarning("[MainInterface][AddressablesManager] Não foi possível carregar os catálogos!");
+                Debug.LogWarning("[MainInterface][AddressablesManager] Não foi possível carregar os catálogos!");
 
             }
 
             Debug.Log("[MainInterface][AddressablesManager] Catálogos carregados:");
 
             ProjectList originalList = await AddressablesManager.LoadSeparateAssetAsync<ProjectList>("project_list");
-            if(originalList!=null) m_projectList = ScriptableObject.Instantiate(originalList);
+            if (originalList != null) m_projectList = ScriptableObject.Instantiate(originalList);
 
-           
+
             foreach (var id in m_projectList.projectGroups)
             {
-                Debug.LogWarning($"Downloading Group '{id}'.");
-                
+                // Debug.LogWarning($"Downloading Group '{id}'.");
+
                 ProjectInfo originalInfo = await AddressablesManager.LoadSeparateAssetAsync<ProjectInfo>(id);
 
                 if (originalInfo == null) continue;
                 ProjectInfo projectInfo = ScriptableObject.Instantiate(originalInfo);
 
-                Debug.LogWarning("INFO:" + projectInfo);
                 if (projectInfo)
                 {
-                    Debug.LogWarning($"ProjectInfo '{id}' encontrado.");
+                    //Debug.LogWarning($"ProjectInfo '{id}' encontrado.");
                     m_projectInfos.Add(projectInfo);
-                } else
+                }
+                else
                     Debug.LogError($"ProjectInfo '{id}' não encontrado.");
-            }     
-            
-            Debug.LogWarning("PROJECTS TOTAL: "+m_projectInfos.Count);
+            }
+
+            //  Debug.LogWarning("PROJECTS TOTAL: "+m_projectInfos.Count);
             string host = m_projectInfos[0].addressableUrl;
             if (host.ToLowerInvariant() == "[default]") host = TwinnyRuntime.GetInstance<MobileRuntime>().hostDirectory;
             string folder = m_projectInfos[0].addressableKey;
             if (folder.ToLowerInvariant() == "[ProjectName]") folder = m_projectInfos[0].name;
-        string moduleCatalogUrl = $"{host}/{folder}/{AddressablesManager.GetPlatformFolder()}/catalog.json";
+            string moduleCatalogUrl = $"{host}/{folder}/{AddressablesManager.GetPlatformFolder()}/catalog.json";
 
-        //    bool teste = await AddressablesManager.LoadContentCatalogAsync(moduleCatalogUrl);
-           
+            //    bool teste = await AddressablesManager.LoadContentCatalogAsync(moduleCatalogUrl);
 
 
-            _ =FillCardsContainer();
-            
+
+            _ = FillCardsContainer();
+
 
             _ = CanvasTransition.FadeScreen(false, m_config.fadeTime);
         }
@@ -176,11 +178,12 @@ namespace Twinny.UI
         private async Task FillCardsContainer()
         {
             m_mainCardsContainer.Clear();
-            foreach (var info in m_projectInfos) {
+            foreach (var info in m_projectInfos)
+            {
 
 
                 Texture2D thumb = await AddressablesManager.LoadSeparateAssetAsync<Texture2D>(info.thumbnailRef);
-                
+
                 CardElement card = new CardElement()
                 {
                     title = info.projectName,
@@ -188,10 +191,10 @@ namespace Twinny.UI
                     thumbnail = thumb
                 };
 
-                card.OnClickEvent += () => _=selectProject(info);
+                card.OnClickEvent += () => _ = selectProject(info);
                 m_mainCardsContainer.Add(card);
 
-            
+
             }
         }
 
@@ -240,7 +243,8 @@ namespace Twinny.UI
             }
             */
 
-            foreach (var key in info.galeryRef) {
+            foreach (var key in info.galeryRef)
+            {
                 Texture2D pic = await AddressablesManager.LoadSeparateAssetAsync<Texture2D>(key);
 
                 if (pic != null)
@@ -283,7 +287,7 @@ namespace Twinny.UI
             clone.style.right = rootWidth - (worldPos.x + size.x);
             clone.style.bottom = rootHeight - (worldPos.y + size.y);
 
-            Debug.LogWarning(card+" clicked.");
+            Debug.LogWarning(card + " clicked.");
             clone.schedule.Execute(_ =>
             {
                 StartExpandAnimation(clone, worldPos, size, rootWidth, rootHeight);
@@ -356,12 +360,21 @@ namespace Twinny.UI
 
             string url = m_currentProject.addressableUrl.ToLowerInvariant() == "[default]" ? MobileRuntime.GetRemotePath() : m_currentProject.addressableUrl;
             string catalogUrl = $"{url.TrimEnd('/')}/{m_currentProject.addressableKey.TrimEnd('/')}/{AddressablesManager.GetPlatformFolder().TrimEnd('/')}/{m_currentProject.GetCatalogName()}";
-            var teste = await AddressablesManager.LoadContentCatalogAsync(catalogUrl);
-
+            var catalog = await AddressablesManager.LoadContentCatalogAsync(catalogUrl);
             ProjectScenes scenes = await AddressablesManager.LoadSeparateAssetAsync<ProjectScenes>(m_currentProject.addressableKey);
 
+
+
+
             if (scenes.sceneInfos.Length > 0)
-                await MobileLevelManager.GetInstance().ChangeAddressableScene(scenes.sceneInfos[0].addressableKey);
+            {
+                var downloadTask = await AddressablesManager.GetDownloadSize(scenes.sceneInfos[0].addressableKey);
+
+                Debug.LogWarning($"{scenes.sceneInfos[0].addressableKey}: {downloadTask.status} | ({downloadTask.length.GetBytes()})");
+            }
+
+            return;
+            await MobileLevelManager.GetInstance().ChangeAddressableScene(scenes.sceneInfos[0].addressableKey);
 
             m_imersiveButton.style.display = DisplayStyle.Flex;
         }
@@ -382,13 +395,13 @@ namespace Twinny.UI
 
         #region UI Callback Methods
 
-        public void OnHudStatusChanged(bool status) {}
+        public void OnHudStatusChanged(bool status) { }
 
-        public void OnPlatformInitialize() {}
+        public void OnPlatformInitialize() { }
 
-        public void OnExperienceReady() {}
+        public void OnExperienceReady() { }
 
-        public void OnExperienceFinished(bool isRunning) {}
+        public void OnExperienceFinished(bool isRunning) { }
 
         public void OnLoadExtensionMenu(GameObject menu, bool isStatic = false)
         {

@@ -63,10 +63,6 @@ namespace Twinny.System.Cameras
                 _navMeshAgent.acceleration = config.navigationAcceleration;
             }
 
-#if UNITY_ANDROID || UNITY_IOS
-            Debug.Log("=== MOBILE NAVMESH TEST ===");
-            TestNavMeshAtPosition(transform.position);
-#endif
         }
 
 
