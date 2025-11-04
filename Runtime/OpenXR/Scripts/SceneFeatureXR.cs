@@ -66,13 +66,14 @@ namespace Twinny.XR
         //Awake is called before the script is started
         protected override void Awake()
         {
-
+            base.Awake();
             _transform = transform;
         }
 
         // Start is called before the first frame update
         protected override void Start()
         {
+            base.Start();
 
             if (fadeOnAwake)
             {
@@ -140,7 +141,6 @@ namespace Twinny.XR
         /// <param name="landMarkIndex">Index on landMarks array.</param>
         public override void TeleportToLandMark(int landMarkIndex)
         {
-
 
             SetHDRI(landMarkIndex);
             if (landMarks.Length > 0)

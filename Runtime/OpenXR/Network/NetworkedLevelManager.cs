@@ -158,8 +158,6 @@ namespace Twinny.System
         {
             Instance._isManager = true;
 
-
-
             Instance.RPC_StartForAll(NetworkRunnerHandler.runner.LocalPlayer, scene, landMarkIndex);
         }
 
@@ -355,6 +353,8 @@ namespace Twinny.System
         public void RPC_NavigateTo(int landMarkIndex, bool fade = true)
         {
             currentLandMark = landMarkIndex;
+
+
             if (fade)
                 NavigateTo(landMarkIndex);
             else
