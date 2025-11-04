@@ -190,7 +190,6 @@ namespace Twinny.UI
                     description = info.description,
                     thumbnail = thumb
                 };
-
                 card.OnClickEvent += () => _ = selectProject(info);
                 m_mainCardsContainer.Add(card);
 
@@ -251,10 +250,10 @@ namespace Twinny.UI
                 {
                     CardElement card = new CardElement()
                     {
-                        expanded = false,
+                        expandedInfo = false,
                         thumbnail = pic
                     };
-                    card.OnClickEvent += () => MaximizeCard(card);
+                  //  card.OnClickEvent += () => MaximizeCard(card);
                     m_projCardsContainer.Add(card);
                 }
                 else
@@ -273,7 +272,7 @@ namespace Twinny.UI
 
             CardElement clone = new CardElement()
             {
-                expanded = false,
+                expandedInfo = false,
                 thumbnail = card.thumbnail
             };
 

@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:concept="Concept.UI" xmlns:twinny="Twinny.UI" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Packages/com.twinny.twe25/Runtime/Mobile/Scripts/UI/Resources/MainInterfaceStyles.uss?fileID=7433441132597879392&amp;guid=f4ab979667f585740b79e32b521fb67f&amp;type=3#MainInterfaceStyles" />
-    <concept:ResponsiveElement name="Main" picking-mode="Ignore" class="main" style="flex-grow: 1;">
+    <concept:ResponsiveElement name="Main" picking-mode="Ignore" class="main portrait" style="flex-grow: 1;">
         <ui:VisualElement name="MainContent" picking-mode="Ignore" style="flex-grow: 1; display: flex;">
             <ui:VisualElement name="Background" class="background" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgb(255, 255, 255); display: flex;" />
             <concept:AspectElement name="Banner" class="banner" style="margin-top: 42px; justify-content: flex-end;">
@@ -46,8 +46,8 @@
         <ui:VisualElement name="Logo" class="logo">
             <ui:VisualElement name="LogoImage" class="logo-image" />
         </ui:VisualElement>
-        <ui:VisualElement name="Header" picking-mode="Ignore" class="expanded header">
-            <ui:VisualElement name="RightPanel" picking-mode="Ignore" style="align-items: flex-end;">
+        <ui:VisualElement name="Header" picking-mode="Ignore" class="expanded header" style="display: flex;">
+            <ui:VisualElement name="RightPanel" picking-mode="Ignore" style="align-items: flex-end; display: flex;">
                 <ui:DropdownField label="Scenes" name="ScenesDropdown" index="0" class="scenes-list custom-dropdown" style="display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>

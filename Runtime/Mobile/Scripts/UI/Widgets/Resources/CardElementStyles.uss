@@ -12,20 +12,15 @@
     min-height: 360px;
     max-height: 480px;
     position: relative;
+    transition-property: min-width,  min-height;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+
 }
 
-.twinny-card-element.clone {
-    position: absolute; 
-    height: auto;
-    width: auto;
-    max-height: none;
-    transition: top 3s ease, left 3s ease, right 3s ease, bottom 3s ease;
-}
-.twinny-card-element.clone.expanded {
-    top: 32px !important;
-    left: 32px !important;
-    right: 32px !important;  
-    bottom: 32px !important; 
+.twinny-card-element.expanded {
+    min-width:100%;
+     min-height:640px;
 }
 
 .twinny-video-element{

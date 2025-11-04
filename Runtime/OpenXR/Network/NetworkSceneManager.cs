@@ -62,7 +62,8 @@ namespace Twinny.System.Network
                         else
                             await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.LoadSceneAsync((int)scene));
             */
-
+            //Resources.UnloadUnusedAssets();
+            //GC.Collect();
         }
 
         public static async Task UnloadAdditivesScenes() {
@@ -75,11 +76,14 @@ namespace Twinny.System.Network
                 if (loadedScene.buildIndex > 1)
                 {
                     await NetworkRunnerHandler.runner.UnloadScene(loadedScene.name);
-//                    await AsyncOperationExtensions.WaitForSceneLoadAsync(SceneManager.UnloadSceneAsync(loadedScene.name));
+                    await Task.Yield();
+                    if (loadedScene.IsValid() && loadedScene.isLoaded)
+                        await SceneManager.UnloadSceneAsync(loadedScene);
+
                 }
             }
+            await Resources.UnloadUnusedAssets();
 
-            
         }
 
 

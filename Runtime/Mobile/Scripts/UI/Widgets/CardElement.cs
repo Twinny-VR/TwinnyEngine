@@ -43,15 +43,15 @@ namespace Twinny.UI
             }
         }
 
-        private bool m_expanded = true;
+        private bool m_expandedInfo = true;
         [UxmlAttribute("expanded-info")]
-        public bool expanded
+        public bool expandedInfo
         {
-            get => m_expanded;
+            get => m_expandedInfo;
 
             set
             {
-                m_expanded = value;
+                m_expandedInfo = value;
                 m_footer.EnableInClassList("expanded", value);
                 m_footer.style.display = DisplayStyle.Flex;
 
@@ -114,10 +114,7 @@ namespace Twinny.UI
             m_descLabel = this.Q<Label>("DescLabel");
 
             m_backgroundElement = this.Q<AspectElement>();
-            m_backgroundElement.RegisterCallback<ClickEvent>(evt =>
-            {
-                OnClickEvent?.Invoke();
-            });
+            m_backgroundElement.RegisterCallback<ClickEvent>(evt => OnClickEvent?.Invoke());
 
             AddToClassList(USSClassName);
             RegisterCallback<AttachToPanelEvent>(OnAttachToPanel);
@@ -139,7 +136,7 @@ namespace Twinny.UI
         private void OnAttachToPanel(AttachToPanelEvent evt)
         {
             //Hide footer if starts false
-            m_footer.style.display = (expanded) ? DisplayStyle.Flex : DisplayStyle.None;
+            m_footer.style.display = (expandedInfo) ? DisplayStyle.Flex : DisplayStyle.None;
             SetBackground(m_background);
         }
 
@@ -213,7 +210,9 @@ namespace Twinny.UI
             m_backgroundElement.style.backgroundImage = new StyleBackground(texture);
 
         }
-       
+
+
+      
     }
 
 }
