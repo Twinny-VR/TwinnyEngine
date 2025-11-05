@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Concept.Helpers;
 using UnityEngine;
 
@@ -33,11 +34,11 @@ namespace Twinny.System
 
         public virtual void TeleportToLandMark(int landMarkIndex) { }
 
-        protected virtual void SetHDRI(Material hdri)
+        protected virtual async void SetHDRI(Material hdri)
         {
-#if NETWORK
-            if (hdri == null) hdri = NetworkedLevelManager.Config.defaultSkybox;
-#endif
+
+            await Task.Yield();
+
             if (hdri == null) hdri = TwinnyRuntime.GetInstance<TwinnyRuntime>().defaultSkybox;
 
             if (RenderSettings.skybox != hdri)

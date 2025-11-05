@@ -82,7 +82,7 @@ namespace Twinny.System.Network
 
                 }
             }
-            await Resources.UnloadUnusedAssets();
+            await Resources.UnloadUnusedAssets(); 
 
         }
 

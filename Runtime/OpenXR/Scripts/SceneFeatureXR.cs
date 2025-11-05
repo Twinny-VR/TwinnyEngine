@@ -118,7 +118,7 @@ namespace Twinny.XR
 
         private void OnDestroy()
         {
-            SetHDRI(-1);
+            SetupHDRI(-1);
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnLoadExtensionMenu(null));
 
             if (OVRManager.display != null)
@@ -142,7 +142,7 @@ namespace Twinny.XR
         public override void TeleportToLandMark(int landMarkIndex)
         {
 
-            SetHDRI(landMarkIndex);
+            SetupHDRI(landMarkIndex);
             if (landMarks.Length > 0)
             {
                 if (_currentLandMark != null) _currentLandMark.node?.OnLandMarkUnselected?.Invoke();
@@ -218,7 +218,7 @@ namespace Twinny.XR
         #region Private Methods
 
 
-        private void SetHDRI(int landMarkIndex)
+        private void SetupHDRI(int landMarkIndex)
         {
 
             //TODO Melhorar o sistema de HDRI
@@ -235,17 +235,7 @@ namespace Twinny.XR
             {
 
                 LandMark landMark = landMarks[landMarkIndex];
-                if (landMark.skyBoxMaterial)
-                {
-
-                    if (RenderSettings.skybox != landMark.skyBoxMaterial)
-                    {
-                        RenderSettings.skybox = landMark.skyBoxMaterial;
-                        DynamicGI.UpdateEnvironment();
-                    }
-                }
-                else
-                    Debug.LogWarning("[SceneFeature] Warning! The Skybox Material has not been defined.");
+                SetHDRI(landMark.skyBoxMaterial);
                 currentLandMark = landMark;
             }
 
