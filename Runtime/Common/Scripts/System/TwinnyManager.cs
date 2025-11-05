@@ -3,7 +3,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Concept.Core;
 using Concept.Helpers;
+#if UNITY_LOCALIZATION
 using Concept.Localization;
+#endif
 using Twinny.Helpers;
 using Twinny.UI;
 #if UNITY_EDITOR
@@ -64,7 +66,9 @@ namespace Twinny.System
             GetCurrentPlatform();
             var locale = CultureInfo.CurrentCulture.ToString();
             //LocalizationProvider.SetLocale(locale);
+#if UNITY_LOCALIZATION
             LocalizationProvider.Initialize();
+#endif
         }
 
         public static void GetCurrentPlatform()

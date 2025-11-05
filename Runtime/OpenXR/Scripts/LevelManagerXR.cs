@@ -44,7 +44,6 @@ namespace Twinny.XR
         protected override void Awake()
         {
             base.Awake();
-
         }
 
 
@@ -271,7 +270,7 @@ namespace Twinny.XR
 
         public void SetPassthrough(bool status)
         {
-            UnityEngine.Debug.LogWarning("SetPassthrough: " + status);
+            Debug.LogWarning("SetPassthrough: " + status);
             Camera.main.backgroundColor = Color.clear;
             if (status)
             {
@@ -292,7 +291,7 @@ namespace Twinny.XR
             }
             else
             {
-                UnityEngine.Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
+                Debug.LogWarning("[LevelManagerXR] SetPassthrough was not effective. Cause: 'Passthrough not found'");
                 return;
             }
             OnSetPassthrough?.Invoke(status);

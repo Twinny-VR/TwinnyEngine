@@ -173,7 +173,8 @@ namespace Twinny.XR
                 {
                     cameraRig.SetParent(null);
                     cameraRig.position = Vector3.zero;
-                    SceneManager.MoveGameObjectToScene(cameraRig.gameObject, SceneManager.GetActiveScene());
+                    var activeScene = SceneManager.GetSceneByBuildIndex(0);
+                    SceneManager.MoveGameObjectToScene(cameraRig.gameObject, activeScene);
                 }
             }
             else
