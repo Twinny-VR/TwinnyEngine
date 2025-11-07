@@ -65,18 +65,19 @@ namespace Twinny.XR
         protected override async Task InitializePlatform()
         {
             await  base.InitializePlatform();
-            Debug.LogWarning("KISSO: " + currentPlatform);
+            
+            _ = CanvasTransition.FadeScreen(false, TwinnyRuntime.GetInstance().fadeTime);
+            
+            
             if (currentPlatform == Platform.XR)
             {
-
-                await ConnectToServer();
+               await ConnectToServer();
             }
             else
             {
                 Debug.LogError($"[LevelManager] Unknow Platform initialized ({UnityEngine.Application.platform}).");
             }
 
-            _ = CanvasTransition.FadeScreen(false, TwinnyRuntime.GetInstance().fadeTime);
 
         }
 

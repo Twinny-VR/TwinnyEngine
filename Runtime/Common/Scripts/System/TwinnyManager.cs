@@ -162,6 +162,8 @@ namespace Twinny.System
         //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Initialize()
         {
+            //TODO Aprimorar sistema de webhook com Dispatcher
+            /* 
             if(m_config == null)
             _ = DiscordUtils.SendEmbedAsync(DEFAULT_WEBHOOK, "Runtime Preset", "The project doesn't have any preset defined."); // Green color
             else
@@ -173,7 +175,7 @@ namespace Twinny.System
                         discordHandler.webhookUrl = m_config.webHookUrl;
                 discordHandler.sendWarnings = m_config.sendWarnings;       
             }
-
+            */
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
             if (m_config.isTestBuild)
