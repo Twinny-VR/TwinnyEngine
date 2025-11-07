@@ -142,7 +142,6 @@ namespace Twinny.System
             base.Start();
             _safeAreaSize = TwinnyRuntime.GetInstance<RuntimeXR>().safeAreaSize;
 
-
             //Set callbacks listeners
             _spatialAnchorCore.OnAnchorsLoadCompleted.AddListener(OnAnchorsLoadCompleted);
             _spatialAnchorCore.OnAnchorCreateCompleted.AddListener(OnAnchorCreateCompleted);

@@ -99,7 +99,7 @@ namespace Twinny.UI
 
             if (!TwinnyRuntime.GetInstance<RuntimeXR>().allowClickSafeAreaOutside && (AnchorManager.Instance && !AnchorManager.Instance.isInSafeArea))//TODO Globalizar isso sem anchor
             {
-                AlertViewHUD.PostMessage("%BACK_TO_SAFE_AREA", AlertViewHUD.MessageType.Warning, 5f);
+                AlertViewHUD.PostMessage("Volte para a Safe Área!", AlertViewHUD.MessageType.Warning, 5f);
                 return;
             }
 

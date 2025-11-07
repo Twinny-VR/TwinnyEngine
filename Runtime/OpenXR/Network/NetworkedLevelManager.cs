@@ -207,7 +207,7 @@ namespace Twinny.System
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnStartLoadScene());
 
             RPC_FadingStatus(1);
-            RPC_Message(Runner.LocalPlayer, PlayerRef.None, "%LOADING_SCENE", time: 90f);
+            RPC_Message(Runner.LocalPlayer, PlayerRef.None, "CARREGANDO CENA...", time: 90f);
 
             await CanvasTransition.FadeScreen(true, config.fadeTime);
 
