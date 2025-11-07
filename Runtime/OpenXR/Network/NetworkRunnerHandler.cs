@@ -189,7 +189,7 @@ namespace Twinny.System.Network
             //LevelManager.Instance.RPC_StartForAll(PlayerRef.None, "");
             if (TwinnyRuntime.GetInstance<NetworkRuntime>().tryReconnect)
             {
-                Twinny.UI.AlertViewHUD.PostMessage($"{"%DISCONNECTED"}!", Twinny.UI.AlertViewHUD.MessageType.Error, 10f);
+                Twinny.UI.AlertViewHUD.PostMessage($"DESCONECTADO!", Twinny.UI.AlertViewHUD.MessageType.Error, 10f);
                 TryReconnect();
             }
         }
