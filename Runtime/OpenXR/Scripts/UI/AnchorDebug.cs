@@ -23,6 +23,7 @@ namespace Twinny.UI
         // Start is called before the first frame update
         void Start()
         {
+            Debug.LogWarning("[AnchorDebug] Active:" + TwinnyRuntime.GetInstance<RuntimeXR>().isTestBuild);
             _debugVisual.SetActive(TwinnyRuntime.GetInstance<RuntimeXR>().isTestBuild);
             _transform = transform;
             _debugInfo.SetActive(_showInfo);

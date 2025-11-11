@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugVisual: {fileID: 4245279888031358441}
-  _showInfo: 0
+  _showInfo: 1
   _debugInfo: {fileID: 1588519700610495203}
   TMP_Info: {fileID: 4001378391498386605}
 --- !u!1001 &1585656121270191295
@@ -100,6 +100,30 @@ PrefabInstance:
     - target: {fileID: 3236718447782254934, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
       propertyPath: m_Name
       value: AnchorDebugVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679211691107839168, guid: 11c2bda146e74d64fb438292e0070853, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

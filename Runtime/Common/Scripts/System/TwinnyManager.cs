@@ -179,8 +179,8 @@ namespace Twinny.System
             CallbackHub.CallAction<IUICallBacks>(callback => callback.OnPlatformInitialize());
 
             if (m_config.isTestBuild)
-            {
                 Debug.LogWarning("*** TEST VERSION BUILD! Unset in Config file before Release!");
+
                 if (DebugPanel.Instance != null)
                 {
                     DebugPanel.Instance.visible = m_config.isTestBuild;
@@ -189,7 +189,6 @@ namespace Twinny.System
                                      "= <color=#3cbcd6>Unset in Config file before Release.</color> =\n" +
                                      "===============================", " ", LogType.Warning);
                 }
-            }
 
             if (m_config != null && m_config.forceFrameRate)
             {

@@ -27,7 +27,7 @@ namespace Twinny.XR
         [SerializeField] private FusionBootstrap _bootstrap;
         [SerializeField] private SharedSpatialAnchorManager _sharedAnchorManager;
 
-        RuntimeXR config => TwinnyRuntime.GetInstance<RuntimeXR>();
+        public RuntimeXR config => TwinnyRuntime.GetInstance<RuntimeXR>();
 
 
         #region Delegates
