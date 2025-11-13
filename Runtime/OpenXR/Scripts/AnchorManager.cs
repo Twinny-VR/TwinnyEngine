@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Meta.XR.MultiplayerBlocks.Shared;
 using Twinny.XR;
 using Concept.Helpers;
+using static Fusion.Sockets.NetBitBuffer;
 
 namespace Twinny.System
 {
@@ -44,6 +45,7 @@ namespace Twinny.System
         [SerializeField] private SpatialAnchorSpawnerBuildingBlock _spatialAnchorSpawner;
 
         [SerializeField] private float _maxDistance = 5f;
+        [SerializeField] private float m_distanceOffset = .4f;
 
         [SerializeField] private bool _usePinchToAnchor = false;
 
@@ -397,7 +399,7 @@ namespace Twinny.System
                 cameraPitch -= 360;  // Limits the X axis rotation between -180 and 180 degrees.
             }
 
-            float targetDistance = Mathf.Lerp(_maxDistance, 0f, Mathf.InverseLerp(-70f, 90f, cameraPitch));
+            float targetDistance = Mathf.Lerp(_maxDistance, 0f, Mathf.InverseLerp(-70f, 90f, cameraPitch)) - m_distanceOffset;
 
             Vector3 targetPosition = _mainCamera.transform.position + forwardDirection * targetDistance;
             Quaternion targetRotation = Quaternion.LookRotation(forwardDirection);
