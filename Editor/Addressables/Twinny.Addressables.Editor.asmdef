@@ -13,7 +13,8 @@
     "autoReferenced": false,
     "defineConstraints": [
         "ADDRESSABLES",
-        "NEWTON_SOFT"
+        "NEWTON_SOFT",
+        "false"
     ],
     "versionDefines": [
         {

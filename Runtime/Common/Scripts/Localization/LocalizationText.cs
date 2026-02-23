@@ -1,8 +1,8 @@
-#if OBSOLETE
+#if true
 using System.Collections;
 using System.Collections.Generic;
+using Concept.Localization;
 using TMPro;
-using Twinny.Localization;
 using Twinny.Helpers;
 using UnityEngine;
 
@@ -27,14 +27,14 @@ namespace Twinny.UI
         {
             _textMesh = GetComponent<TMP_Text>();
             SetText();
-            LocalizationProvider.OnLanguageChanged += SetText;
+           // LocalizationProvider.OnLanguageChanged += SetText;
 
         }
 
         // Start is called when component or object are removed
         private void OnDestroy()
         {
-            LocalizationProvider.OnLanguageChanged -= SetText;
+           // LocalizationProvider.OnLanguageChanged -= SetText;
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace Twinny.Helpers
         /// <param name="key">KeyWord to tranlate</param>
         public static void SetLocalizationText(this TMP_Text textMesh, string key)
         {
-            textMesh.text = LocalizationProvider.GetTranslated(key);
+          //  textMesh.text = LocalizationProvider.GetTranslated(key);
         }
     }
 

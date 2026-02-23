@@ -272,7 +272,8 @@ namespace Twinny.XR
         public void SetPassthrough(bool status)
         {
             Debug.LogWarning("SetPassthrough: " + status);
-            Camera.main.backgroundColor = Color.clear;
+            Camera mainCamera = Camera.main;
+            mainCamera.backgroundColor = Color.clear;
             if (status)
             {
                 RenderSettings.skybox = (config as RuntimeXR).defaultSkybox;
